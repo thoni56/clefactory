@@ -15,6 +15,6 @@ AfterEach(Main) {}
 Ensure(Main, will_exit_when_dispatcher_exits) {
     char *argv[] = {"crefactory"};
 
-    expect(read_and_execute_commands, when(channel, is_equal_to(stdin)));
+    expect(dispatch_commands, when(channel, is_equal_to(stdin)));
     assert_that(main(1, argv), is_equal_to(EXIT_SUCCESS));
 }

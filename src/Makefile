@@ -158,7 +158,7 @@ unit: unittests
 
 #########################################################################
 clean:
-	-$(MAKE) -C ../tests clean
+	#-$(MAKE) -C ../tests clean
 	-rm -rf $(OBJDIR) crefactory *.gcov
 
 
@@ -306,5 +306,6 @@ endef
 
 # Autogenerate unittest targets and recipe for listed modules
 $(eval $(call UNITTEST,main,))
+$(eval $(call UNITTEST,dispatcher,))
 
 .PHONY : $(PHONY)

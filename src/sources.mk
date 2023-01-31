@@ -1,4 +1,4 @@
-MODULES =  main
+MODULES =  main dispatcher
 
 OBJDIR = .objects
 SRCS = ${MODULES:=.c}

@@ -3,6 +3,8 @@
 
 /* DISPATCHER - read commands from stdin, decode and dispatch until EOF */
 
-extern void read_and_execute_commands(FILE *channel);
+#include <stdio.h>
+
+extern void dispatch_commands(FILE *channel);
 
 #endif
