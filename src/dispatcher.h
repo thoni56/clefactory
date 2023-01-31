@@ -13,6 +13,6 @@ typedef struct {
     CommandHandler *handler;
 } DispatchTable;
 
-extern void dispatch_commands(FILE *channel, DispatchTable *table);
+extern void dispatch_command(const char *command, DispatchTable *table);
 
 #endif
