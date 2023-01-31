@@ -46,7 +46,9 @@ Ensure(Dispatcher, will_call_handler_for_matching_command) {
     assert_that(exit_handler_has_been_called);
 }
 
-Ensure(Dispatcher, will_send_array_terminated_by_NULL_pointer_to_handler) {}
+Ensure(Dispatcher, will_return_EXIT_ERROR_when_no_handler_found) {
+    assert_that(dispatch_command("void", dispatchTable), is_equal_to(EXIT_FAILURE));
+}
 
 Ensure(Dispatcher, will_give_rest_of_command_to_handler) {
     dispatch_command("about something\n", dispatchTable);

@@ -14,6 +14,7 @@ typedef struct {
     CommandHandler *handler;
 } DispatchTable;
 
-extern void dispatch_command(const char *command, DispatchTable *table);
+// Returns EXIT_FAILURE if no handler found, else return code from handler
+extern int dispatch_command(const char *command, DispatchTable *table);
 
 #endif

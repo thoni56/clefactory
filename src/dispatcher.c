@@ -1,9 +1,10 @@
 #include "dispatcher.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 
-void dispatch_command(const char *line, DispatchTable *table) {
+int dispatch_command(const char *line, DispatchTable *table) {
     char *command = strdup(line);
     command[strlen(command)-1] = '\0';
     strtok(command, " ");
@@ -14,6 +15,7 @@ void dispatch_command(const char *line, DispatchTable *table) {
 
     for (int i=0; table[i].handler != NULL; i++) {
         if (strcmp(command, table[i].command) == 0)
-            table[i].handler((const char **)arguments);
+            return table[i].handler((const char **)arguments);
     }
+    return EXIT_FAILURE;
 }
