@@ -24,9 +24,16 @@ static int help_handler(const char *arguments[]) {
     return 0;
 }
 
+static bool exit_handler_has_been_called = false;
+static int exit_handler(const char *arguments[]) {
+    exit_handler_has_been_called = true;
+    return 0;
+}
+
 static DispatchTable dispatchTable[] = {
     {"about", about_handler},
-    {"help",  help_handler },
+    {"help",  help_handler},
+    {"exit",  exit_handler},
     {"",      NULL        }
 };
 
@@ -35,6 +42,8 @@ Ensure(Dispatcher, will_call_handler_for_matching_command) {
     assert_that(about_handler_has_been_called);
     dispatch_command("help\n", dispatchTable);
     assert_that(help_handler_has_been_called);
+    dispatch_command("exit\n", dispatchTable);
+    assert_that(exit_handler_has_been_called);
 }
 
 Ensure(Dispatcher, will_send_array_terminated_by_NULL_pointer_to_handler) {}

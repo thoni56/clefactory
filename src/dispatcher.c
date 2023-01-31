@@ -3,16 +3,17 @@
 #include <string.h>
 
 
-void dispatch_command(const char *command, DispatchTable *table) {
-    char *copy = strdup(command);
-    copy[strlen(copy)-1] = '\0';
+void dispatch_command(const char *line, DispatchTable *table) {
+    char *command = strdup(line);
+    command[strlen(command)-1] = '\0';
+    strtok(command, " ");
 
     static char *arguments[2];
-    arguments[0] = &copy[6];
+    arguments[0] = &command[6];
     arguments[1] = NULL;
 
-    if (strncmp(command, "about", 5) == 0)
-        table[0].handler((const char **)arguments);
-    else
-        table[1].handler((const char **)arguments);
+    for (int i=0; table[i].handler != NULL; i++) {
+        if (strcmp(command, table[i].command) == 0)
+            table[i].handler((const char **)arguments);
+    }
 }
