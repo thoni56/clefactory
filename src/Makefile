@@ -273,7 +273,7 @@ endif
 
 PHONY += unittests
 ifeq ($(shell command -v cgreen-runner 2> /dev/null),)
-unittests: parsers
+unittests:
 	@echo Cgreen not available, cannot run unittests
 else
 unittests: $(UNITTESTS)
