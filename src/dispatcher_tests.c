@@ -11,15 +11,26 @@ BeforeEach(Dispatcher) {}
 AfterEach(Dispatcher) {}
 
 
-bool handler_has_been_called = false;
+bool about_handler_has_been_called = false;
 static int aboutHandler(const char *command) {
-    handler_has_been_called = true;
+    about_handler_has_been_called = true;
+    return 0;
+}
+
+bool help_handler_has_been_called = false;
+static int helpHandler(const char *command) {
+    help_handler_has_been_called = true;
     return 0;
 }
 
 Ensure(Dispatcher, will_call_handler_for_matching_command) {
-    DispatchTable table[] = {{"about", aboutHandler},
-                             {"", NULL}};
+    DispatchTable table[] = {
+        {"about", aboutHandler},
+        {"help", helpHandler},
+        {"", NULL}
+    };
     dispatch_command("about\n", table);
-    assert_that(handler_has_been_called);
+    assert_that(about_handler_has_been_called);
+    dispatch_command("help\n", table);
+    assert_that(help_handler_has_been_called);
 }
