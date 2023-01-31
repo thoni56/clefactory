@@ -6,7 +6,8 @@
 #include <stdio.h>
 
 
-typedef int CommandHandler(const char *);
+/* Will receive an array of arguments terminated by a NULL pointer */
+typedef int CommandHandler(const char *arguments[]);
 
 typedef struct {
     const char *command;
