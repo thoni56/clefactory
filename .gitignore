@@ -1,0 +1,8 @@
+*.d
+*.o
+*.so
+*.gcov
+*.gcno
+*.gcda
+*.info
+*.done

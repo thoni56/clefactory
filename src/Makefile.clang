@@ -1,0 +1,9 @@
+LLVM = $(shell brew --prefix)/opt/llvm
+
+INCLUDES = -I$(LLVM)/include
+
+CFLAGS = $(INCLUDES) -g
+LDFLAGS = -L$(LLVM)/lib -lclang
+
+
+all: main
