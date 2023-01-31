@@ -5,7 +5,14 @@
 
 #define MAX_LINE_LENGTH 3000
 
-static DispatchTable dispatchTable[1];
+static int about_handler(const char *arguments[]) {
+    printf("This is Crefactory v0.0");
+    return EXIT_SUCCESS;
+}
+
+static DispatchTable dispatchTable[] = {
+    {"about", about_handler}
+};
 
 int main(int argc, char *argv[]) {
     char command[MAX_LINE_LENGTH];
