@@ -1,0 +1,31 @@
+language: c
+os:
+  - linux
+
+dist: jammy
+
+addons:
+  apt:
+    packages:
+    - lcov
+
+before_install:
+    - if [ "$TRAVIS_OS_NAME" = "linux" ] ; then ./.travis_install_linux.sh ; fi
+
+script:
+    - cd src
+    # Separate coverage for unittest to Codecov
+    - make COVERAGE=--coverage unit
+    - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+        bash <(curl -s https://codecov.io/bash) -X gcovout ;
+      fi
+    # Now reset coverage and run everything
+    - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+        lcov -q -z -d . ;
+      fi
+    - make ci                   # = unit, build & test (even slow)
+    - cd ..
+
+branches:
+    except:
+        - stable
