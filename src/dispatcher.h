@@ -3,6 +3,6 @@
 
 /* DISPATCHER - read commands from stdin, decode and dispatch until EOF */
 
-extern void read_and_execute_commands(void);
+extern void read_and_execute_commands(FILE *channel);
 
 #endif

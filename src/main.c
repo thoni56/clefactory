@@ -5,6 +5,6 @@
 
 
 int main(int argc, char *argv[]) {
-    read_and_execute_commands();
+    read_and_execute_commands(stdin);
     return EXIT_SUCCESS;
 }
