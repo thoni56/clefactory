@@ -12,21 +12,21 @@ AfterEach(Dispatcher) {}
 
 static const char **about_arguments;
 static bool about_handler_has_been_called = false;
-static int aboutHandler(const char *arguments[]) {
+static int about_handler(const char *arguments[]) {
     about_handler_has_been_called = true;
     about_arguments = arguments;
     return 0;
 }
 
 static bool help_handler_has_been_called = false;
-static int helpHandler(const char *arguments[]) {
+static int help_handler(const char *arguments[]) {
     help_handler_has_been_called = true;
     return 0;
 }
 
 static DispatchTable dispatchTable[] = {
-    {"about", aboutHandler},
-    {"help",  helpHandler },
+    {"about", about_handler},
+    {"help",  help_handler },
     {"",      NULL        }
 };
 
