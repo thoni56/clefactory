@@ -26,6 +26,21 @@ static FILE *create_an_empty_file(const char *input) {
 
 Ensure(Dispatcher, will_exit_immediately_on_empty_input) {
 	FILE *channel = create_an_empty_file("");
-    dispatch_commands(channel);
+    DispatchTable table[1];
+    dispatch_commands(channel, table);
     assert_that(true);
+}
+
+bool handler_has_been_called = false;
+static int aboutHandler(const char *command) {
+    handler_has_been_called = true;
+    return 0;
+}
+
+Ensure(Dispatcher, will_call_handler_for_matching_command) {
+    FILE *channel = create_an_empty_file("about\n");
+    DispatchTable table[] = {{"about", aboutHandler},
+                           {"", NULL}};
+    dispatch_commands(channel, table);
+    assert_that(handler_has_been_called);
 }

@@ -5,6 +5,14 @@
 
 #include <stdio.h>
 
-extern void dispatch_commands(FILE *channel);
+
+typedef int CommandHandler(const char *);
+
+typedef struct {
+    const char *command;
+    CommandHandler *handler;
+} DispatchTable;
+
+extern void dispatch_commands(FILE *channel, DispatchTable *table);
 
 #endif

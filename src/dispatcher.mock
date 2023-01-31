@@ -3,6 +3,6 @@
 #include "dispatcher.h"
 
 
-void dispatch_commands(FILE *channel) {
-    mock(channel);
+void dispatch_commands(FILE *channel, DispatchTable *table) {
+    mock(channel, table);
 }
