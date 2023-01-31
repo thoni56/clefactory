@@ -1,7 +1,7 @@
-# crefactory
+# Clefactory
 
-Refactoring browser for C inspired by c-xrefactory built on libclang
+This is planned to become a refactoring browser for C inspired by c-xrefactory built on libclang, hence `Clefactory`.
 
 # Work In Progress
 
-This is not even started yet ;-)
+This is hardly even started yet ;-)

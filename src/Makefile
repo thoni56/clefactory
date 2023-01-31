@@ -141,11 +141,11 @@ GIT_HASH = $(shell git describe --abbrev=5 --always --tags --dirty)
 $(OBJDIR)/options.o: CFLAGS += -DGIT_HASH=\"$(GIT_HASH)\"
 
 PHONY += build
-build: crefactory
+build: clefactory
 
-PHONY += crefactory
-crefactory: $(OBJS)
-	$(CC) $(LDFLAGS) -o crefactory $(OBJS) $(LIBS)
+PHONY += clefactory
+clefactory: $(OBJS)
+	$(CC) $(LDFLAGS) -o clefactory $(OBJS) $(LIBS)
 
 
 #########################################################################
@@ -159,7 +159,7 @@ unit: unittests
 #########################################################################
 clean:
 	#-$(MAKE) -C ../tests clean
-	-rm -rf $(OBJDIR) crefactory *.gcov
+	-rm -rf $(OBJDIR) clefactory *.gcov
 
 
 ########################################################################

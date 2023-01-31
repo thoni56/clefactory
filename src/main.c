@@ -6,7 +6,7 @@
 #define MAX_LINE_LENGTH 3000
 
 static int about_handler(const char *arguments[]) {
-    printf("This is Crefactory v0.0");
+    printf("This is Clefactory v0.0");
     return EXIT_SUCCESS;
 }
 
