@@ -13,9 +13,9 @@ int dispatch_command(const char *line, DispatchTable *table) {
     arguments[0] = &command[6];
     arguments[1] = NULL;
 
-    for (int i=0; table[i].handler != NULL; i++) {
-        if (strcmp(command, table[i].command) == 0)
-            return table[i].handler((const char **)arguments);
+    for (DispatchTable *t=table; t->handler != NULL; t++) {
+        if (strcmp(command, t->command) == 0)
+            return t->handler((const char **)arguments);
     }
     return EXIT_FAILURE;
 }
