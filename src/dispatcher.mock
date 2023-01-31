@@ -1,0 +1,8 @@
+#include <cgreen/mocks.h>
+
+#include "dispatcher.h"
+
+
+void read_and_execute_commands(void) {
+    mock();
+}
