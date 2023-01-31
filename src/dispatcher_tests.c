@@ -51,7 +51,9 @@ Ensure(Dispatcher, will_return_EXIT_ERROR_when_no_handler_found) {
 }
 
 Ensure(Dispatcher, will_give_rest_of_command_to_handler) {
-    dispatch_command("about something\n", dispatchTable);
+    dispatch_command("about something or other\n", dispatchTable);
     assert_that(about_arguments[0], is_equal_to_string("something"));
-    assert_that(about_arguments[1], is_null);
+    assert_that(about_arguments[1], is_equal_to_string("or"));
+    assert_that(about_arguments[2], is_equal_to_string("other"));
+    assert_that(about_arguments[3], is_null);
 }
