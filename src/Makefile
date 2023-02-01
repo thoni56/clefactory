@@ -127,7 +127,7 @@ ci:
 	$(MAKE) -e -j unit
 	$(MAKE) -e -j build
 	$(MAKE) -e -j -C ../tests all
-	for tc in ../tests/*/.coverage ; do $(GCOV_TOOL) merge $$tc $(OBJDIR) -o $(OBJDIR) ; done
+	-for tc in ../tests/*/.coverage ; do $(GCOV_TOOL) merge $$tc $(OBJDIR) -o $(OBJDIR) ; done
 
 chcheck:
 	for m in `echo $(MODULES) | sed -e 's/[a-z]*_parser\.tab//g'` ; do \
