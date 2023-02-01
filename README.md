@@ -1,4 +1,4 @@
-[![Travis Build Status](https://app.travis-ci.com/thoni56/clefactory.svg?branch=main)
+[![Travis Build Status](https://app.travis-ci.com/thoni56/clefactory.svg?branch=main)](https://app.travis-ci.com/thoni56/clefactory.svg?branch=main)
 [![Coverage Status](https://coveralls.io/repos/github/thoni56/clefactory/badge.svg?branch=main)](https://coveralls.io/github/thoni56/clefactory?branch=main)
 # Clefactory
 
