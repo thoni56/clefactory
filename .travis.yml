@@ -25,7 +25,3 @@ script:
       fi
     - make ci                   # = unit, build & test (even slow)
     - cd ..
-
-branches:
-    except:
-        - stable
