@@ -2,19 +2,6 @@ coverage:
   status:
     project:
       default: off
-      unittests:
-        flags: unittests
-      integration:
-        flags: integration
 
 ignore:
   - "**/*.mock"
-  
-flags:
-  # filter the folder(s) you wish to measure by that flag
-  integration:
-    paths:
-      - src
-  unittests:
-    paths:
-      - src
