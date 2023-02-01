@@ -58,6 +58,17 @@
 export COVERAGE = --coverage
 export CC = cc
 
+# Includes and libs
+ifeq ($(OS),Darwin)
+LLVM = $(shell brew --prefix)/opt/llvm
+else
+LLVM = /usr/lib/llvm-15
+endif
+
+INCLUDES += -I$(LLVM)/include
+
+LIBS += -L$(LLVM)/lib -lclang
+
 # Other variables
 
 MAKEFLAGS += --no-print-directory
