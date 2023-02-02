@@ -1,4 +1,4 @@
-MODULES =  main dispatcher exports inspector
+MODULES =  main dispatcher exports clang_adaptor
 
 OBJDIR = .objects
 SRCS = ${MODULES:=.c}

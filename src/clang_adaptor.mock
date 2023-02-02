@@ -1,0 +1,80 @@
+#include "clang_adaptor.h"
+
+CXIndex createIndex(int excludeDeclarationsFromPCH, int displayDiagnostics) {
+    return (CXIndex)mock(excludeDeclarationsFromPCH, displayDiagnostics);
+}
+
+CXTranslationUnit parseTranslationUnit(CXIndex CIdx, const char *source_filename,
+                                       const char *const *command_line_args,
+                                       int num_command_line_args,
+                                       struct CXUnsavedFile *unsaved_files,
+                                       unsigned num_unsaved_files, unsigned options) {
+    return (CXTranslationUnit)mock(CIdx, source_filename, command_line_args, num_command_line_args,
+                                   unsaved_files, num_unsaved_files, options);
+}
+
+CXCursor getTranslationUnitCursor(CXTranslationUnit unit) {
+    CXTranslationUnit *unitP = &unit;
+    CXCursor *cursor = (CXCursor *)mock(unitP);
+    return *cursor;
+}
+
+CXFile getFile(CXTranslationUnit unit, const char *file_name) {
+    return (CXFile)mock(unit, file_name);
+}
+
+unsigned int visitChildren(CXCursor parent, CXCursorVisitor visitor, CXClientData client_data) {
+    CXCursor *parentP = &parent;
+    return mock(parentP, visitor, client_data);
+}
+
+enum CXLinkageKind getCursorLinkage(CXCursor cursor) {
+    CXCursor *cursorP = &cursor;
+    return (enum CXLinkageKind)mock(cursorP);
+}
+
+CXString getCursorSpelling(CXCursor cursor) {
+    CXCursor *cursorP = &cursor;
+    CXString *stringP = (CXString *)mock(cursorP);
+    return *stringP;
+}
+
+enum CXCursorKind getCursorKind(CXCursor cursor) {
+    CXCursor *cursorP = &cursor;
+    return (enum CXCursorKind)mock(cursorP);
+}
+
+enum CX_StorageClass cursor_getStorageClass(CXCursor cursor) {
+    CXCursor *cursorP = &cursor;
+    return (enum CX_StorageClass)mock(cursorP);
+}
+
+CXSourceLocation getCursorLocation(CXCursor cursor) {
+    CXCursor *cursorP = &cursor;
+    CXSourceLocation *location = (CXSourceLocation *)mock(cursorP);
+    return *location;
+}
+
+void getSpellingLocation(CXSourceLocation location, CXFile *file, unsigned int *line,
+                         unsigned int *column, unsigned int *offset) {
+    CXSourceLocation *locationP = &location;
+    mock(locationP, file, line, column, offset);
+}
+
+const char *getCString(CXString string) {
+    CXString *stringP = &string;
+    return (const char *)mock(stringP);
+}
+
+int file_isEqual(CXFile file1, CXFile file2) {
+    return mock(file1, file2);
+}
+
+void disposeString(CXString string) {
+    CXString *stringP = &string;
+    mock(stringP);
+}
+
+void disposeIndex(CXIndex index) { mock(index); }
+
+void disposeTranslationUnit(CXTranslationUnit unit) { mock(unit); }

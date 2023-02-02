@@ -1,0 +1,8 @@
+#include <cgreen/mocks.h>
+
+#include "exports.h"
+
+
+int exports_handler(const char *arguments[]) {
+    return mock(arguments);
+}

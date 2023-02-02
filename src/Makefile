@@ -17,16 +17,15 @@
 #
 #	make unit
 #
-# 5: build with coverage, run all "quick" tests and produce
-# gcov:
+# 5: build with coverage, run all tests and produce gcov:
 #
 #	make devel
 #
 # 6: build with coverage, run one test and produce gcov files:
 #
-#   make
-#   make clean-coverage
-#   <run test>
+#	make
+#	make clean-coverage
+#	<run test>
 #	make coverage-report
 #
 # 6: run another test and produce aggregated gcov files:
@@ -161,8 +160,7 @@ clefactory: $(OBJS)
 
 #########################################################################
 test:
-	@echo "Only running quick tests for now - 'cd ../test; make all' to run all"
-	$(MAKE) -e -C ../tests quick
+	$(MAKE) -e -C ../tests
 
 unit: unittests
 
@@ -323,5 +321,6 @@ endef
 # Autogenerate unittest targets and recipe for listed modules
 $(eval $(call UNITTEST,main,))
 $(eval $(call UNITTEST,dispatcher,))
+$(eval $(call UNITTEST,exports,))
 
 .PHONY : $(PHONY)

@@ -6,6 +6,7 @@
 extern int main(int argc, char *argv[]);
 
 #include "dispatcher.mock"
+#include "exports.mock"
 
 
 Describe(Main);
