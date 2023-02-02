@@ -266,9 +266,13 @@ endif
 
 ifeq ($(OS),Darwin)
 	ifeq ($(shell arch),arm64)
-		# And for Homebrew on M1
+		# For Homebrew on M1
 		CGREEN_LIB = -L/opt/homebrew/lib -lcgreen
 		DYLD_PATH = DYLD_LIBRARY_PATH=/opt/homebrew/lib
+	else
+		# And for Homebrew on x86_64
+		CGREEN_LIB = -L/usr/local/lib -lcgreen
+		DYLD_PATH = DYLD_LIBRARY_PATH=/usr/local/lib
 	endif
 endif
 
