@@ -4,7 +4,7 @@
 
 #include "dispatcher.h"
 #include "exports.h"
-//#include "indexer.h"
+#include "indexer.h"
 
 #define MAX_LINE_LENGTH 3000
 

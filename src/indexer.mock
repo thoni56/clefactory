@@ -1,0 +1,8 @@
+#include <cgreen/mocks.h>
+
+#include "indexer.h"
+
+
+int indexer_handler(const char *arguments[]) {
+    return mock(arguments);
+}
