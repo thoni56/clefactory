@@ -3,6 +3,7 @@
 
 #include "dispatcher.h"
 #include "exports.h"
+#include "indexer.h"
 
 #define MAX_LINE_LENGTH 3000
 
@@ -13,7 +14,8 @@ static int about_handler(const char *arguments[]) {
 
 static DispatchTable dispatchTable[] = {
     {"about", about_handler},
-    {"exports", exports_handler}
+    {"exports", exports_handler},
+    {"indexer", indexer_handler}
 };
 
 int main(int argc, char *argv[]) {
