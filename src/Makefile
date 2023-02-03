@@ -51,7 +51,7 @@
 #	make watch-for-systemtests
 #
 #########################################################################
-# Always export following variables to environment of sub-makes (to use you need "-e")
+OS := $(shell uname)
 
 # Build with coverage for all cases except "prod"
 export COVERAGE = --coverage
@@ -59,9 +59,10 @@ export CC = cc
 
 # Includes and libs
 ifeq ($(OS),Darwin)
-LLVM = $(shell brew --prefix)/opt/llvm
+  #LLVM = $(shell brew --prefix)/opt/llvm
+  LLVM = /opt/homebrew/opt/clang+llvm-15.0.6-arm64-apple-darwin21.0
 else
-LLVM = /usr/lib/llvm-15
+  LLVM = /usr/lib/llvm-15
 endif
 
 INCLUDES += -I$(LLVM)/include
@@ -91,8 +92,8 @@ ifeq ($(OS),Darwin)
 #		CC=cc
 #	endif
 # But we'd rather go with Apple Clang and generate fat binaries
-CFLAGS += -arch arm64 -arch x86_64
-LDFLAGS += -arch arm64 -arch x86_64
+CFLAGS += -arch arm64
+LDFLAGS += -arch arm64
 endif
 
 # We need to use compatible gcov (for Darwin/Brew with Homebrew gcc-11 we need to use GCC:s gcov)
@@ -277,7 +278,7 @@ ifeq ($(OS),Darwin)
 	ifeq ($(shell arch),arm64)
 		# For Homebrew on M1
 		CGREEN_LIB = -L/opt/homebrew/lib -lcgreen
-		DYLD_PATH = DYLD_LIBRARY_PATH=/opt/homebrew/lib
+		DYLD_PATH = DYLD_LIBRARY_PATH=/opt/homebrew/lib:$(LLVM)/lib
 	else
 		# And for Homebrew on x86_64
 		CGREEN_LIB = -L/usr/local/lib -lcgreen
