@@ -8,3 +8,4 @@
 *.info
 *.done
 .cgreen-debug-commands
+coverage
