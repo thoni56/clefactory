@@ -1,54 +1,16 @@
 #######################################################################
 #
-# This makefile supports the following use cases
+# This makefile supports the following targets
 #
-# 2: ci - build and run all tests with coverage and create
-#    coverage report:
-#
-#	make ci
-#
-# 3: all (or no target) - build and run unittests & build the c-xref
-# exe:
-#
-#	make
-#
-# 4: build and run unittests with coverage and produce gcov files for
-#    cov-mode in Emacs:
-#
-#	make unit
-#
-# 5: build with coverage, run all tests and produce gcov:
-#
-#	make devel
-#
-# 6: build with coverage, run one test and produce gcov files:
-#
-#	make
-#	make clean-coverage
-#	<run test>
-#	make coverage-report
-#
-# 6: run another test and produce aggregated gcov files:
-#
-#	<run another test>
-#	make coverage-report
-#
-# 7: produce coverage report for current collected coverage:
-#
-#	make coverage-report
-#
-# 8: watch sources to build and run all tests:
-#
-#	make watch
-#
-# 9: watch sources to build and run unittests (use as compile command in Emacs!):
-#
-#	make watch-for-unittests
-#
-# 10: watch unitests completion and run all systemtests (use in a separate
-#     terminal):
-#
-#	make watch-for-systemtests
+# ci - build and run all tests with coverage and create coverage report
+# all (or no target) - build and run unittests & build the clefactory exe
+# unit - build and run unittests with coverage and produce gcov files for cov-mode in Emacs
+# devel - build with coverage, run all tests and produce gcov
+# clean-coverage - clean coverage
+# coverage-report - create coverage-report with the current data
+# watch - watch sources to build and run all tests on change
+# watch-for-unittests - watch sources to build and run unittests on change
+# watch-for-systemtests - watch unitests completion and run all systemtests
 #
 #########################################################################
 OS := $(shell uname)
@@ -59,10 +21,9 @@ export CC = cc
 
 # Includes and libs
 ifeq ($(OS),Darwin)
-  #LLVM = $(shell brew --prefix)/opt/llvm
-  LLVM = /opt/homebrew/opt/clang+llvm-15.0.6-arm64-apple-darwin21.0
+  LLVM = /opt/clang+llvm-15.0.6-arm64-apple-darwin21.04
 else
-  LLVM = /usr/lib/llvm-15
+  LLVM = /opt/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04
 endif
 
 INCLUDES += -I$(LLVM)/include
