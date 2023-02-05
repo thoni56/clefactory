@@ -316,7 +316,7 @@ $(1)_DEPENDENCIES = $(2)
 $(1)_DEPS = $$(patsubst %,$(OBJDIR)/%.o,$$($(1)_DEPENDENCIES))
 $(OBJDIR)/$(1)_tests.o: CFLAGS += $(CGREEN_INCLUDE)
 $(1)_tests.$(EXT): $(OBJDIR)/$(1)_tests.o $(OBJDIR)/$(1).o $$($(1)_DEPS)
-	$(CC) $(LDFLAGS) -shared -o $$@ $$^ $$(COVERAGE) $$(CGREEN_LIB) -lz
+	$(CC) $(LDFLAGS) -shared -o $$@ $$^ $$(COVERAGE) $$(CGREEN_LIB)
 endef
 
 # Autogenerate unittest targets and recipe for listed modules
