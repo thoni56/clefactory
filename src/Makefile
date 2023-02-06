@@ -231,7 +231,7 @@ ifeq ($(OS),Darwin)
 	DYLD_PATH = DYLD_LIBRARY_PATH=/opt/homebrew/lib:$(LLVM)/lib
 	LIBS += -rpath $(LLVM)/lib
 else
-	LIBS += -Wl,rpath,$(LLVM)/lib
+	LIBS += "-Wl,rpath,$(LLVM)/lib"
 endif
 
 PHONY += unittests
