@@ -10,5 +10,3 @@ gem install coveralls-lcov
 wget https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.6/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz
 tar xf clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz
 mv clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04 /opt
-echo /opt/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04/lib | tee /etc/ld.so.conf.d/llvm-15.0.6.conf > /dev/null
-sudo ldconfig
