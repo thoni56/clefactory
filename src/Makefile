@@ -272,5 +272,7 @@ endef
 $(eval $(call UNITTEST,main,))
 $(eval $(call UNITTEST,dispatcher,))
 $(eval $(call UNITTEST,exports,))
+$(eval $(call UNITTEST,indexer,))
+$(eval $(call UNITTEST,includes,))
 
 .PHONY : $(PHONY)

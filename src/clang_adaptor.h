@@ -5,7 +5,7 @@
 
 extern CXIndex createIndex(int excludeDeclarationsFromPCH, int displayDiagnostics);
 
-extern CXTranslationUnit parseTranslationUnit(CXIndex CIdx, const char *source_filename,
+extern CXTranslationUnit parseTranslationUnit(CXIndex index, const char *source_filename,
                                               const char *const *command_line_args,
                                               int num_command_line_args,
                                               struct CXUnsavedFile *unsaved_files,
@@ -15,8 +15,17 @@ extern unsigned int visitChildren(CXCursor parent, CXCursorVisitor visitor,
                                   CXClientData client_data);
 
 extern CXCursor getTranslationUnitCursor(CXTranslationUnit unit);
+extern void getInclusions(CXTranslationUnit tu, CXInclusionVisitor visitor, CXClientData client_data);
 
 extern CXFile getFile(CXTranslationUnit unit, const char *file_name);
+extern CXString getFileName(CXFile file);
+
+extern CXFile getIncludedFile(CXCursor cursor);
+
+extern unsigned int getNumDiagnostics(CXTranslationUnit unit);
+extern CXDiagnostic getDiagnostic(CXTranslationUnit unit, unsigned int index);
+extern CXSourceLocation getDiagnosticLocation(CXDiagnostic diagnostic);
+extern void disposeDiagnostic(CXDiagnostic diagnostic);
 
 extern enum CXLinkageKind getCursorLinkage(CXCursor cursor);
 extern CXString getCursorSpelling(CXCursor);

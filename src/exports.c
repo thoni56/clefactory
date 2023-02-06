@@ -1,3 +1,5 @@
+#include "exports.h"
+
 #include <clang-c/Index.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,8 +8,8 @@
 
 static CXFile current_file;
 
-static enum CXChildVisitResult printCursor(CXCursor cursor, CXCursor parent,
-                                           CXClientData client_data) {
+static enum CXChildVisitResult printExportedSymbols(CXCursor cursor, CXCursor parent,
+                                                    CXClientData client_data) {
     enum CXCursorKind kind = getCursorKind(cursor);
     if (kind == CXCursor_VarDecl || kind == CXCursor_FunctionDecl) {
         CXString name = getCursorSpelling(cursor);
@@ -26,7 +28,7 @@ static enum CXChildVisitResult printCursor(CXCursor cursor, CXCursor parent,
 int exports_handler(const char *arguments[]) {
     CXIndex index = createIndex(0, 0);
     CXTranslationUnit tu =
-        parseTranslationUnit(index, arguments[0], 0, 0, 0, 0, CXTranslationUnit_KeepGoing);
+        parseTranslationUnit(index, arguments[0], NULL, 0, NULL, 0, CXTranslationUnit_KeepGoing);
     if (!tu) {
         fprintf(stderr, "Error parsing translation unit\n");
         return 1;
@@ -36,7 +38,7 @@ int exports_handler(const char *arguments[]) {
 
     current_file = getFile(tu, arguments[0]);
 
-    visitChildren(cursor, printCursor, NULL);
+    visitChildren(cursor, printExportedSymbols, NULL);
 
     disposeTranslationUnit(tu);
     disposeIndex(index);

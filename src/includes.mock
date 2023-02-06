@@ -1,0 +1,8 @@
+#include <cgreen/mocks.h>
+
+#include "includes.h"
+
+
+int includes_handler(const char *arguments[]) {
+    return mock(arguments);
+}

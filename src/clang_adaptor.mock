@@ -4,12 +4,12 @@ CXIndex createIndex(int excludeDeclarationsFromPCH, int displayDiagnostics) {
     return (CXIndex)mock(excludeDeclarationsFromPCH, displayDiagnostics);
 }
 
-CXTranslationUnit parseTranslationUnit(CXIndex CIdx, const char *source_filename,
+CXTranslationUnit parseTranslationUnit(CXIndex index, const char *source_filename,
                                        const char *const *command_line_args,
                                        int num_command_line_args,
                                        struct CXUnsavedFile *unsaved_files,
                                        unsigned num_unsaved_files, unsigned options) {
-    return (CXTranslationUnit)mock(CIdx, source_filename, command_line_args, num_command_line_args,
+    return (CXTranslationUnit)mock(index, source_filename, command_line_args, num_command_line_args,
                                    unsaved_files, num_unsaved_files, options);
 }
 
@@ -19,8 +19,40 @@ CXCursor getTranslationUnitCursor(CXTranslationUnit unit) {
     return *cursor;
 }
 
+void getInclusions(CXTranslationUnit tu, CXInclusionVisitor visitor, CXClientData client_data) {
+    mock(tu, visitor, client_data);
+}
+
 CXFile getFile(CXTranslationUnit unit, const char *file_name) {
     return (CXFile)mock(unit, file_name);
+}
+
+CXString getFileName(CXFile file) {
+    CXString *stringP = (CXString *)mock(file);
+    return *stringP;
+}
+
+CXFile getIncludedFile(CXCursor cursor) {
+    CXCursor *cursorP = &cursor;
+    return (CXFile)mock(cursorP);
+}
+
+
+unsigned int getNumDiagnostics(CXTranslationUnit unit) {
+    return mock(unit);
+}
+
+CXDiagnostic getDiagnostic(CXTranslationUnit unit, unsigned int index) {
+    return (CXDiagnostic)mock(unit, index);
+}
+
+CXSourceLocation getDiagnosticLocation(CXDiagnostic diagnostic) {
+    CXSourceLocation *locationP = (CXSourceLocation *)mock(diagnostic);
+    return *locationP;
+}
+
+void disposeDiagnostic(CXDiagnostic diagnostic) {
+    mock(diagnostic);
 }
 
 unsigned int visitChildren(CXCursor parent, CXCursorVisitor visitor, CXClientData client_data) {

@@ -1,4 +1,4 @@
-MODULES =  main dispatcher exports clang_adaptor indexer
+MODULES =  main dispatcher exports clang_adaptor indexer includes
 
 OBJDIR = .objects
 SRCS = ${MODULES:=.c}
