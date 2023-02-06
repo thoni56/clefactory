@@ -1,0 +1,31 @@
+#! /bin/bash
+# Run an autodiscovered test in the test suite and save coverage in
+# a separate directory so running the tests in parallel is possible
+# (otherwise they will crash when writing the coverage data in the same
+# gcda files...)
+#
+# args: 1 = test (directory) name
+#
+# Environment variables:
+#       GCOV_OPTIONS such as "GCOV_PREFIX=<path> GCOV_PREFIX_STRIP=6"
+#
+# Checks if the test is suspended and runs with the GCOV_OPTIONS
+
+if [ -f $1/.suspended ] ; then
+    echo "Tests in '$1': `tput setaf 6`SUSPENDED`tput sgr0`"
+else
+    mkdir -p $1/.coverage
+    make --no-print-directory $GCOV_OPTIONS -C $1
+    rc=$?
+    if [ $rc -ne 0 ] ; then
+	    exit $rc
+    fi
+    if ! command -v gcov-tool &> /dev/null ; then
+        cd $1
+        # We need the .gcno here
+        rsync -q -acv --filter='+ */' --filter='+ *.gcno' --filter='- *' ../../src/.objects/ .coverage
+        # Then we create a coverage.info for this test
+	# TODO: do we need this?
+        lcov -q -c -d . -b ../../src -o .coverage/coverage.info 2>&1 | grep -v "did not produce any data" | cat
+    fi
+fi

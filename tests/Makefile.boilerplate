@@ -1,0 +1,50 @@
+# Boilerplate Makefile for tests
+#
+# - Names the test from directory name
+# - Can verify output to expected with colours
+#
+# In the test Makefiles you just need to include this and define the
+# $(TEST) target where the execution of the test should go.
+#
+
+# Make all testcases silent by default. Use VERBOSE=1 to revert
+$(VERBOSE).SILENT:
+
+# Colours:
+BLACK = 0
+RED   = 1
+GREEN = 2
+YELLOW = 3
+BLUE  = 4
+MAGENTA = 5
+CYAN  = 6
+WHITE = 7
+
+# OK and FAIL messages (with colour)
+#OK = echo "Tests in '$(TEST)': $(shell tput setaf $(GREEN))Ok$(shell tput sgr0)"
+OK = printf "$(shell tput setaf $(GREEN))✓$(shell tput sgr0)"
+FAIL = echo "Tests in '$(TEST)': $(shell tput setaf $(RED))Failed$(shell tput sgr0)"
+NO_TESTS = @echo "Tests in '$(TEST)': $(shell tput setaf $(YELLOW))No tests, just executing$(shell tput sgr0)"
+IGNORED = @echo "Tests in '$(TEST)': $(shell tput setaf $(BLUE))Ignored$(shell tput sgr0)"
+
+
+# Verification is often done by comparing an output with the expected
+VERIFY = cmp output expected ; \
+	if [ $$? -ne 0 ] ; then \
+		$(FAIL) ; \
+		diff output expected ; \
+		exit 1 ; \
+	else \
+		$(OK) ; \
+		exit 0 ; \
+	fi
+
+TEST = $(shell basename '$(CURDIR)')
+
+all: $(TEST)
+
+coverage:
+	cd ../../src ; make clean-coverage
+	@echo "Doing coverage in this directory only"
+	$(MAKE) $(TEST)
+	cd ../../src ; make COVERAGE_CASE=$(TEST) the-actual-coverage-report
