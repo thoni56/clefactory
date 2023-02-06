@@ -23,7 +23,7 @@ export CC = cc
 ifeq ($(OS),Darwin)
   LLVM = /opt/clang+llvm-15.0.6-arm64-apple-darwin21.0
 else
-  LLVM = /opt/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04
+  LLVM = /usr/lib/llvm-15
 endif
 
 INCLUDES += -I$(LLVM)/include
@@ -231,7 +231,8 @@ ifeq ($(OS),Darwin)
 	DYLD_PATH = DYLD_LIBRARY_PATH=/opt/homebrew/lib:$(LLVM)/lib
 	LIBS += -rpath $(LLVM)/lib
 else
-	LIBS += "-Wl,rpath,$(LLVM)/lib"
+	CGREEN = cgreen-runner
+	LIBS += -Wl,-rpath=$(LLVM)/lib
 endif
 
 PHONY += unittests
