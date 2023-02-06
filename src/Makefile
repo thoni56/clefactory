@@ -28,7 +28,7 @@ endif
 
 INCLUDES += -I$(LLVM)/include
 
-LIBS += -L$(LLVM)/lib -lclang -rpath $(LLVM)/lib
+LIBS += -L$(LLVM)/lib -lclang
 
 # Other variables
 
@@ -38,21 +38,10 @@ WARNINGS = -Wall -Wno-char-subscripts -Werror -Wimplicit-fallthrough
 
 CFLAGS = -g -Og $(INCLUDES) -fPIC -MMD -funsigned-char $(WARNINGS) $(COVERAGE) $(EXTRA_CFLAGS)
 
-LDFLAGS = $(COVERAGE)
+LDFLAGS += $(COVERAGE)
 
-ROOTDIR=..
-
-# On Darwin we can use gcc-11 if available
 OS := $(shell uname)
 ifeq ($(OS),Darwin)
-#	ifneq (, $(shell command -v gcc-11 2> /dev/null))
-#		CC=gcc-11
-#	endif
-#	ifeq ($(shell arch),arm64)
-#		# And for Homebrew on M1
-#		CC=cc
-#	endif
-# But we'd rather go with Apple Clang and generate fat binaries
 CFLAGS += -arch arm64
 LDFLAGS += -arch arm64
 endif
@@ -240,6 +229,9 @@ ifeq ($(OS),Darwin)
 	CGREEN = arch -arm64 cgreen-runner
 	CGREEN_LIB = -L/opt/homebrew/lib -lcgreen
 	DYLD_PATH = DYLD_LIBRARY_PATH=/opt/homebrew/lib:$(LLVM)/lib
+	LIBS += -rpath $(LLVM)/lib
+else
+	LIBS += -Wl,rpath $(LLVM)/lib
 endif
 
 PHONY += unittests
