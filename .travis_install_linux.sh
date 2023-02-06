@@ -11,4 +11,4 @@ gem install coveralls-lcov
 #tar xf clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz
 #mv clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04 /opt
 #ls /opt
-apt install libclang-15-dev
+sudo apt install libclang-15-dev
