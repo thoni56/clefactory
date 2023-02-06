@@ -21,14 +21,14 @@ export CC = cc
 
 # Includes and libs
 ifeq ($(OS),Darwin)
-  LLVM = /opt/clang+llvm-15.0.6-arm64-apple-darwin21.04
+  LLVM = /opt/clang+llvm-15.0.6-arm64-apple-darwin21.0
 else
   LLVM = /opt/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04
 endif
 
 INCLUDES += -I$(LLVM)/include
 
-LIBS += -L$(LLVM)/lib -lclang
+LIBS += -L$(LLVM)/lib -lclang -rpath $(LLVM)/lib
 
 # Other variables
 
@@ -236,15 +236,10 @@ endif
 # CGREEN_LIB = -L/usr/local/lib -lcgreen
 
 ifeq ($(OS),Darwin)
-	ifeq ($(shell arch),arm64)
-		# For Homebrew on M1
-		CGREEN_LIB = -L/opt/homebrew/lib -lcgreen
-		DYLD_PATH = DYLD_LIBRARY_PATH=/opt/homebrew/lib:$(LLVM)/lib
-	else
-		# And for Homebrew on x86_64
-		CGREEN_LIB = -L/usr/local/lib -lcgreen
-		DYLD_PATH = DYLD_LIBRARY_PATH=/usr/local/lib
-	endif
+	# Build only for M1
+	CGREEN = arch -arm64 cgreen-runner
+	CGREEN_LIB = -L/opt/homebrew/lib -lcgreen
+	DYLD_PATH = DYLD_LIBRARY_PATH=/opt/homebrew/lib:$(LLVM)/lib
 endif
 
 PHONY += unittests
@@ -254,7 +249,7 @@ unittests:
 else
 unittests: $(UNITTESTS)
 	$(MAKE) -e clean-coverage
-	$(DYLD_PATH) cgreen-runner -q $(CGREEN_OUTPUT) --suite unittests $(UNITTESTS)
+	$(DYLD_PATH) $(CGREEN) -q $(CGREEN_OUTPUT) --suite unittests $(UNITTESTS)
 	make gcov
 	filecount=`ls -1 $(OBJDIR)/*.gcda 2>/dev/null | wc -l` ; \
 	if [ $$filecount -gt 0 ] ; then \
