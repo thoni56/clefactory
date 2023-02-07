@@ -14,12 +14,14 @@ static int about_handler(const char *arguments[]) {
     return EXIT_SUCCESS;
 }
 
+static const char *about_help(void) { return ""; }
+
 static DispatchTable dispatchTable[] = {
-    {"about", about_handler},
-    {"exports", exports_handler},
-    {"includes", includes_handler},
-    {"indexer", indexer_handler},
-    {"", NULL}
+    {"about", about_handler, about_help},
+    {"exports", exports_handler, exports_help},
+    {"includes", includes_handler, includes_help},
+    {"indexer", indexer_handler, indexer_help},
+    {"", NULL, NULL}
 };
 
 int main(int argc, char *argv[]) {
@@ -28,7 +30,7 @@ int main(int argc, char *argv[]) {
     while (fgets(command, sizeof(command), stdin) != NULL) {
         if (strncmp(command, "?", 1) == 0)
             for (DispatchTable *t = dispatchTable; t->handler != NULL; t++)
-                fprintf(stderr, "%s\n", t->command);
+                fprintf(stderr, "%s %s\n", t->command, t->help());
         else {
             int error_code = dispatch_command(command, dispatchTable);
             if (error_code != 0) {

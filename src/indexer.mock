@@ -3,6 +3,8 @@
 #include "indexer.h"
 
 
+const char *indexer_help(void) { return (const char *)mock(); }
+
 int indexer_handler(const char *arguments[]) {
     return mock(arguments);
 }

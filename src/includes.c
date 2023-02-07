@@ -17,6 +17,10 @@ static void inclusionVisitor(CXFile includedFile,
     disposeString(fileName);
 }
 
+const char *includes_help(void) {
+    return "<filename> - prints all files included, recursively";
+}
+
 int includes_handler(const char *arguments[]) {
     CXIndex index = createIndex(0, 0);
     CXTranslationUnit tu =

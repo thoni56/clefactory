@@ -25,6 +25,10 @@ static enum CXChildVisitResult printExportedSymbols(CXCursor cursor, CXCursor pa
     return CXChildVisit_Continue;
 }
 
+const char *exports_help(void) {
+    return "<filename> - print all exported symbols from a translation unit";
+}
+
 int exports_handler(const char *arguments[]) {
     CXIndex index = createIndex(0, 0);
     CXTranslationUnit tu =

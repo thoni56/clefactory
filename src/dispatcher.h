@@ -1,8 +1,6 @@
 #ifndef DISPATCHER_H_INCLUDED
 #define DISPATCHER_H_INCLUDED
 
-/* DISPATCHER - read commands from stdin, decode and dispatch until EOF */
-
 #include <stdio.h>
 
 
@@ -12,6 +10,7 @@ typedef int CommandHandler(const char *arguments[]);
 typedef struct {
     const char *command;
     CommandHandler *handler;
+    const char *(*help)(void);
 } DispatchTable;
 
 // Returns EXIT_FAILURE if no handler found, else return code from handler
