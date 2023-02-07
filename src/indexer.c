@@ -1,3 +1,5 @@
+#include "indexer.h"
+
 #include <clang-c/Index.h>
 #include <glob.h>
 #include <stdio.h>
