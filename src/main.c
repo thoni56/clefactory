@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     while (fgets(command, sizeof(command), stdin) != NULL) {
         if (strncmp(command, "?", 1) == 0)
             for (DispatchTable *t = dispatchTable; t->handler != NULL; t++)
-                fprintf(stderr, "%s %s\n", t->command, t->help());
+                fprintf(stdout, "%s %s\n", t->command, t->help());
         else {
             int error_code = dispatch_command(command, dispatchTable);
             if (error_code != 0) {
