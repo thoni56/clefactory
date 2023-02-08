@@ -14,5 +14,12 @@ BeforeEach(References) {}
 AfterEach(References) {}
 
 
-Ensure(References, can_run_empty_test) {
+Ensure(References, can_find_references) {
+    const char *arguments[] = {"filename.c", NULL};
+
+    expect(createIndex);
+
+    expect(disposeIndex);
+
+    references_handler(arguments);
 }
