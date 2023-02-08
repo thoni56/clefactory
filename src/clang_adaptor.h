@@ -15,18 +15,29 @@ extern unsigned int visitChildren(CXCursor parent, CXCursorVisitor visitor,
                                   CXClientData client_data);
 
 extern CXCursor getTranslationUnitCursor(CXTranslationUnit unit);
-extern void getInclusions(CXTranslationUnit tu, CXInclusionVisitor visitor, CXClientData client_data);
+extern void getInclusions(CXTranslationUnit tu, CXInclusionVisitor visitor,
+                          CXClientData client_data);
+extern CXResult findReferencesInFile(CXCursor cursor, CXFile file, CXCursorAndRangeVisitor visitor);
 
 extern CXFile getFile(CXTranslationUnit unit, const char *file_name);
 extern CXString getFileName(CXFile file);
 
 extern CXFile getIncludedFile(CXCursor cursor);
 
+extern CXSourceLocation indexLoc_getCXSourceLocation(CXIdxLoc loc);
+extern void getExpansionLocation(CXSourceLocation location, CXFile *file, unsigned int *line,
+                                 unsigned int *column, unsigned int *offset);
+extern CXSourceLocation getLocation(CXTranslationUnit tu, CXFile file, unsigned int line,
+                                    unsigned int column);
+
 extern unsigned int getNumDiagnostics(CXTranslationUnit unit);
 extern CXDiagnostic getDiagnostic(CXTranslationUnit unit, unsigned int index);
 extern CXSourceLocation getDiagnosticLocation(CXDiagnostic diagnostic);
 extern void disposeDiagnostic(CXDiagnostic diagnostic);
 
+extern int cursor_isNull(CXCursor cursor);
+extern CXCursor getCursor(CXTranslationUnit unit, CXSourceLocation location);
+extern CXCursor getCursorReferenced(CXCursor cursor);
 extern enum CXLinkageKind getCursorLinkage(CXCursor cursor);
 extern CXString getCursorSpelling(CXCursor);
 extern enum CXCursorKind getCursorKind(CXCursor);

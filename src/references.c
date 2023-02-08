@@ -8,11 +8,16 @@
 #include "clang_adaptor.h"
 
 static enum CXVisitorResult visitReference(void *context, CXCursor cursor, CXSourceRange range) {
+    CXIdxLoc *location = (CXIdxLoc*)context;
+    CXSourceLocation sourceLocation = indexLoc_getCXSourceLocation(*location);
     CXFile file;
-    unsigned line, column;
-    CXSourceLocation location = clang_getExpansionLocation();
-    clang_getSpellingLocation(location, NULL, &line, &column, NULL);
-    printf("Reference found at %d:%d\n", line, column);
+    unsigned int line;
+    unsigned int column;
+    getExpansionLocation(sourceLocation, &file, &line, &column, NULL);
+
+    CXString fileName = getFileName(file);
+    printf("Reference at %s:%d\n", getCString(fileName), line);
+    disposeString(fileName);
     return CXVisit_Continue;
 }
 
@@ -26,21 +31,19 @@ int references_handler(const char *arguments[]) {
         return 1;
     }
 
-    CXFile file = clang_getFile(tu, arguments[0]);
+    CXFile file = getFile(tu, arguments[0]);
     unsigned line = 10, column = 2;
-    CXSourceLocation location = clang_getLocation(tu, file, line, column);
+    CXSourceLocation location = getLocation(tu, file, line, column);
 
-    CXCursor cursor = clang_getCursor(tu, location);
-    CXCursor reference = clang_getCursorReferenced(cursor);
-    if (!clang_Cursor_isNull(reference)) {
+    CXCursor cursor = getCursor(tu, location);
+    CXCursor reference = getCursorReferenced(cursor);
+    if (!cursor_isNull(reference)) {
         cursor = reference;
     }
 
-    CXCursorAndRangeVisitor visitor = {};
-    visitor.context = &cursor;
-    visitor.visit = visitReference;
+    CXCursorAndRangeVisitor visitor = {NULL, visitReference};
 
-    clang_findReferencesInFile(cursor, file, visitor);
+    findReferencesInFile(cursor, file, visitor);
 
     disposeIndex(index);
 

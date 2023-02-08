@@ -13,6 +13,11 @@ CXTranslationUnit parseTranslationUnit(CXIndex index, const char *source_filenam
                                    unsaved_files, num_unsaved_files, options);
 }
 
+unsigned int visitChildren(CXCursor parent, CXCursorVisitor visitor, CXClientData client_data) {
+    CXCursor *parentP = &parent;
+    return mock(parentP, visitor, client_data);
+}
+
 CXCursor getTranslationUnitCursor(CXTranslationUnit unit) {
     CXTranslationUnit *unitP = &unit;
     CXCursor *cursor = (CXCursor *)mock(unitP);
@@ -21,6 +26,12 @@ CXCursor getTranslationUnitCursor(CXTranslationUnit unit) {
 
 void getInclusions(CXTranslationUnit tu, CXInclusionVisitor visitor, CXClientData client_data) {
     mock(tu, visitor, client_data);
+}
+
+CXResult findReferencesInFile(CXCursor cursor, CXFile file, CXCursorAndRangeVisitor visitor) {
+    CXCursor *cursorP = &cursor;
+    CXCursorAndRangeVisitor *visitorP = &visitor;
+    return (CXResult)mock(cursorP, file, visitorP);
 }
 
 CXFile getFile(CXTranslationUnit unit, const char *file_name) {
@@ -35,6 +46,24 @@ CXString getFileName(CXFile file) {
 CXFile getIncludedFile(CXCursor cursor) {
     CXCursor *cursorP = &cursor;
     return (CXFile)mock(cursorP);
+}
+
+CXSourceLocation indexLoc_getCXSourceLocation(CXIdxLoc loc) {
+    CXIdxLoc *locP = &loc;
+    CXSourceLocation *locationP = (CXSourceLocation *)mock(locP);
+    return *locationP;
+}
+
+void getExpansionLocation(CXSourceLocation location, CXFile *file, unsigned int *line,
+                          unsigned int *column, unsigned int *offset) {
+    CXSourceLocation *locationP = &location;
+    mock(locationP, file, line, column, offset);
+}
+
+CXSourceLocation getLocation(CXTranslationUnit tu, CXFile file, unsigned int line,
+                             unsigned int column) {
+    CXSourceLocation *locationP = (CXSourceLocation *)mock(tu, file, line, column);
+    return *locationP;
 }
 
 
@@ -55,9 +84,21 @@ void disposeDiagnostic(CXDiagnostic diagnostic) {
     mock(diagnostic);
 }
 
-unsigned int visitChildren(CXCursor parent, CXCursorVisitor visitor, CXClientData client_data) {
-    CXCursor *parentP = &parent;
-    return mock(parentP, visitor, client_data);
+int cursor_isNull(CXCursor cursor) {
+    CXCursor *cursorP = (CXCursor *)&cursor;
+    return mock(cursorP);
+}
+
+CXCursor getCursor(CXTranslationUnit unit, CXSourceLocation location) {
+    CXSourceLocation *locationP = &location;
+    CXCursor *cursorP = (CXCursor *)mock(unit, locationP);
+    return *cursorP;
+}
+
+CXCursor getCursorReferenced(CXCursor cursor) {
+    CXCursor *cursorP = &cursor;
+    CXCursor *returned_cursorP = (CXCursor *)mock(cursorP);
+    return *returned_cursorP;
 }
 
 enum CXLinkageKind getCursorLinkage(CXCursor cursor) {
