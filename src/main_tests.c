@@ -10,6 +10,7 @@ extern int main(int argc, char *argv[]);
 #include "indexer.mock"
 #include "includes.mock"
 #include "references.mock"
+#include "clang_adaptor.mock"
 
 
 Describe(Main);

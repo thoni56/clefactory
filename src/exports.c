@@ -29,8 +29,7 @@ const char *exports_help(void) {
     return "<filename> - print all exported symbols from a translation unit";
 }
 
-int exports_handler(const char *arguments[]) {
-    CXIndex index = createIndex(0, 0);
+int exports_handler(CXIndex index, const char *arguments[]) {
     CXTranslationUnit tu =
         parseTranslationUnit(index, arguments[0], NULL, 0, NULL, 0, CXTranslationUnit_KeepGoing);
     if (!tu) {

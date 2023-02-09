@@ -3,6 +3,6 @@
 #include "dispatcher.h"
 
 
-int dispatch_command(const char *command, DispatchTable *table) {
+int dispatch_command(CXIndex index, const char *command, DispatchTable *table) {
     return mock(command, table);
 }

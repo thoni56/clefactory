@@ -5,6 +5,6 @@
 
 const char *indexer_help(void) { return (const char *)mock(); }
 
-int indexer_handler(const char *arguments[]) {
+int indexer_handler(CXIndex index, const char *arguments[]) {
     return mock(arguments);
 }

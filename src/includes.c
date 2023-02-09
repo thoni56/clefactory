@@ -21,8 +21,7 @@ const char *includes_help(void) {
     return "<filename> - prints all files included, recursively";
 }
 
-int includes_handler(const char *arguments[]) {
-    CXIndex index = createIndex(0, 0);
+int includes_handler(CXIndex index, const char *arguments[]) {
     CXTranslationUnit tu =
         parseTranslationUnit(index, arguments[0], NULL, 0, NULL, 0, CXTranslationUnit_KeepGoing);
     if (!tu) {

@@ -24,9 +24,7 @@ static int index_file(const char *file_name, CXIndex index) {
 
 const char *indexer_help(void) { return "<pattern> - index all files matching pattern"; }
 
-int indexer_handler(const char *arguments[]) {
-    CXIndex index = createIndex(0, 0);
-
+int indexer_handler(CXIndex index, const char *arguments[]) {
     int result_code = EXIT_SUCCESS;
 
     glob_t glob_result;

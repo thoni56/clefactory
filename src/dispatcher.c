@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "clang_adaptor.h"
+
+
 static char **split_into_arguments(char *token) {
     char **arguments = malloc(sizeof(char *));
     int argc = 0;
@@ -17,7 +20,7 @@ static char **split_into_arguments(char *token) {
     return arguments;
 }
 
-int dispatch_command(const char *line, DispatchTable *table) {
+int dispatch_command(CXIndex index, const char *line, DispatchTable *table) {
     char *command = strdup(line);
     command[strlen(command) - 1] = '\0'; /* Remove newline */
     char *token = strtok(command, " ");  /* Split off the command */
@@ -26,7 +29,7 @@ int dispatch_command(const char *line, DispatchTable *table) {
 
     for (DispatchTable *t = table; t->handler != NULL; t++) {
         if (strcmp(command, t->command) == 0) {
-            int return_code = t->handler((const char **)arguments);
+            int return_code = t->handler(index, (const char **)arguments);
             if (return_code != 0)
                 fprintf(stderr, "Handler for '%s' returned error code %d\n", command, return_code);
             return return_code;

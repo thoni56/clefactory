@@ -18,7 +18,6 @@ AfterEach(References) {}
 Ensure(References, can_find_references) {
     const char *arguments[] = {"filename.c", "12", "21"};
 
-    expect(createIndex);
     CXTranslationUnit tu;
     expect(parseTranslationUnit, will_return(&tu));
 
@@ -32,8 +31,33 @@ Ensure(References, can_find_references) {
     CXCursor cursor;
     expect(getCursor, will_return(&cursor));
 
-    expect(disposeTranslationUnit);
-    expect(disposeIndex);
+    CXSourceRange range;
+    expect(getCursorExtent, will_return(&range));
 
-    references_handler(arguments);
+    CXSourceLocation start;
+    expect(getRangeStart, will_return(&start));
+
+    expect(getExpansionLocation);
+
+    CXString file_name;
+    expect(getFileName, will_return(&file_name));
+    expect(getCString, will_return("fileName.c"));
+
+    CXSourceLocation end;
+    expect(getRangeEnd, will_return(&end));
+
+    expect(getExpansionLocation);
+    expect(getFileName, will_return(&file_name));
+    expect(getCString, will_return("fileName.c"));
+
+    CXCursor referenced;
+    expect(getCursorReferenced, will_return(&referenced));
+    expect(cursor_isNull, will_return(true));
+
+    expect(findReferencesInFile);
+
+    expect(disposeTranslationUnit);
+
+    CXIndex index = (CXIndex)0xfefefefe;
+    references_handler(index, arguments);
 }
