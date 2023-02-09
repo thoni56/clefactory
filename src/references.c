@@ -27,7 +27,7 @@ const char *references_help(void) {
 int references_handler(CXIndex index, const char *arguments[]) {
     int result_code = EXIT_SUCCESS;
 
-    CXTranslationUnit tu = parseTranslationUnit(index, arguments[0], NULL, 0, NULL, 0, CXTranslationUnit_None);
+    CXTranslationUnit tu = parseTranslationUnit(index, arguments[0], NULL, 0, NULL, 0, CXTranslationUnit_KeepGoing);
     if (!tu) {
         return 1;
     }
