@@ -10,6 +10,7 @@
 
 #define MAX_LINE_LENGTH 3000
 
+
 static int about_handler(CXIndex index, const char *arguments[]) {
     printf("This is Clefactory v0.0\n");
     return EXIT_SUCCESS;
@@ -39,7 +40,7 @@ int main(int argc, char *argv[]) {
         else {
             int error_code = dispatch_command(index, command, dispatchTable);
             if (error_code != 0) {
-                return error_code;
+                fprintf(stderr, "Error: %d\n", error_code);
             }
         }
         fprintf(stdout, "> ");
