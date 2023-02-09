@@ -41,18 +41,18 @@ int references_handler(const char *arguments[]) {
 
     CXCursor cursor = getCursor(tu, location);
 
-    CXSourceRange range = clang_getCursorExtent(cursor);
+    CXSourceRange range = getCursorExtent(cursor);
 
-    CXSourceLocation start = clang_getRangeStart(range);
+    CXSourceLocation start = getRangeStart(range);
     CXFile cursorFile;
     unsigned int startLine;
     unsigned int startColumn;
-    clang_getExpansionLocation(start, &cursorFile, &startLine, &startColumn, NULL);
+    getExpansionLocation(start, &cursorFile, &startLine, &startColumn, NULL);
     CXString fileName = getFileName(file);
     printf("Cursor starts at %s %d:%d\n", getCString(fileName), startLine, startColumn);
 
-    CXSourceLocation end = clang_getRangeEnd(range);
-    clang_getExpansionLocation(end, &cursorFile, &startLine, &startColumn, NULL);
+    CXSourceLocation end = getRangeEnd(range);
+    getExpansionLocation(end, &cursorFile, &startLine, &startColumn, NULL);
     fileName = getFileName(file);
     printf("Cursor ends at %s %d:%d\n", getCString(fileName), startLine, startColumn);
 

@@ -77,6 +77,8 @@ CXCursor getCursor(CXTranslationUnit unit, CXSourceLocation location) {
 }
 CXCursor getCursorReferenced(CXCursor cursor) { return clang_getCursorReferenced(cursor); }
 
+CXSourceRange getCursorExtent(CXCursor cursor) { return clang_getCursorExtent(cursor); }
+
 CXString getCursorSpelling(CXCursor cursor) { return clang_getCursorSpelling(cursor); }
 
 enum CXCursorKind getCursorKind(CXCursor cursor) { return clang_getCursorKind(cursor); }

@@ -72,6 +72,12 @@ CXSourceLocation getRangeStart(CXSourceRange range) {
     return *locationP;
 }
 
+CXSourceLocation getRangeEnd(CXSourceRange range) {
+    CXSourceRange *rangeP = &range;
+    CXSourceLocation *locationP = (CXSourceLocation *)mock(rangeP);
+    return *locationP;
+}
+
 
 unsigned int getNumDiagnostics(CXTranslationUnit unit) {
     return mock(unit);
@@ -110,6 +116,12 @@ CXCursor getCursorReferenced(CXCursor cursor) {
 enum CXLinkageKind getCursorLinkage(CXCursor cursor) {
     CXCursor *cursorP = &cursor;
     return (enum CXLinkageKind)mock(cursorP);
+}
+
+CXSourceRange getCursorExtent(CXCursor cursor) {
+    CXCursor *cursorP = &cursor;
+    CXSourceRange *rangeP = (CXSourceRange *)mock(cursorP);
+    return *rangeP;
 }
 
 CXString getCursorSpelling(CXCursor cursor) {

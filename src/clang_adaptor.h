@@ -30,6 +30,7 @@ extern void getExpansionLocation(CXSourceLocation location, CXFile *file, unsign
 extern CXSourceLocation getLocation(CXTranslationUnit tu, CXFile file, unsigned int line,
                                     unsigned int column);
 extern CXSourceLocation getRangeStart(CXSourceRange range);
+extern CXSourceLocation getRangeEnd(CXSourceRange range);
 
 extern unsigned int getNumDiagnostics(CXTranslationUnit unit);
 extern CXDiagnostic getDiagnostic(CXTranslationUnit unit, unsigned int index);
@@ -40,6 +41,7 @@ extern int cursor_isNull(CXCursor cursor);
 extern CXCursor getCursor(CXTranslationUnit unit, CXSourceLocation location);
 extern CXCursor getCursorReferenced(CXCursor cursor);
 extern enum CXLinkageKind getCursorLinkage(CXCursor cursor);
+extern CXSourceRange getCursorExtent(CXCursor cursor);
 extern CXString getCursorSpelling(CXCursor);
 extern enum CXCursorKind getCursorKind(CXCursor);
 extern enum CX_StorageClass cursor_getStorageClass(CXCursor cursor);
