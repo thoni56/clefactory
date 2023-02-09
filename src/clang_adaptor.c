@@ -28,23 +28,37 @@ void getInclusions(CXTranslationUnit tu, CXInclusionVisitor visitor, CXClientDat
     clang_getInclusions(tu, visitor, client_data);
 }
 
+CXResult findReferencesInFile(CXCursor cursor, CXFile file, CXCursorAndRangeVisitor visitor) {
+    return clang_findReferencesInFile(cursor, file, visitor);
+}
 
 CXFile getFile(CXTranslationUnit unit, const char *file_name) {
     return clang_getFile(unit, file_name);
 }
 
-CXString getFileName(CXFile file) {
-    return clang_getFileName(file);
+CXString getFileName(CXFile file) { return clang_getFileName(file); }
+
+CXFile getIncludedFile(CXCursor cursor) { return clang_getIncludedFile(cursor); }
+
+CXSourceLocation indexLoc_getCXSourceLocation(CXIdxLoc loc) {
+    return clang_indexLoc_getCXSourceLocation(loc);
 }
 
-CXFile getIncludedFile(CXCursor cursor) {
-    return clang_getIncludedFile(cursor);
+void getExpansionLocation(CXSourceLocation location, CXFile *file, unsigned int *line,
+                          unsigned int *column, unsigned int *offset) {
+    clang_getExpansionLocation(location, file, line, column, offset);
 }
 
-
-unsigned int getNumDiagnostics(CXTranslationUnit unit) {
-    return clang_getNumDiagnostics(unit);
+CXSourceLocation getLocation(CXTranslationUnit tu, CXFile file, unsigned int line,
+                             unsigned int column) {
+    return clang_getLocation(tu, file, line, column);
 }
+
+CXSourceLocation getRangeStart(CXSourceRange range) {
+    return clang_getRangeStart(range);
+}
+
+unsigned int getNumDiagnostics(CXTranslationUnit unit) { return clang_getNumDiagnostics(unit); }
 
 CXDiagnostic getDiagnostic(CXTranslationUnit unit, unsigned int index) {
     return clang_getDiagnostic(unit, index);
@@ -54,10 +68,14 @@ CXSourceLocation getDiagnosticLocation(CXDiagnostic diagnostic) {
     return clang_getDiagnosticLocation(diagnostic);
 }
 
-void disposeDiagnostic(CXDiagnostic diagnostic) {
-    return clang_disposeDiagnostic(diagnostic);
-}
+void disposeDiagnostic(CXDiagnostic diagnostic) { return clang_disposeDiagnostic(diagnostic); }
 
+int cursor_isNull(CXCursor cursor) { return clang_Cursor_isNull(cursor); }
+
+CXCursor getCursor(CXTranslationUnit unit, CXSourceLocation location) {
+    return clang_getCursor(unit, location);
+}
+CXCursor getCursorReferenced(CXCursor cursor) { return clang_getCursorReferenced(cursor); }
 
 CXString getCursorSpelling(CXCursor cursor) { return clang_getCursorSpelling(cursor); }
 

@@ -9,6 +9,7 @@ extern int main(int argc, char *argv[]);
 #include "exports.mock"
 #include "indexer.mock"
 #include "includes.mock"
+#include "references.mock"
 
 
 Describe(Main);

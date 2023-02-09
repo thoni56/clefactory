@@ -66,6 +66,12 @@ CXSourceLocation getLocation(CXTranslationUnit tu, CXFile file, unsigned int lin
     return *locationP;
 }
 
+CXSourceLocation getRangeStart(CXSourceRange range) {
+    CXSourceRange *rangeP = &range;
+    CXSourceLocation *locationP = (CXSourceLocation *)mock(rangeP);
+    return *locationP;
+}
+
 
 unsigned int getNumDiagnostics(CXTranslationUnit unit) {
     return mock(unit);

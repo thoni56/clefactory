@@ -6,6 +6,7 @@
 #include "exports.h"
 #include "indexer.h"
 #include "includes.h"
+#include "references.h"
 
 #define MAX_LINE_LENGTH 3000
 
@@ -21,6 +22,7 @@ static DispatchTable dispatchTable[] = {
     {"exports", exports_handler, exports_help},
     {"includes", includes_handler, includes_help},
     {"indexer", indexer_handler, indexer_help},
+    {"references", references_handler, references_help},
     {"", NULL, NULL}
 };
 

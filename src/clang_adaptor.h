@@ -29,6 +29,7 @@ extern void getExpansionLocation(CXSourceLocation location, CXFile *file, unsign
                                  unsigned int *column, unsigned int *offset);
 extern CXSourceLocation getLocation(CXTranslationUnit tu, CXFile file, unsigned int line,
                                     unsigned int column);
+extern CXSourceLocation getRangeStart(CXSourceRange range);
 
 extern unsigned int getNumDiagnostics(CXTranslationUnit unit);
 extern CXDiagnostic getDiagnostic(CXTranslationUnit unit, unsigned int index);
