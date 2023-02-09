@@ -107,6 +107,12 @@ CXCursor getCursor(CXTranslationUnit unit, CXSourceLocation location) {
     return *cursorP;
 }
 
+CXCursor getCursorDefinition(CXCursor cursor) {
+    CXCursor *cursorP = &cursor;
+    CXCursor *returned_cursorP = (CXCursor *)mock(cursorP);
+    return *returned_cursorP;
+}
+
 CXCursor getCursorReferenced(CXCursor cursor) {
     CXCursor *cursorP = &cursor;
     CXCursor *returned_cursorP = (CXCursor *)mock(cursorP);

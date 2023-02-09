@@ -39,6 +39,7 @@ extern void disposeDiagnostic(CXDiagnostic diagnostic);
 
 extern int cursor_isNull(CXCursor cursor);
 extern CXCursor getCursor(CXTranslationUnit unit, CXSourceLocation location);
+extern CXCursor getCursorDefinition(CXCursor cursor);
 extern CXCursor getCursorReferenced(CXCursor cursor);
 extern enum CXLinkageKind getCursorLinkage(CXCursor cursor);
 extern CXSourceRange getCursorExtent(CXCursor cursor);

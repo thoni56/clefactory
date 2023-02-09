@@ -58,6 +58,10 @@ CXSourceLocation getRangeStart(CXSourceRange range) {
     return clang_getRangeStart(range);
 }
 
+CXSourceLocation getRangeEnd(CXSourceRange range) {
+    return clang_getRangeEnd(range);
+}
+
 unsigned int getNumDiagnostics(CXTranslationUnit unit) { return clang_getNumDiagnostics(unit); }
 
 CXDiagnostic getDiagnostic(CXTranslationUnit unit, unsigned int index) {
@@ -75,6 +79,9 @@ int cursor_isNull(CXCursor cursor) { return clang_Cursor_isNull(cursor); }
 CXCursor getCursor(CXTranslationUnit unit, CXSourceLocation location) {
     return clang_getCursor(unit, location);
 }
+
+CXCursor getCursorDefinition(CXCursor cursor) { return clang_getCursorDefinition(cursor); }
+
 CXCursor getCursorReferenced(CXCursor cursor) { return clang_getCursorReferenced(cursor); }
 
 CXSourceRange getCursorExtent(CXCursor cursor) { return clang_getCursorExtent(cursor); }
