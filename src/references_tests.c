@@ -31,25 +31,6 @@ Ensure(References, can_find_references) {
     CXCursor cursor;
     expect(getCursor, will_return(&cursor));
 
-    CXSourceRange range;
-    expect(getCursorExtent, will_return(&range));
-
-    CXSourceLocation start;
-    expect(getRangeStart, will_return(&start));
-
-    expect(getExpansionLocation);
-
-    CXString file_name;
-    expect(getFileName, will_return(&file_name));
-    expect(getCString, will_return("fileName.c"));
-
-    CXSourceLocation end;
-    expect(getRangeEnd, will_return(&end));
-
-    expect(getExpansionLocation);
-    expect(getFileName, will_return(&file_name));
-    expect(getCString, will_return("fileName.c"));
-
     CXCursor referenced;
     expect(getCursorReferenced, will_return(&referenced));
     expect(cursor_isNull, will_return(true));
