@@ -6,7 +6,8 @@
 
 #include "filemanager.h"
 
-#include "common.h"
+#include "fileio.mock"
+
 
 
 Describe(Filemananger);
@@ -15,6 +16,8 @@ AfterEach(Filemananger) {}
 
 
 Ensure(Filemananger, will_create_an_empty_filetable_for_an_empty_directory) {
+    const char *fileNameList[] = {NULL};
+    expect(getFilesInCurrentDirectory, will_return(fileNameList));
     FileTable fileTable = getFilesFromCompilationDatabase();
     assert_that(fileTable, is_null);
 }

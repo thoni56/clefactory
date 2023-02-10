@@ -18,4 +18,8 @@ Some useful commands:
 * TODO Get a list of files from compile_commands.json
 * TODO If no compile_commands.json use all *.c files in current directory
 * TODO Take one argument which is the directory to 'cd' to before operating
-* TODO 
+* TODO Option to prune a directory (tree)
+Any file in it will not be considered even if it they are included,
+handy for `/usr` where files "never" change so it is unnecessary to
+check their time stamps
+
