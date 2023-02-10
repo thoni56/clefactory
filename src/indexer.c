@@ -38,7 +38,7 @@ int indexer_handler(CXIndex index, const char *arguments[]) {
 
     for (size_t i = 0; i < glob_result.gl_pathc; ++i) {
         char *file_name = glob_result.gl_pathv[i];
-        fprintf(stderr, "%s\n", file_name);
+        fprintf(stdout, "%s\n", file_name);
         result_code = index_file(file_name, index);
     }
 
