@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "common.h"
+
 #include "dispatcher.h"
 #include "exports.h"
+#include "filemanager.h"
 #include "indexer.h"
 #include "includes.h"
 #include "references.h"
@@ -40,8 +43,13 @@ static int help_handler(CXIndex index, const char *arguments[]) {
 int main(int argc, char *argv[]) {
     char command[MAX_LINE_LENGTH];
 
+    // TODO: Set CWD to argv[1] if available
+
     // TODO: create a compilation database object using clang_CompilationDatabase_fromDirectory()
     // TODO: use that to get compile flags and options for a specific translation unit
+    FileTable fileTable = getFilesFromCompilationDatabase();
+    UNUSED fileTable;
+
     CXIndex index = createIndex(0, 0);
 
     // TODO: create a table of filenames of all translation units,

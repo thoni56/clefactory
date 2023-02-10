@@ -1,0 +1,8 @@
+#include <cgreen/mocks.h>
+
+#include "filemanager.h"
+
+
+FileTable getFilesFromCompilationDatabase(void) {
+    return (FileTable)mock();
+}

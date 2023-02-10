@@ -271,6 +271,7 @@ endef
 # Autogenerate unittest targets and recipe for listed modules
 $(eval $(call UNITTEST,dispatcher,))
 $(eval $(call UNITTEST,exports,))
+$(eval $(call UNITTEST,filemanager,))
 $(eval $(call UNITTEST,includes,))
 $(eval $(call UNITTEST,indexer,))
 $(eval $(call UNITTEST,main,))
