@@ -15,9 +15,9 @@ BeforeEach(Filemananger) {}
 AfterEach(Filemananger) {}
 
 
-Ensure(Filemananger, will_create_an_empty_filetable_for_an_empty_directory) {
+Ensure(Filemananger, will_create_an_empty_filetable_for_an_empty_directory_without_compile_commands) {
     const char *fileNameList[] = {NULL};
     expect(getFilesInCurrentDirectory, will_return(fileNameList));
-    FileTable fileTable = getFilesFromCompilationDatabase();
+    FileTable fileTable = getFilesFromCurrentDirectory();
     assert_that(fileTable, is_null);
 }

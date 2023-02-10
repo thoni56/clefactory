@@ -6,7 +6,7 @@
 #include "fileio.h"
 
 
-FileTable getFilesFromCompilationDatabase(void) {
+FileTable getFilesFromCurrentDirectory(void) {
     const char **fileNameTable = getFilesInCurrentDirectory();
     UNUSED fileNameTable;
 

@@ -3,6 +3,6 @@
 #include "filemanager.h"
 
 
-FileTable getFilesFromCompilationDatabase(void) {
+FileTable getFilesFromCurrentDirectory(void) {
     return (FileTable)mock();
 }

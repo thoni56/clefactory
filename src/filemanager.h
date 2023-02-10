@@ -11,6 +11,6 @@ typedef struct {
 typedef FileTableElement *FileTable;
 
 
-extern FileTable getFilesFromCompilationDatabase(void);
+extern FileTable getFilesFromCurrentDirectory(void);
 
 #endif
