@@ -1,0 +1,21 @@
+# -*- org-todo-keyword-faces: (("DOING" . "orange") ("REQUIRES" . "dark orange")) -*-
+#+TODO: TODO(t) TRY(y) REQUIRES(r) DOING(i) | DONE(d)
+
+(This file is structured for Emacs org-mode...)
+
+Some useful commands:
+
+  <C-S-return>	org-insert-todo-heading-respect-content
+  <C-c C-t>     select state
+  <S-Right>     next state
+  <S-Left>      previous state
+  <M-Left>      promote heading
+  <M-S-Left>    promote subtree
+  <M-Right>     demote heading
+  <M-S-Right>   demote subtree
+
+
+* TODO Get a list of files from compile_commands.json
+* TODO If no compile_commands.json use all *.c files in current directory
+* TODO Take one argument which is the directory to 'cd' to before operating
+* TODO 
