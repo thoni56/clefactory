@@ -3,6 +3,13 @@
 #include "filemanager.h"
 
 
+unsigned fileTableLength(FileTable fileTable) { return (unsigned)mock(fileTable); }
+
+FileTableElement fileTableElement(FileTable fileTable, unsigned index) {
+    FileTableElement *fileTableElementP = (FileTableElement *)mock(index);
+    return *fileTableElementP;
+}
+
 FileTable getFilesFromCurrentDirectory(void) {
     return (FileTable)mock();
 }

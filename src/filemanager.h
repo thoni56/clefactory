@@ -11,6 +11,8 @@ typedef struct {
 typedef FileTableElement *FileTable;
 
 
+extern unsigned fileTableLength(FileTable fileTable);
+extern FileTableElement fileTableElement(FileTable fileTable, unsigned index);
 extern FileTable getFilesFromCurrentDirectory(void);
 
 #endif
