@@ -10,11 +10,12 @@ Describe(Dispatcher);
 BeforeEach(Dispatcher) {}
 AfterEach(Dispatcher) {}
 
-static const char **about_arguments;
+static const char *about_arguments[10];
 static bool about_handler_has_been_called = false;
 static CommandHandler(about_handler) {
     about_handler_has_been_called = true;
-    about_arguments = arguments;
+    for (int i = 0; arguments[i] != NULL; i++)
+        about_arguments[i] = strdup(arguments[i]);
     return 0;
 }
 

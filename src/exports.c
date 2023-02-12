@@ -45,7 +45,6 @@ CommandHandler(exports_handler) {
     visitChildren(cursor, printExportedSymbols, NULL);
 
     disposeTranslationUnit(tu);
-    disposeIndex(index);
 
     return EXIT_SUCCESS;
 }

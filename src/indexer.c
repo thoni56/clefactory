@@ -44,7 +44,5 @@ CommandHandler(indexer_handler) {
 
     globfree(&glob_result);
 
-    disposeIndex(index);
-
     return result_code;
 }

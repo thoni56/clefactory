@@ -32,7 +32,6 @@ CommandHandler(includes_handler) {
 
     getInclusions(tu, inclusionVisitor, NULL);
     disposeTranslationUnit(tu);
-    disposeIndex(index);
 
     return EXIT_SUCCESS;
 }

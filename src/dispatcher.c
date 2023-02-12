@@ -34,8 +34,10 @@ int dispatch_command(CXIndex index, FileTable fileTable, const char *line, Dispa
             int return_code = t->handler(index, fileTable, (const char **)arguments);
             if (return_code != 0)
                 fprintf(stderr, "Handler for '%s' returned error code %d\n", command, return_code);
+            free(command);
             return return_code;
         }
     }
+    free(command);
     return EXIT_FAILURE;
 }

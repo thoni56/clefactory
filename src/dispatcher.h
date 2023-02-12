@@ -8,7 +8,8 @@
 #include "filemanager.h"
 
 
-/* Will receive a FileTable and an array of arguments both terminated by a NULL pointers */
+/* Will receive a FileTable and an array of arguments both terminated by a NULL pointers. */
+/* Callee have to duplicate arguments if they should be saved, will be free'd after return. */
 #define CommandHandler(handler) int (handler)(CXIndex index, FileTable fileTable, const char *arguments[])
 
 typedef struct {
