@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "clang_adaptor.h"
 #include "common.h"
 
 #include "dispatcher.h"
@@ -67,6 +68,8 @@ int main(int argc, char *argv[]) {
         fprintf(stdout, "> ");
     }
 
+    disposeIndex(index);
     freeFileTable(fileTable);
+
     return EXIT_SUCCESS;
 }

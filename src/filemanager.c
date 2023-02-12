@@ -28,26 +28,33 @@ FileTableElement fileTableElement(FileTable fileTable, unsigned index) {
     return fileTable[index];
 }
 
+static void freeFileNames(char **fileNames) {
+
+    for (int i = 0; fileNames[i] != NULL; i++)
+        free(fileNames[i]);
+    free(fileNames);
+}
+
 FileTable getTranslationUnitsFromCurrentDirectory(void) {
-    char **fileNameTable = getFilesInCurrentDirectory();
+    char **fileNames = getFilesInCurrentDirectory();
 
     int length = 0;
-    for (unsigned i = 0; fileNameTable[i] != NULL; i++)
+    for (unsigned i = 0; fileNames[i] != NULL; i++)
         length++;
 
     FileTable fileTable = (FileTable)malloc((length+1)*sizeof(FileTableElement));
     fileTable[0].fileName = NULL;
 
     int i = 0;
-    for (char **f = fileNameTable; *f != NULL; f++) {
+    for (char **f = fileNames; *f != NULL; f++) {
         if (endsWith(*f, ".c")) {
             fileTable[i].fileName = strdup(*f);
             fileTable[++i].fileName = NULL;
         }
     }
-    for (int i = 0; fileNameTable[i] != NULL; i++)
-        free(fileNameTable[i]);
-    free(fileNameTable);
+
+    freeFileNames(fileNames);
+
     return fileTable;
 }
 
