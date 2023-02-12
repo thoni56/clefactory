@@ -276,5 +276,6 @@ $(eval $(call UNITTEST,includes,))
 $(eval $(call UNITTEST,indexer,))
 $(eval $(call UNITTEST,main,))
 $(eval $(call UNITTEST,references,))
+$(eval $(call UNITTEST,units,))
 
 .PHONY : $(PHONY)
