@@ -40,5 +40,7 @@ Ensure(References, can_find_references) {
     expect(disposeTranslationUnit);
 
     CXIndex index = (CXIndex)0xfefefefe;
-    references_handler(index, arguments);
+    FileTableElement null_element = {.fileName = NULL};
+    FileTable fileTable = &null_element;
+    references_handler(index, fileTable, arguments);
 }

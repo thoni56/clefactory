@@ -6,6 +6,7 @@
 
 #include "clang_adaptor.h"
 
+
 static CXFile current_file;
 
 static enum CXChildVisitResult printExportedSymbols(CXCursor cursor, CXCursor parent,
@@ -29,7 +30,7 @@ const char *exports_help(void) {
     return "<filename> - print all exported symbols from a translation unit";
 }
 
-int exports_handler(CXIndex index, const char *arguments[]) {
+CommandHandler(exports_handler) {
     CXTranslationUnit tu =
         parseTranslationUnit(index, arguments[0], NULL, 0, NULL, 0, CXTranslationUnit_KeepGoing);
     if (!tu) {

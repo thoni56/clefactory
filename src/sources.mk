@@ -1,4 +1,4 @@
-MODULES =  main dispatcher exports clang_adaptor indexer includes references filemanager fileio
+MODULES =  main dispatcher exports clang_adaptor indexer includes references filemanager fileio units
 
 OBJDIR = .objects
 SRCS = ${MODULES:=.c}

@@ -1,10 +1,11 @@
 #ifndef UNITS_H_INCLUDED
 #define UNITS_H_INCLUDED
 
-#include "clang_adaptor.h"
+#include "dispatcher.h"
+#include "filemanager.h"
 
 
 extern const char *units_help(void);
-extern int units_handler(CXIndex index, const char *arguments[]);
+extern CommandHandler(units_handler);
 
 #endif

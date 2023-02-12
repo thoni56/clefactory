@@ -15,14 +15,14 @@
 #define MAX_LINE_LENGTH 3000
 
 
-static int about_handler(CXIndex index, const char *arguments[]) {
+static CommandHandler(about_handler) {
     printf("This is Clefactory v0.0\n");
     return EXIT_SUCCESS;
 }
 
 static const char *about_help(void) { return ""; }
 
-static int help_handler(CXIndex index, const char *arguments[]);
+static CommandHandler(help_handler);
 
 static DispatchTable dispatchTable[] = {
     {"about",      about_handler,      about_help     },
@@ -35,7 +35,7 @@ static DispatchTable dispatchTable[] = {
     {"",           NULL,               NULL           }
 };
 
-static int help_handler(CXIndex index, const char *arguments[]) {
+static CommandHandler(help_handler) {
     for (DispatchTable *t = dispatchTable; strcmp(t->command, "?") != 0; t++)
         fprintf(stdout, "%s %s\n", t->command, t->help());
     return EXIT_SUCCESS;
@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
     while (fgets(command, sizeof(command), stdin) != NULL) {
         // TODO: ... so that we can refresh the index if needed,
         // before doing the operation
-        int error_code = dispatch_command(index, command, dispatchTable);
+        int error_code = dispatch_command(index, fileTable, command, dispatchTable);
         if (error_code != 0) {
             fprintf(stderr, "Error: %d\n", error_code);
         }

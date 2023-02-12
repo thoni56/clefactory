@@ -2,7 +2,8 @@
 
 #include "exports.h"
 
-
 const char *exports_help(void) { return (const char *)mock(); }
 
-int exports_handler(CXIndex index, const char *arguments[]) { return mock(arguments); }
+CommandHandler(exports_handler) {
+    return mock(arguments);
+}

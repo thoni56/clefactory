@@ -3,8 +3,11 @@
 
 #include "clang_adaptor.h"
 
+#include "filemanager.h"
+#include "dispatcher.h"
+
 
 extern const char *includes_help(void);
-extern int includes_handler(CXIndex index, const char *arguments[]);
+extern CommandHandler(includes_handler);
 
 #endif

@@ -1,0 +1,10 @@
+#include <cgreen/mocks.h>
+
+#include "units.h"
+
+
+const char *units_help(void) { return (const char *)mock(); }
+
+int units_handler(CXIndex index, FileTable fileTable, const char *arguments[]) {
+    return mock(index, fileTable, arguments);
+}

@@ -24,7 +24,7 @@ const char *references_help(void) {
     return "<filename> <line> <column> - prints all locations where the symbol at that location is referenced";
 }
 
-int references_handler(CXIndex index, const char *arguments[]) {
+CommandHandler(references_handler) {
     int result_code = EXIT_SUCCESS;
 
     CXTranslationUnit tu = parseTranslationUnit(index, arguments[0], NULL, 0, NULL, 0, CXTranslationUnit_KeepGoing);

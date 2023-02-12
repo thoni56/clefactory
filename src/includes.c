@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "clang_adaptor.h"
+#include "filemanager.h"
 
 
 static void inclusionVisitor(CXFile includedFile,
@@ -21,7 +22,7 @@ const char *includes_help(void) {
     return "<filename> - prints all files included, recursively";
 }
 
-int includes_handler(CXIndex index, const char *arguments[]) {
+CommandHandler(includes_handler) {
     CXTranslationUnit tu =
         parseTranslationUnit(index, arguments[0], NULL, 0, NULL, 0, CXTranslationUnit_KeepGoing);
     if (!tu) {

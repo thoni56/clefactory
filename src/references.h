@@ -3,9 +3,12 @@
 
 #include "clang_adaptor.h"
 
+#include "dispatcher.h"
+#include "filemanager.h"
+
 
 const char *references_help(void);
 
-int references_handler(CXIndex index, const char *arguments[]);
+CommandHandler(references_handler);
 
 #endif

@@ -3,8 +3,11 @@
 
 #include "clang_adaptor.h"
 
+#include "dispatcher.h"
+#include "filemanager.h"
+
 
 extern const char *indexer_help(void);
-extern int indexer_handler(CXIndex index, const char *arguments[]);
+extern CommandHandler(indexer_handler);
 
 #endif
