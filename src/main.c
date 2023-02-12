@@ -11,6 +11,7 @@
 #include "indexer.h"
 #include "includes.h"
 #include "references.h"
+#include "units.h"
 
 #define MAX_LINE_LENGTH 3000
 
@@ -30,6 +31,7 @@ static DispatchTable dispatchTable[] = {
     {"includes",   includes_handler,   includes_help  },
     {"indexer",    indexer_handler,    indexer_help   },
     {"references", references_handler, references_help},
+    {"units",      units_handler,      units_help     },
     {"?",          help_handler,       NULL           }, /* NOTE: Help will stop at "?" */
     {"help",       help_handler,       NULL           },
     {"",           NULL,               NULL           }
