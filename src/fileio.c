@@ -1,10 +1,17 @@
 #include "fileio.h"
 
 #include <unistd.h>
+#include <stdlib.h>
 #include <sys/stat.h>
+#include <string.h>
+#include <dirent.h>
 
-#include "log.h"
-#include "head.h"
+
+#ifdef __WIN32__
+#define FILE_PATH_SEPARATOR '\\'
+#else
+#define FILE_PATH_SEPARATOR '/'
+#endif
 
 
 bool exists(char *path) {
@@ -66,7 +73,6 @@ void recursivelyCreateFileDirIfNotExists(char *fpath) {
 
 
 void removeFile(char *fileName) {
-    log_trace("removing file '%s'", fileName);
     unlink(fileName);
 }
 
@@ -126,14 +132,25 @@ int readChar(FILE *file) {
     return getc(file);
 }
 
-char *getEnv(const char *variable) {
-    return getenv(variable);
-}
-
 char *getCwd(char *buffer, size_t size) {
     return getcwd(buffer, size);
 }
 
-const char **getFilesInCurrentDirectory(void) {
-    return NULL;
+char **getFilesInCurrentDirectory(void) {
+    DIR *d;
+    struct dirent *dir;
+    char **files = malloc(sizeof(const char *));
+    unsigned length = 1;
+    files[length-1] = NULL;
+
+    d = opendir(".");
+    if (d) {
+        while ((dir = readdir(d)) != NULL) {
+            files = realloc(files, ++length*sizeof(const char *));
+            files[length-2] = strdup(dir->d_name);
+            files[length-1] = NULL;
+        }
+        closedir(d);
+    }
+    return files;
 }

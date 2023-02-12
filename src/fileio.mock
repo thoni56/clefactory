@@ -3,8 +3,8 @@
 #include "fileio.h"
 
 
-const char **getFilesInCurrentDirectory(void) {
-    return (const char **)mock();
+char **getFilesInCurrentDirectory(void) {
+    return (char **)mock();
 }
 
 bool isDirectory(char *fullPath) {

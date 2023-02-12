@@ -10,6 +10,10 @@ FileTableElement fileTableElement(FileTable fileTable, unsigned index) {
     return *fileTableElementP;
 }
 
-FileTable getFilesFromCurrentDirectory(void) {
+FileTable getTranslationUnitsFromCurrentDirectory(void) {
     return (FileTable)mock();
+}
+
+void freeFileTable(FileTable fileTable) {
+    mock(fileTable);
 }

@@ -21,9 +21,11 @@ extern bool fileExists(char *fullPath);
 extern size_t readFile(FILE *file, void *buffer, size_t size, size_t count);
 extern size_t writeFile(FILE *file, void *buffer, size_t size, size_t count);
 extern int readChar(FILE *file);
-extern const char **getFilesInCurrentDirectory(void);
 
-extern char *getEnv(const char *variable);
+// Return array of pointers to strings for all files in current directory
+// Caller needs to deallocate array and the strings
+extern char **getFilesInCurrentDirectory(void);
+
 extern char *getCwd(char *buf, size_t size);
 
 #endif

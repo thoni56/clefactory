@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 
     // TODO: create a compilation database object using clang_CompilationDatabase_fromDirectory()
     // TODO: use that to get compile flags and options for a specific translation unit
-    FileTable fileTable = getFilesFromCurrentDirectory();
+    FileTable fileTable = getTranslationUnitsFromCurrentDirectory();
     UNUSED fileTable;
 
     CXIndex index = createIndex(0, 0);
@@ -66,5 +66,7 @@ int main(int argc, char *argv[]) {
         }
         fprintf(stdout, "> ");
     }
+
+    freeFileTable(fileTable);
     return EXIT_SUCCESS;
 }

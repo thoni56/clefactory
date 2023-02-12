@@ -28,20 +28,31 @@ FileTableElement fileTableElement(FileTable fileTable, unsigned index) {
     return fileTable[index];
 }
 
-FileTable getFilesFromCurrentDirectory(void) {
-    const char **fileNameTable = getFilesInCurrentDirectory();
-    // TODO: how long is the fileNameTable? Use that in allocation...
+FileTable getTranslationUnitsFromCurrentDirectory(void) {
+    char **fileNameTable = getFilesInCurrentDirectory();
 
-    FileTable fileTable = (FileTable)malloc(FILE_TABLE_SIZE*sizeof(FileTableElement));
+    int length = 0;
+    for (unsigned i = 0; fileNameTable[i] != NULL; i++)
+        length++;
+
+    FileTable fileTable = (FileTable)malloc((length+1)*sizeof(FileTableElement));
     fileTable[0].fileName = NULL;
 
     int i = 0;
-    for (const char **f = fileNameTable; *f != NULL; f++) {
+    for (char **f = fileNameTable; *f != NULL; f++) {
         if (endsWith(*f, ".c")) {
-            fileTable[i].fileName = *f;
+            fileTable[i].fileName = strdup(*f);
             fileTable[++i].fileName = NULL;
         }
     }
-
+    for (int i = 0; fileNameTable[i] != NULL; i++)
+        free(fileNameTable[i]);
+    free(fileNameTable);
     return fileTable;
+}
+
+void freeFileTable(FileTable fileTable) {
+    for (int i = 0; fileTable[i].fileName != NULL; i++)
+        free((char *)fileTable[i].fileName);
+    free(fileTable);
 }
