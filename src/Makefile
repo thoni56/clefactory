@@ -185,15 +185,22 @@ ifneq ($(shell command -v cloc 2> /dev/null),)
 endif
 
 #########################################################################
-# watchexec 1.20.6 has a bug that can be worked around with '--project-origin .'
+# watchexec 1.20.6 (which my Homebrew currently has) has a bug that
+# can be worked around with '--project-origin .'
+ifeq ($(OS),Darwin)
+  WATCHEXEC = watchexec --project-origin .
+else
+  WATCHEXEC = watchexec
+endif
+
 watch:
-	watchexec --project-origin . -e c,h,y,mock -- execnotify -t Development make -j devel
+	$(WATCHEXEC) -e c,h,y,mock -- execnotify -t Development make -j devel
 
 watch-for-unittests:
-	watchexec --project-origin . -e c,h,y,mock -- execnotify -t Unittests make -j unit
+	$(WATCHEXEC) -e c,h,y,mock -- execnotify -t Unittests make -j unit
 
 watch-for-systemtests:
-	watchexec --project-origin . -w .unittests.done -- execnotify -t Systemtests make -j system-tests
+	$(WATCHEXEC) -w .unittests.done -- execnotify -t Systemtests make -j system-tests
 
 system-tests:
 	$(MAKE) -e build
