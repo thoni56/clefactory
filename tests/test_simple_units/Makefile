@@ -1,5 +1,5 @@
 include ../Makefile.boilerplate
 
 $(TEST):
-	echo units | ../../src/clefactory > output
+	../../src/clefactory --cli < input > output
 	$(VERIFY)

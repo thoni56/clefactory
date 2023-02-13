@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     // modification time ...
 
     // TODO: options handling... For now:
-    if (strcmp(argv[1], "--cli") == 0)
+    if (argc == 2 && strcmp(argv[1], "--cli") == 0)
         cli_repl(fileTable, index);
     //else if (strcmp(argv[1], "--lsp") == 0)
     //  lsp_event_loop(fileTable, index);
