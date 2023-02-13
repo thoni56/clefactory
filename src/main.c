@@ -29,7 +29,6 @@ static DispatchTable dispatchTable[] = {
     {"about",      about_handler,      about_help     },
     {"exports",    exports_handler,    exports_help   },
     {"includes",   includes_handler,   includes_help  },
-    {"parse",      parser_handler,     parser_help    },
     {"references", references_handler, references_help},
     {"units",      units_handler,      units_help     },
     {"?",          help_handler,       NULL           }, /* NOTE: Help will stop at "?" */

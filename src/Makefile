@@ -200,7 +200,7 @@ watch-for-unittests:
 	$(WATCHEXEC) -e c,h,y,mock -- execnotify -t Unittests make -j unit
 
 watch-for-systemtests:
-	$(WATCHEXEC) -w .unittests.done -- execnotify -t Systemtests make -j system-tests
+	$(WATCHEXEC) -e done -- execnotify -t Systemtests make -j system-tests
 
 system-tests:
 	$(MAKE) -e build
