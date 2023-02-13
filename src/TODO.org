@@ -22,4 +22,9 @@ Some useful commands:
 Any file in it will not be considered even if it they are included,
 handy for `/usr` where files "never" change so it is unnecessary to
 check their time stamps
-
+* TODO Store and restore the index on disc
+Using `clang_saveIndex()` and `clang_createIndexFromFile()` are
+available. Need to think about if a build system can be responsible
+for keeping the index updated and `clefactory` should only do the
+actual operations. Then we only needs to check if the files are newer
+than the index file...
