@@ -4,47 +4,11 @@
 
 #include "clang_adaptor.h"
 #include "common.h"
-
-#include "dispatcher.h"
-#include "exports.h"
 #include "filemanager.h"
-#include "includes.h"
-#include "parser.h"
-#include "references.h"
-#include "units.h"
+#include "repl.h"
 
-#define MAX_LINE_LENGTH 3000
-
-
-static CommandHandler(about_handler) {
-    printf("This is Clefactory v0.0\n");
-    return EXIT_SUCCESS;
-}
-
-static const char *about_help(void) { return ""; }
-
-static CommandHandler(help_handler);
-
-static DispatchTable dispatchTable[] = {
-    {"about",      about_handler,      about_help     },
-    {"exports",    exports_handler,    exports_help   },
-    {"includes",   includes_handler,   includes_help  },
-    {"references", references_handler, references_help},
-    {"units",      units_handler,      units_help     },
-    {"?",          help_handler,       NULL           }, /* NOTE: Help will stop at "?" */
-    {"help",       help_handler,       NULL           },
-    {"",           NULL,               NULL           }
-};
-
-static CommandHandler(help_handler) {
-    for (DispatchTable *t = dispatchTable; strcmp(t->command, "?") != 0; t++)
-        fprintf(stdout, "%s %s\n", t->command, t->help());
-    return EXIT_SUCCESS;
-}
 
 int main(int argc, char *argv[]) {
-    char command[MAX_LINE_LENGTH];
-
     // TODO: Set CWD to argv[1] if available
 
     // TODO: create a compilation database object using clang_CompilationDatabase_fromDirectory()
@@ -57,16 +21,13 @@ int main(int argc, char *argv[]) {
     // all their dependent included files and their latest
     // modification time ...
 
-    fprintf(stdout, "> ");
-    while (fgets(command, sizeof(command), stdin) != NULL) {
-        // TODO: ... so that we can refresh the index if needed,
-        // before doing the operation
-        int error_code = dispatch_command(index, fileTable, command, dispatchTable);
-        if (error_code != 0) {
-            fprintf(stderr, "Error: %d\n", error_code);
-        }
-        fprintf(stdout, "> ");
-    }
+    // TODO: options handling... For now:
+    if (strcmp(argv[1], "--cli") == 0)
+        cli_repl(fileTable, index);
+    //else if (strcmp(argv[1], "--lsp") == 0)
+    //  lsp_event_loop(fileTable, index);
+    else
+        fprintf(stderr, "Need to select '--cli' or '--lsp'\n");
 
     disposeIndex(index);
     freeFileTable(fileTable);

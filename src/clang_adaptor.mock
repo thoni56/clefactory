@@ -1,5 +1,8 @@
 #include "clang_adaptor.h"
 
+#include <cgreen/mocks.h>
+
+
 CXIndex createIndex(int excludeDeclarationsFromPCH, int displayDiagnostics) {
     return (CXIndex)mock(excludeDeclarationsFromPCH, displayDiagnostics);
 }

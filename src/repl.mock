@@ -1,0 +1,8 @@
+#include <cgreen/mocks.h>
+
+#include "repl.h"
+
+
+void cli_repl(FileTable fileTable, CXIndex index) {
+    mock(fileTable, index);
+}

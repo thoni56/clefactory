@@ -6,13 +6,8 @@
 extern int main(int argc, char *argv[]);
 
 #include "clang_adaptor.mock"
-#include "dispatcher.mock"
-#include "exports.mock"
 #include "filemanager.mock"
-#include "includes.mock"
-#include "parser.mock"
-#include "references.mock"
-#include "units.mock"
+#include "repl.mock"
 
 
 Describe(Main);
