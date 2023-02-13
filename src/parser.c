@@ -1,4 +1,4 @@
-#include "indexer.h"
+#include "parser.h"
 
 #include <clang-c/Index.h>
 #include <glob.h>
@@ -7,7 +7,7 @@
 
 #include "clang_adaptor.h"
 
-static CXTranslationUnit index_file(const char *file_name, CXIndex index) {
+static CXTranslationUnit parse_file(const char *file_name, CXIndex index) {
     CXTranslationUnit tu =
         parseTranslationUnit(index, file_name, 0, 0, 0, 0, CXTranslationUnit_KeepGoing);
     if (!tu) {
@@ -16,13 +16,13 @@ static CXTranslationUnit index_file(const char *file_name, CXIndex index) {
     return tu;
 }
 
-int indexFiles(FileTable fileTable, CXIndex index) {
+int parse_files(FileTable fileTable, CXIndex index) {
     for (FileItem *fileItem = &fileTable[0]; fileItem->fileName != NULL; fileItem++)
-        fileItem->unit = index_file(fileTable[0].fileName, index);
+        fileItem->unit = parse_file(fileTable[0].fileName, index);
     return EXIT_SUCCESS;
 }
 
-const char *indexer_help(void) { return "<pattern> - index all files matching pattern"; }
+const char *parser_help(void) { return "<pattern> - index all files matching pattern"; }
 
 CommandHandler(indexer_handler) {
     int result_code = EXIT_SUCCESS;
@@ -39,7 +39,7 @@ CommandHandler(indexer_handler) {
     for (size_t i = 0; i < glob_result.gl_pathc; ++i) {
         char *file_name = glob_result.gl_pathv[i];
         fprintf(stdout, "%s\n", file_name);
-        CXTranslationUnit tu = index_file(file_name, index);
+        CXTranslationUnit tu = parse_file(file_name, index);
         if (!tu)
             result_code = EXIT_FAILURE;
         disposeTranslationUnit(tu);

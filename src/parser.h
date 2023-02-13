@@ -7,9 +7,9 @@
 #include "filemanager.h"
 
 
-extern int indexFiles(FileTable fileTable, CXIndex index);
+extern int parse_files(FileTable fileTable, CXIndex index);
 
-extern const char *indexer_help(void);
-extern CommandHandler(indexer_handler);
+extern const char *parser_help(void);
+extern CommandHandler(parser_handler);
 
 #endif

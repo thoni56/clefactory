@@ -10,7 +10,7 @@ extern int main(int argc, char *argv[]);
 #include "exports.mock"
 #include "filemanager.mock"
 #include "includes.mock"
-#include "indexer.mock"
+#include "parser.mock"
 #include "references.mock"
 #include "units.mock"
 

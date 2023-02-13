@@ -8,8 +8,8 @@
 #include "dispatcher.h"
 #include "exports.h"
 #include "filemanager.h"
-#include "indexer.h"
 #include "includes.h"
+#include "parser.h"
 #include "references.h"
 #include "units.h"
 
@@ -29,7 +29,7 @@ static DispatchTable dispatchTable[] = {
     {"about",      about_handler,      about_help     },
     {"exports",    exports_handler,    exports_help   },
     {"includes",   includes_handler,   includes_help  },
-    {"indexer",    indexer_handler,    indexer_help   },
+    {"parse",      parser_handler,     parser_help    },
     {"references", references_handler, references_help},
     {"units",      units_handler,      units_help     },
     {"?",          help_handler,       NULL           }, /* NOTE: Help will stop at "?" */
