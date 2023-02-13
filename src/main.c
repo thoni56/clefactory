@@ -6,9 +6,29 @@
 #include "common.h"
 #include "filemanager.h"
 #include "repl.h"
+#include "clang-c/Index.h"
 
+
+typedef enum { NO_MODE, CLI_MODE, LSP_MODE } Mode;
+
+static Mode decode_arguments(int argc, char *argv[]) {
+    if (argc == 2) {
+        if (strcmp(argv[1], "--cli") == 0)
+            return CLI_MODE;
+        else
+            return LSP_MODE;
+    } else {
+        fprintf(stderr, "Need to select '--cli' or '--lsp'\n");
+        return NO_MODE;
+    }
+}
 
 int main(int argc, char *argv[]) {
+    // TODO: options handling... For now:
+    Mode mode = decode_arguments(argc, argv);
+    if (mode == NO_MODE)
+        return EXIT_FAILURE;
+
     // TODO: Set CWD to argv[1] if available
 
     // TODO: create a compilation database object using clang_CompilationDatabase_fromDirectory()
@@ -20,14 +40,10 @@ int main(int argc, char *argv[]) {
     // TODO: create a table of filenames of all translation units,
     // all their dependent included files and their latest
     // modification time ...
-
-    // TODO: options handling... For now:
-    if (argc == 2 && strcmp(argv[1], "--cli") == 0)
+    if (mode == CLI_MODE)
         cli_repl(fileTable, index);
-    //else if (strcmp(argv[1], "--lsp") == 0)
-    //  lsp_event_loop(fileTable, index);
     else
-        fprintf(stderr, "Need to select '--cli' or '--lsp'\n");
+        ;//lsp_event_loop(fileTable, index);
 
     disposeIndex(index);
     freeFileTable(fileTable);
