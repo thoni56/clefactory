@@ -5,8 +5,8 @@
 
 unsigned fileTableLength(FileTable fileTable) { return (unsigned)mock(fileTable); }
 
-FileTableElement fileTableElement(FileTable fileTable, unsigned index) {
-    FileTableElement *fileTableElementP = (FileTableElement *)mock(index);
+FileItem fileTableElement(FileTable fileTable, unsigned index) {
+    FileItem *fileTableElementP = (FileItem *)mock(index);
     return *fileTableElementP;
 }
 

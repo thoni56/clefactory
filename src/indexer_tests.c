@@ -15,14 +15,14 @@ AfterEach(Indexer) {}
 
 
 Ensure(Indexer, can_index_empty_list_of_files) {
-    FileTableElement null_fileitem = {.fileName = NULL};
+    FileItem null_fileitem = {.fileName = NULL};
     FileTable emptyFileTable = &null_fileitem;
     assert_that(indexFiles(emptyFileTable, index), is_equal_to(EXIT_SUCCESS));
 }
 
 
 Ensure(Indexer, can_index_a_single_file) {
-    FileTableElement single_fileitem[] = {{.fileName = "test.c"},
+    FileItem single_fileitem[] = {{.fileName = "test.c"},
                                           {.fileName = NULL}};
     FileTable singleFileTable = single_fileitem;
 

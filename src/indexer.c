@@ -17,7 +17,7 @@ static CXTranslationUnit index_file(const char *file_name, CXIndex index) {
 }
 
 int indexFiles(FileTable fileTable, CXIndex index) {
-    for (FileTableElement *fileItem = &fileTable[0]; fileItem->fileName != NULL; fileItem++)
+    for (FileItem *fileItem = &fileTable[0]; fileItem->fileName != NULL; fileItem++)
         fileItem->unit = index_file(fileTable[0].fileName, index);
     return EXIT_SUCCESS;
 }

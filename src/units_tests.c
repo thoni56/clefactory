@@ -16,8 +16,8 @@ AfterEach(Units) {}
 
 
 Ensure(Units, can_list_all_translation_units_in_an_empty_filetable) {
-    FileTableElement element0 = {.fileName = NULL};
-    FileTable fileTable = &element0;
+    FileItem item0 = {.fileName = NULL};
+    FileTable fileTable = &item0;
 
     const char *empty_arguments[] = {NULL};
 

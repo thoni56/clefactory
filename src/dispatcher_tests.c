@@ -38,8 +38,8 @@ static DispatchTable dispatchTable[] = {
     {"",      NULL        }
 };
 
-static FileTableElement emptyFileTableElement = { .fileName = NULL };
-static FileTable emptyFileTable = &emptyFileTableElement;
+static FileItem nullFileItem = { .fileName = NULL };
+static FileTable emptyFileTable = &nullFileItem;
 
 Ensure(Dispatcher, will_call_handler_for_matching_command) {
     dispatch_command(index, emptyFileTable, "about\n", dispatchTable);

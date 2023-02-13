@@ -7,13 +7,13 @@
 typedef struct {
     const char *fileName;
     CXTranslationUnit unit;
-} FileTableElement;
+} FileItem;
 
-typedef FileTableElement *FileTable;
+typedef FileItem *FileTable;
 
 
 extern unsigned fileTableLength(FileTable fileTable);
-extern FileTableElement fileTableElement(FileTable fileTable, unsigned index);
+extern FileItem fileTableElement(FileTable fileTable, unsigned index);
 extern FileTable getTranslationUnitsFromCurrentDirectory(void);
 extern void freeFileTable(FileTable fileTable);
 

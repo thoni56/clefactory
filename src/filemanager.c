@@ -19,12 +19,12 @@ static bool endsWith(const char *fileName, const char *ending) {
 
 unsigned fileTableLength(FileTable fileTable) {
     unsigned length = 0;
-    for (FileTableElement *e = fileTable; e->fileName != NULL; e++)
+    for (FileItem *item = fileTable; item->fileName != NULL; item++)
         length++;
     return length;
 }
 
-FileTableElement fileTableElement(FileTable fileTable, unsigned index) {
+FileItem fileTableElement(FileTable fileTable, unsigned index) {
     return fileTable[index];
 }
 
@@ -41,7 +41,7 @@ FileTable getTranslationUnitsFromCurrentDirectory(void) {
     for (unsigned i = 0; fileNames[i] != NULL; i++)
         length++;
 
-    FileTable fileTable = (FileTable)malloc((length+1)*sizeof(FileTableElement));
+    FileTable fileTable = (FileTable)malloc((length+1)*sizeof(FileItem));
     fileTable[0].fileName = NULL;
 
     int i = 0;
