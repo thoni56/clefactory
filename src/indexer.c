@@ -7,19 +7,19 @@
 
 #include "clang_adaptor.h"
 
-static int index_file(const char *file_name, CXIndex index) {
-    int result_code = EXIT_SUCCESS;
-
+static CXTranslationUnit index_file(const char *file_name, CXIndex index) {
     CXTranslationUnit tu =
         parseTranslationUnit(index, file_name, 0, 0, 0, 0, CXTranslationUnit_KeepGoing);
     if (!tu) {
         fprintf(stderr, "Error parsing translation unit '%s'\n", file_name);
-        result_code = EXIT_FAILURE;
     }
+    return tu;
+}
 
-    disposeTranslationUnit(tu);
-
-    return result_code;
+int indexFiles(FileTable fileTable, CXIndex index) {
+    for (FileTableElement *fileItem = &fileTable[0]; fileItem->fileName != NULL; fileItem++)
+        fileItem->unit = index_file(fileTable[0].fileName, index);
+    return EXIT_SUCCESS;
 }
 
 const char *indexer_help(void) { return "<pattern> - index all files matching pattern"; }
@@ -39,7 +39,10 @@ CommandHandler(indexer_handler) {
     for (size_t i = 0; i < glob_result.gl_pathc; ++i) {
         char *file_name = glob_result.gl_pathv[i];
         fprintf(stdout, "%s\n", file_name);
-        result_code = index_file(file_name, index);
+        CXTranslationUnit tu = index_file(file_name, index);
+        if (!tu)
+            result_code = EXIT_FAILURE;
+        disposeTranslationUnit(tu);
     }
 
     globfree(&glob_result);

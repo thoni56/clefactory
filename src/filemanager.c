@@ -29,7 +29,6 @@ FileTableElement fileTableElement(FileTable fileTable, unsigned index) {
 }
 
 static void freeFileNames(char **fileNames) {
-
     for (int i = 0; fileNames[i] != NULL; i++)
         free(fileNames[i]);
     free(fileNames);

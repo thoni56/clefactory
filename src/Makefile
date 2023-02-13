@@ -38,7 +38,7 @@ WARNINGS = -Wall -Wno-char-subscripts -Werror -Wimplicit-fallthrough
 
 CFLAGS = -g -O0 $(INCLUDES) -fPIC -MMD -funsigned-char $(WARNINGS) $(COVERAGE) $(EXTRA_CFLAGS)
 
-LDFLAGS += $(COVERAGE)
+LDFLAGS += -g $(COVERAGE)
 
 OS := $(shell uname)
 ifeq ($(OS),Darwin)

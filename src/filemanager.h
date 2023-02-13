@@ -6,6 +6,7 @@
 
 typedef struct {
     const char *fileName;
+    CXTranslationUnit unit;
 } FileTableElement;
 
 typedef FileTableElement *FileTable;
