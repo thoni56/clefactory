@@ -14,7 +14,9 @@ Some useful commands:
   <M-Right>     demote heading
   <M-S-Right>   demote subtree
 
-* TODO Rename an include file
+  
+* TODO [FEATURE] Pass LSP command through to LSP server
+* TODO [FEATURE] Rename an include file
 ** TODO Parse all translation units in the current directory
 ** TODO Rename the file
 ** TODO Exchange all references to the file (in #include directives)

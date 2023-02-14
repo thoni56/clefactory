@@ -3,7 +3,7 @@
 # This makefile supports the following targets
 #
 # ci - build and run all tests with coverage and create coverage report
-# all (or no target) - build and run unittests & build the clefactory exe
+# all (or no target) - build and run unittests & build the clef exe
 # unit - build and run unittests with coverage and produce gcov files for cov-mode in Emacs
 # devel - build with coverage, run all tests and produce gcov
 # clean-coverage - clean coverage
@@ -102,11 +102,11 @@ GIT_HASH = $(shell git describe --abbrev=5 --always --tags --dirty)
 $(OBJDIR)/options.o: CFLAGS += -DGIT_HASH=\"$(GIT_HASH)\"
 
 PHONY += build
-build: clefactory
+build: clef
 
-PHONY += clefactory
-clefactory: $(OBJS)
-	$(CC) $(LDFLAGS) -o clefactory $(OBJS) $(LIBS)
+PHONY += clef
+clef: $(OBJS)
+	$(CC) $(LDFLAGS) -o clef $(OBJS) $(LIBS)
 
 
 #########################################################################
@@ -119,7 +119,7 @@ unit: unittests
 #########################################################################
 clean:
 	#-$(MAKE) -C ../tests clean
-	-rm -rf $(OBJDIR) clefactory *.gcov
+	-rm -rf $(OBJDIR) clef *.gcov
 
 
 ########################################################################

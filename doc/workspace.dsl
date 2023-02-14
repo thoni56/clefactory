@@ -11,7 +11,7 @@ workspace "Clefactory" "A C refactoring browser in C" {
 
         source = Element "Source Code" "a set of files stored on disk or in editor" "" DB
 
-        clefactory = SoftwareSystem "Clefactory" "Analyses source code, receives and processes requests for navigation and refactoring" Clefactory {
+        clefactory = SoftwareSystem "Clefactory" "Analyses source code, receives and processes extended requests for navigation and refactoring" Clefactory {
             editorExtension = container editorExtension "Extends the Editor with operations and interfaces to the clefactory API" "Plugin" {
                 clef_el = Component clef.el "" elisp
             }
