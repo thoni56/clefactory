@@ -8,6 +8,7 @@ extern int main(int argc, char *argv[]);
 #include "clang_adaptor.mock"
 #include "filemanager.mock"
 #include "repl.mock"
+#include "lsp.mock"
 
 
 Describe(Main);

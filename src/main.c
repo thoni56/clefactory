@@ -6,7 +6,7 @@
 #include "common.h"
 #include "filemanager.h"
 #include "repl.h"
-#include "clang-c/Index.h"
+#include "lsp.h"
 
 
 typedef enum { NO_MODE, CLI_MODE, LSP_MODE } Mode;
@@ -42,8 +42,10 @@ int main(int argc, char *argv[]) {
     // modification time ...
     if (mode == CLI_MODE)
         cli_repl(fileTable, index);
-    else
-        ;//lsp_event_loop(fileTable, index);
+    else {
+        lsp_init();
+        lsp_event_loop(fileTable, index);
+    }
 
     disposeIndex(index);
     freeFileTable(fileTable);
