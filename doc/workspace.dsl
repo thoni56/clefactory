@@ -7,6 +7,8 @@ workspace "Clefactory" "A C refactoring browser in C" {
 
         editor = SoftwareSystem "Editor" "Allows Developer to modify source code and perform refactoring operations" Editor,Ext
 
+        lspServer = SoftwareSystem "LSP Server" "Handles normal LSP operations" Ext
+
         source = Element "Source Code" "a set of files stored on disk or in editor" "" DB
 
         clefactory = SoftwareSystem "Clefactory" "Analyses source code, receives and processes requests for navigation and refactoring" Clefactory {
@@ -19,14 +21,18 @@ workspace "Clefactory" "A C refactoring browser in C" {
                 main = Component main "Main program" C
             }
 
-            developer -> editor "usual editor/IDE operations"
-            developer -> clefactory "configuration and command line invocations"
-            editor -> source "normal editing operations"
-            editor -> clefactory "navigation and refactoring requests"
-            clefactory -> editor "positioning and editing responses"
-            clefactory -> source "read/analyze"
+            developer -> editor "performs extended editor/IDE operations"
+            developer -> clefactory "configures"
+            editor -> source "does normal editing operations"
+            editor -> clefactory "sends navigation and refactoring requests"
+            clefactory -> editor "sends positioning and editing responses"
+            clef -> source "reads/analyzes"
+            clef -> lspServer "propagates LSP requests"
+            lspServer -> clef "returns LSP responses"
+            lspServer -> source "reads/analyzes"
             editor -> editorExtension "extends" "Editor extension protocol"
             editorExtension -> source "extended c-xrefactory operations"
+            
         }
     }
 
