@@ -7,6 +7,6 @@ void lsp_init(void) {
     mock();
 }
 
-int lsp_event_loop(FileTable fileTable, CXIndex index) {
+int lsp_intercept(FileTable fileTable, CXIndex index) {
     return mock(fileTable, index);
 }

@@ -7,7 +7,7 @@
 
 void lsp_init(void) {}
 
-int lsp_event_loop(FileTable fileTable, CXIndex index) { return EXIT_SUCCESS; }
+int lsp_intercept(FileTable fileTable, CXIndex index) { return EXIT_SUCCESS; }
 
 int lsp_listener(FileTable fileTable, CXIndex index, int client_input_pipe, int client_output_pipe) {
     char buffer[1000];

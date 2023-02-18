@@ -43,8 +43,7 @@ int main(int argc, char *argv[]) {
     if (mode == CLI_MODE)
         cli_repl(fileTable, index);
     else {
-        lsp_init();
-        lsp_event_loop(fileTable, index);
+        lsp_intercept(fileTable, index);
     }
 
     disposeIndex(index);

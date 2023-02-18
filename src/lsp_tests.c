@@ -35,8 +35,6 @@ Ensure(Lsp, will_close_when_clients_input_pipe_closes) {
     CXIndex index = (CXIndex)0xfbfbfb;
     lsp_listener(fileTable, index, input_pipe[0], output_pipe[1]);
 
-    // Parent process: send data to input pipe and read manipulated data from output pipe
-
     // Read manipulated data from output pipe
     nbytes = read(output_pipe[0], buffer, BUFFER_SIZE);
     if (nbytes == -1) {
