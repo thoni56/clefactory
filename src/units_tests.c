@@ -7,7 +7,7 @@
 #include "filemanager.h"
 #include "units.h"
 
-#include "clang_adaptor.mock"
+#include "clang_adapter.h"
 
 
 Describe(Units);

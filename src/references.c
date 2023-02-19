@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "clang_adaptor.h"
+#include "clang_adapter.h"
 
 static enum CXVisitorResult visitReference(void *context, CXCursor cursor, CXSourceRange range) {
     CXSourceLocation sourceLocation = getRangeStart(range);

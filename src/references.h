@@ -1,7 +1,7 @@
 #ifndef REFERENCES_H_INCLUDED
 #define REFERENCES_H_INCLUDED
 
-#include "clang_adaptor.h"
+#include "clang_adapter.h"
 
 #include "dispatcher.h"
 #include "filemanager.h"

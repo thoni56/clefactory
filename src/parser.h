@@ -1,7 +1,7 @@
 #ifndef PARSER_H_INCLUDED
 #define PARSER_H_INCLUDED
 
-#include "clang_adaptor.h"
+#include "clang_adapter.h"
 
 #include "filemanager.h"
 

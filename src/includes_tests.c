@@ -4,7 +4,7 @@
 
 #include "includes.h"
 
-#include "clang_adaptor.mock"
+#include "clang_adapter.mock"
 
 
 Describe(IncludesHandler);

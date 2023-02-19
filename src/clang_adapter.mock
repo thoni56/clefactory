@@ -1,4 +1,4 @@
-#include "clang_adaptor.h"
+#include "clang_adapter.h"
 
 #include <cgreen/mocks.h>
 

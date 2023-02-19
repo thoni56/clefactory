@@ -1,7 +1,7 @@
 #ifndef FILEMANAGER_H_INCLUDED
 #define FILEMANAGER_H_INCLUDED
 
-#include "clang_adaptor.h"
+#include "clang_adapter.h"
 
 
 typedef struct {

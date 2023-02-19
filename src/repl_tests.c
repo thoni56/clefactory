@@ -3,7 +3,7 @@
 
 #include "repl.h"
 
-#include "clang_adaptor.mock"
+#include "clang_adapter.h"
 #include "dispatcher.mock"
 #include "exports.mock"
 #include "filemanager.mock"

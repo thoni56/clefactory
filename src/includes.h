@@ -1,7 +1,7 @@
 #ifndef INCLUDES_H_INCLUDED
 #define INCLUDES_H_INCLUDED
 
-#include "clang_adaptor.h"
+#include "clang_adapter.h"
 
 #include "filemanager.h"
 #include "dispatcher.h"

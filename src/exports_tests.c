@@ -6,7 +6,7 @@
 
 #include "exports.h"
 
-#include "clang_adaptor.mock"
+#include "clang_adapter.mock"
 
 
 Describe(Exports);

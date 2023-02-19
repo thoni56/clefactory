@@ -6,8 +6,7 @@
 
 #include "references.h"
 
-#include "clang_adaptor.mock"
-#include "clang-c/Index.h"
+#include "clang_adapter.mock"
 
 
 Describe(References);

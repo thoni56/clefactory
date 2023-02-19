@@ -1,6 +1,8 @@
-#include "clang_adaptor.h"
+#include "clang_adapter.h"
+
 #include "clang-c/CXString.h"
 #include "clang-c/Index.h"
+
 
 CXIndex createIndex(int excludeDeclarationsFromPCH, int displayDiagnostics) {
     return clang_createIndex(excludeDeclarationsFromPCH, displayDiagnostics);

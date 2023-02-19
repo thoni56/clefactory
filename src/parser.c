@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "clang_adaptor.h"
+#include "clang_adapter.h"
 
 static CXTranslationUnit parse_file(const char *file_name, CXIndex index) {
     CXTranslationUnit tu =

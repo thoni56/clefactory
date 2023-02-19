@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "clang_adaptor.h"
+#include "clang_adapter.h"
 #include "common.h"
 #include "filemanager.h"
 #include "repl.h"
