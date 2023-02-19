@@ -3,6 +3,7 @@
 
 #include <cgreen/assertions.h>
 #include <cgreen/cgreen.h>
+#include <cgreen/constraint_syntax_helpers.h>
 #include <cgreen/internal/unit_implementation.h>
 #include <cgreen/unit.h>
 #include <unistd.h>
@@ -41,8 +42,8 @@ Ensure(Lsp, will_close_when_clients_input_pipe_closes) {
         perror("read");
         fail_test("read");
     }
-    buffer[nbytes] = '\0';
-    printf("Received data from child process: \"%s\"\n", buffer);
+    buffer[nbytes-1] = '\0';
+    assert_that(buffer, is_equal_to_string("hello, world!"));
 
     close(input_pipe[1]);
     close(output_pipe[0]);
