@@ -7,6 +7,6 @@ void lsp_init(void) {
     mock();
 }
 
-int lsp_intercept(FileTable fileTable, CXIndex index) {
-    return mock(fileTable, index);
+int lsp_inject(const char *program_name, int input_pipe[], int output_pipe[]) {
+    return mock(program_name, input_pipe, output_pipe);
 }
