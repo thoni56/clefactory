@@ -18,7 +18,7 @@ AfterEach(Main) {}
 
 Ensure(Main, will_inject_the_given_server) {
     char *argv[] = {"", "--lsp=server_name"};
-    int argc = 2;
+    int argc = sizeof(argv)/sizeof(argv[0]);
 
     FileItem nullFileItem = {.fileName = NULL};
     FileTable fileTable = &nullFileItem;
@@ -26,6 +26,8 @@ Ensure(Main, will_inject_the_given_server) {
     expect(createIndex, will_return(NULL));
 
     expect(lsp_inject, when(program_name, is_equal_to_string("server_name")));
+    expect(lsp_init);
+    expect(lsp_repl);
 
     expect(disposeIndex);
     expect(freeFileTable);

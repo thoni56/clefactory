@@ -1,12 +1,17 @@
 #include "lsp.h"
-
 #include <cgreen/mocks.h>
 
+#include "error.h"
 
-void lsp_init(void) {
-    mock();
+
+ResultCode lsp_inject(const char *program_name, int input_pipe[], int output_pipe[]) {
+    return mock(program_name, input_pipe, output_pipe);
 }
 
-int lsp_inject(const char *program_name, int input_pipe[], int output_pipe[]) {
-    return mock(program_name, input_pipe, output_pipe);
+ResultCode lsp_init(int server_request_pipe, int server_response_pipe) {
+    return mock(server_request_pipe, server_response_pipe);
+}
+
+ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable fileTable, CXIndex index) {
+    return mock(server_request_pipe, server_response_pipe, fileTable, index);
 }

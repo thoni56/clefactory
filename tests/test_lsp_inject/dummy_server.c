@@ -7,7 +7,6 @@
 
 int main(int argc, char **argv) {
     char input[1000];
-    const char exit_request[] = "{\"jsonrpc\":\"2.0\",\"id\": 1,\"method\": \"exit\"}";
     while (fgets(input, sizeof(input), stdin)) {
         cJSON *root = cJSON_Parse(input);
         cJSON *method = cJSON_GetObjectItem(root, "method");

@@ -28,7 +28,7 @@ endif
 
 INCLUDES += -I$(LLVM)/include
 
-LIBS += -L$(LLVM)/lib -lclang
+LDLIBS += -L$(LLVM)/lib -lclang -lcjson
 
 # Other variables
 
@@ -104,9 +104,9 @@ $(OBJDIR)/options.o: CFLAGS += -DGIT_HASH=\"$(GIT_HASH)\"
 PHONY += build
 build: clef
 
-PHONY += clef
+
 clef: $(OBJS)
-	$(CC) $(LDFLAGS) -o clef $(OBJS) $(LIBS)
+	$(CC) $(LDFLAGS) -o clef $(OBJS) $(LDLIBS)
 
 
 #########################################################################
@@ -119,7 +119,7 @@ unit: unittests
 #########################################################################
 clean:
 	#-$(MAKE) -C ../tests clean
-	-rm -rf $(OBJDIR) clef *.gcov
+	-rm -rf $(OBJDIR) clef clefactory *.gcov
 
 
 ########################################################################

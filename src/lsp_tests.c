@@ -10,6 +10,7 @@
 
 #include "server_handler.mock"
 #include "process.mock"
+#include "json_adapter.mock"
 
 
 Describe(Lsp);

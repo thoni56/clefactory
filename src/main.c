@@ -49,15 +49,17 @@ protected int main_(int argc, char *argv[]) {
     if (mode == CLI_MODE)
         cli_repl(fileTable, index);
     else {
-        int input_pipe[2], output_pipe[2];
-        lsp_inject(lsp_server_bin, input_pipe, output_pipe);
+        int pipe1[2], pipe2[2];
+        lsp_inject(lsp_server_bin, pipe1, pipe2);
+        lsp_init(pipe1[1], pipe2[0]);
+        lsp_repl(pipe1[1], pipe2[0], fileTable, index);
     }
 
     disposeIndex(index);
     freeFileTable(fileTable);
 
     return EXIT_SUCCESS;
-    }
+}
 
 int main(int argc, char *argv[]) {
     return main_(argc, argv);
