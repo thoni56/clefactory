@@ -1,26 +1,13 @@
 #include "lsp.h"
+#include "error.h"
+#include "process.h"
+#include "server_handler.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
 void lsp_init(void) {}
-
-static void launch_server(int input_pipe[], int output_pipe[], const char program[]) {
-    close(input_pipe[1]);  // Close unused write end of input pipe
-    close(output_pipe[0]); // Close unused read end of output pipe
-
-    // Duplicate input and output pipe read and write ends to stdin and stdout
-    dup2(input_pipe[0], STDIN_FILENO);
-    dup2(output_pipe[1], STDOUT_FILENO);
-
-    // Launch the LSP server using exec
-    execlp(program, program, NULL);
-
-    // If we get here the exec() failed.
-    perror("Error launching LSP server");
-    exit(1);
-}
 
 void init_server(int input_pipe[], int output_pipe[]) {
     char buffer[1000];
@@ -41,20 +28,18 @@ void init_server(int input_pipe[], int output_pipe[]) {
     printf("Response from LSP server: %s", buffer);
 }
 
-int lsp_inject(const char *program_name, int input_pipe[], int output_pipe[]) {
+ResultCode lsp_inject(const char *program_name, int input_pipe[], int output_pipe[]) {
     pid_t pid;
 
     // Create input and output pipes
     if (pipe(input_pipe) < 0 || pipe(output_pipe) < 0) {
-        perror("Error creating pipes");
-        exit(1);
+        return RC_PIPE_CREATION_ERROR;
     }
 
     // Fork a new process to handle the LSP server
-    pid = fork();
+    pid = fork_process();
     if (pid < 0) {
-        perror("Error forking process");
-        exit(1);
+        return RC_FORK_FAILED;
     } else if (pid == 0) {
         // Child process
         launch_server(input_pipe, output_pipe, program_name);
@@ -62,9 +47,8 @@ int lsp_inject(const char *program_name, int input_pipe[], int output_pipe[]) {
         // Parent process
         close(input_pipe[0]);  // Close unused read end of input pipe
         close(output_pipe[1]); // Close unused write end of output pipe
-        init_server(input_pipe, output_pipe);
     }
-    return EXIT_SUCCESS;
+    return RC_OK;
 }
 
 int lsp_listener(FileTable fileTable, CXIndex index, int client_input_pipe,

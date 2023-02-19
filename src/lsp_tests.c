@@ -8,6 +8,10 @@
 #include <cgreen/unit.h>
 #include <unistd.h>
 
+#include "server_handler.mock"
+#include "process.mock"
+
+
 Describe(Lsp);
 BeforeEach(Lsp) {}
 AfterEach(Lsp) {}
@@ -51,4 +55,13 @@ Ensure(Lsp, will_close_when_clients_input_pipe_closes) {
     close(output_pipe[1]);
 
     pass_test();
+}
+
+Ensure(Lsp, will_launch_program_on_inject) {
+    int input_pipe[2], output_pipe[2];
+
+    expect(fork_process);
+    expect(launch_server); //, when(program, is_equal_to_string("the_program")));
+
+    lsp_inject("the_program", input_pipe, output_pipe);
 }

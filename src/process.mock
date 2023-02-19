@@ -1,0 +1,5 @@
+#include <cgreen/mocks.h>
+
+int fork_process(void) {
+    return mock();
+}

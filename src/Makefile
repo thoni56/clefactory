@@ -286,6 +286,7 @@ $(eval $(call UNITTEST,main,))
 $(eval $(call UNITTEST,parser,))
 $(eval $(call UNITTEST,references,))
 $(eval $(call UNITTEST,repl,))
+$(eval $(call UNITTEST,server_handler,))
 $(eval $(call UNITTEST,units,))
 
 .PHONY : $(PHONY)
