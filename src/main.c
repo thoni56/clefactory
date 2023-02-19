@@ -11,19 +11,25 @@
 
 typedef enum { NO_MODE, CLI_MODE, LSP_MODE } Mode;
 
+static char *lsp_server_bin;
+
 static Mode decode_arguments(int argc, char *argv[]) {
     if (argc == 2) {
         if (strcmp(argv[1], "--cli") == 0)
             return CLI_MODE;
-        else
+        else if (strncmp("--lsp=", argv[1], 6) == 0) {
+            lsp_server_bin = argv[1]+6;
             return LSP_MODE;
+        }
+        fprintf(stderr, "Error in options\n");
+        return NO_MODE;
     } else {
         fprintf(stderr, "Need to select '--cli' or '--lsp'\n");
         return NO_MODE;
     }
 }
 
-int main(int argc, char *argv[]) {
+protected int main_(int argc, char *argv[]) {
     // TODO: options handling... For now:
     Mode mode = decode_arguments(argc, argv);
     if (mode == NO_MODE)
@@ -43,11 +49,16 @@ int main(int argc, char *argv[]) {
     if (mode == CLI_MODE)
         cli_repl(fileTable, index);
     else {
-        lsp_intercept(fileTable, index);
+        int input_pipe[2], output_pipe[2];
+        lsp_inject(lsp_server_bin, input_pipe, output_pipe);
     }
 
     disposeIndex(index);
     freeFileTable(fileTable);
 
     return EXIT_SUCCESS;
+    }
+
+int main(int argc, char *argv[]) {
+    return main_(argc, argv);
 }
