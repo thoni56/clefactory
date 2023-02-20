@@ -8,6 +8,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include "log.h"
 
 ResultCode lsp_inject(const char *program_name, int input_pipe[], int output_pipe[]) {
     pid_t pid;
@@ -48,7 +49,7 @@ ResultCode lsp_init(int server_request_pipe, int server_response_pipe) {
         return RC_READING_FROM_SERVER;
     }
 
-    printf("Response from LSP server: %s", buffer);
+    log_trace("Response from LSP server: %s", buffer);
     return RC_OK;
 }
 
@@ -60,22 +61,23 @@ ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable
         cJSON *method = jsonGetObjectItem(root, "method");
         if (method != NULL) {
             if (strcmp(method->valuestring, "initialize") == 0) {
-                printf("Received an 'initialize' message\n");
+                log_trace("Received an 'initialize' message");
             } else if (strcmp(method->valuestring, "shutdown") == 0) {
-                printf("Received a 'shutdown' message\n");
+                log_trace("Received a 'shutdown' message");
             } else if (strcmp(method->valuestring, "exit") == 0) {
-                printf("Received an 'exit' message\n");
+                log_trace("Received an 'exit' message");
                 write(server_request_pipe, input, strlen(input));
                 return EXIT_SUCCESS;
             } else {
-                printf("Received an unknown message with method '%s'\n", method->valuestring);
+                log_warn("Received an unknown message with method '%s'", method->valuestring);
             }
         } else {
-            printf("Received an invalid JSON-RPC message\n");
+            log_warn("Received an invalid JSON-RPC message");
         }
         jsonDelete(root);
         write(server_request_pipe, input, strlen(input));
     }
+    log_error("Broken connection to client");
     return RC_BROKEN_INPUT_FROM_CLIENT;
 }
 

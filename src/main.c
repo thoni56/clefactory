@@ -5,6 +5,7 @@
 #include "clang_adapter.h"
 #include "common.h"
 #include "filemanager.h"
+#include "log.h"
 #include "repl.h"
 #include "lsp.h"
 
@@ -30,6 +31,7 @@ static Mode decode_arguments(int argc, char *argv[]) {
 }
 
 protected int main_(int argc, char *argv[]) {
+    log_set_level(LOG_ERROR);
     // TODO: options handling... For now:
     Mode mode = decode_arguments(argc, argv);
     if (mode == NO_MODE)

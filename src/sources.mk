@@ -1,6 +1,6 @@
 MODULES = main dispatcher exports parser includes	\
 	references filemanager fileio units repl lsp server_handler process \
-	clang_adapter json_adapter
+	log clang_adapter json_adapter
 
 OBJDIR = .objects
 SRCS = ${MODULES:=.c}
