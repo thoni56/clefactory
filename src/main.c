@@ -4,6 +4,7 @@
 
 #include "clang_adapter.h"
 #include "common.h"
+#include "error.h"
 #include "filemanager.h"
 #include "log.h"
 #include "repl.h"
@@ -12,29 +13,35 @@
 
 typedef enum { NO_MODE, CLI_MODE, LSP_MODE } Mode;
 
-static char *lsp_server_bin;
+static struct {
+    Mode mode;
+    char *lsp_server_path;
+} options;
 
-static Mode decode_arguments(int argc, char *argv[]) {
+static ResultCode decode_options(int argc, char *argv[]) {
     if (argc == 2) {
-        if (strcmp(argv[1], "--cli") == 0)
-            return CLI_MODE;
-        else if (strncmp("--lsp=", argv[1], 6) == 0) {
-            lsp_server_bin = argv[1]+6;
-            return LSP_MODE;
+        if (strcmp(argv[1], "--cli") == 0) {
+            options.mode = CLI_MODE;
+            return RC_OK;
+        } else if (strncmp("--lsp=", argv[1], 6) == 0) {
+            options.lsp_server_path = argv[1] + 6;
+            options.mode = LSP_MODE;
+            return RC_OK;
+        } else {
+            fprintf(stderr, "Error in options\n");
+            return RC_ERROR_IN_OPTIONS;
         }
-        fprintf(stderr, "Error in options\n");
-        return NO_MODE;
     } else {
         fprintf(stderr, "Need to select '--cli' or '--lsp'\n");
-        return NO_MODE;
+        return RC_NO_MODE_SELECTED;
     }
 }
 
 protected int main_(int argc, char *argv[]) {
     log_set_level(LOG_ERROR);
     // TODO: options handling... For now:
-    Mode mode = decode_arguments(argc, argv);
-    if (mode == NO_MODE)
+    ResultCode rc = decode_options(argc, argv);
+    if (rc != RC_OK)
         return EXIT_FAILURE;
 
     // TODO: Set CWD to argv[1] if available
@@ -48,11 +55,11 @@ protected int main_(int argc, char *argv[]) {
     // TODO: create a table of filenames of all translation units,
     // all their dependent included files and their latest
     // modification time ...
-    if (mode == CLI_MODE)
+    if (options.mode == CLI_MODE)
         cli_repl(fileTable, index);
     else {
         int pipe1[2], pipe2[2];
-        lsp_inject(lsp_server_bin, pipe1, pipe2);
+        lsp_inject(options.lsp_server_path, pipe1, pipe2);
         lsp_repl(pipe1[1], pipe2[0], fileTable, index);
     }
 
