@@ -53,7 +53,6 @@ protected int main_(int argc, char *argv[]) {
     else {
         int pipe1[2], pipe2[2];
         lsp_inject(lsp_server_bin, pipe1, pipe2);
-        lsp_init(pipe1[1], pipe2[0]);
         lsp_repl(pipe1[1], pipe2[0], fileTable, index);
     }
 

@@ -26,7 +26,6 @@ Ensure(Main, will_inject_the_given_server) {
     expect(createIndex, will_return(NULL));
 
     expect(lsp_inject, when(program_name, is_equal_to_string("server_name")));
-    expect(lsp_init);
     expect(lsp_repl);
 
     expect(disposeIndex);

@@ -35,24 +35,6 @@ ResultCode lsp_inject(const char *program_name, int input_pipe[], int output_pip
     return RC_OK;
 }
 
-ResultCode lsp_init(int server_request_pipe, int server_response_pipe) {
-    char buffer[1000];
-
-    // Write data to the LSP server
-    if (write(server_request_pipe,
-              "{\"jsonrpc\":\"2.0\",\"method\":\"initialize\",\"params\":{}}\r\n", 54) < 0) {
-        return RC_WRITING_TO_SERVER;
-    }
-
-    // Read data from the LSP server
-    if (read(server_response_pipe, buffer, 1000) < 0) {
-        return RC_READING_FROM_SERVER;
-    }
-
-    log_trace("Response from LSP server: %s", buffer);
-    return RC_OK;
-}
-
 ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable fileTable,
                     CXIndex index) {
     char input[1000];
