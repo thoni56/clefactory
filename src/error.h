@@ -11,7 +11,7 @@ typedef enum {
     RC_READING_FROM_CLIENT = -105,
     RC_BROKEN_INPUT_FROM_CLIENT = -106,
     // Options handling
-    RC_ERROR_IN_OPTIONS = -200,
+    RC_UNKNOWN_OPTION = -200,
     RC_NO_MODE_SELECTED = -201
 } ResultCode;
 

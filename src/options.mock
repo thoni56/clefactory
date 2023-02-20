@@ -1,0 +1,10 @@
+#include "error.h"
+#include "options.h"
+#include <cgreen/mocks.h>
+
+
+Options options;
+
+ResultCode decode_options(int argc, char **argv) {
+    return (ResultCode)mock(argc, argv);
+}

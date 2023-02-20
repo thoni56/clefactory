@@ -1,3 +1,4 @@
+#include "options.h"
 #include <cgreen/cgreen.h>
 #include <cgreen/constraint_syntax_helpers.h>
 #include <cgreen/mocks.h>
@@ -10,6 +11,7 @@ extern int main_(int argc, char *argv[]);
 #include "filemanager.mock"
 #include "repl.mock"
 #include "lsp.mock"
+#include "options.mock"
 
 
 Describe(Main);
@@ -19,6 +21,10 @@ AfterEach(Main) {}
 Ensure(Main, will_inject_the_given_server) {
     char *argv[] = {"", "--lsp=server_name"};
     int argc = sizeof(argv)/sizeof(argv[0]);
+
+    expect(decode_options);
+    options.mode = LSP_MODE;
+    options.lsp_server_path = "server_name";
 
     FileItem nullFileItem = {.fileName = NULL};
     FileTable fileTable = &nullFileItem;

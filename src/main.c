@@ -9,33 +9,8 @@
 #include "log.h"
 #include "repl.h"
 #include "lsp.h"
+#include "options.h"
 
-
-typedef enum { NO_MODE, CLI_MODE, LSP_MODE } Mode;
-
-static struct {
-    Mode mode;
-    char *lsp_server_path;
-} options;
-
-static ResultCode decode_options(int argc, char *argv[]) {
-    if (argc == 2) {
-        if (strcmp(argv[1], "--cli") == 0) {
-            options.mode = CLI_MODE;
-            return RC_OK;
-        } else if (strncmp("--lsp=", argv[1], 6) == 0) {
-            options.lsp_server_path = argv[1] + 6;
-            options.mode = LSP_MODE;
-            return RC_OK;
-        } else {
-            fprintf(stderr, "Error in options\n");
-            return RC_ERROR_IN_OPTIONS;
-        }
-    } else {
-        fprintf(stderr, "Need to select '--cli' or '--lsp'\n");
-        return RC_NO_MODE_SELECTED;
-    }
-}
 
 protected int main_(int argc, char *argv[]) {
     log_set_level(LOG_ERROR);
