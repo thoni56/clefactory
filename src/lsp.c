@@ -62,14 +62,3 @@ ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable
     log_error("Broken connection to client");
     return RC_BROKEN_INPUT_FROM_CLIENT;
 }
-
-int lsp_listener(FileTable fileTable, CXIndex index, int client_input_pipe,
-                 int client_output_pipe) {
-    char buffer[1000];
-    int nbytes = read(client_input_pipe, buffer, 1000);
-    if (nbytes == -1) {
-        perror("client read");
-    }
-    write(client_output_pipe, buffer, strlen(buffer));
-    return EXIT_SUCCESS;
-}
