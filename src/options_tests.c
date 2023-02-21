@@ -14,8 +14,9 @@ Ensure(Options, can_decode_lsp_option_with_argument) {
     char *argv[] = {
         "", "--lsp=path"
     };
+    int argc = sizeof(argv)/sizeof(argv[0]);
 
-    assert_that(decode_options(2, argv), is_equal_to(RC_OK));
+    assert_that(decode_options(argc, argv), is_equal_to(RC_OK));
     assert_that(options.lsp_server_path, is_equal_to_string("path"));
 }
 
@@ -23,5 +24,19 @@ Ensure(Options, will_return_error_on_unknown_option) {
     char *argv[] = {
         "", "--sldfalsfkjalsfj"
     };
-    assert_that(decode_options(2, argv), is_equal_to(RC_UNKNOWN_OPTION));
+    int argc = sizeof(argv)/sizeof(argv[0]);
+
+    assert_that(decode_options(argc, argv), is_equal_to(RC_UNKNOWN_OPTION));
+}
+
+Ensure(Options, can_parse_two_options) {
+    char *argv[] = {
+        "", "--lsp=path", "--log=log"
+
+    };
+    int argc = sizeof(argv)/sizeof(argv[0]);
+
+    assert_that(decode_options(argc, argv), is_equal_to(RC_OK));
+    assert_that(options.lsp_server_path, is_equal_to_string("path"));
+    assert_that(options.logfile_path, is_equal_to_string("log"));
 }

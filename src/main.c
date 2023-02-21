@@ -14,10 +14,14 @@
 
 protected int main_(int argc, char *argv[]) {
     log_set_level(LOG_ERROR);
-    // TODO: options handling... For now:
     ResultCode rc = decode_options(argc, argv);
     if (rc != RC_OK)
         return EXIT_FAILURE;
+
+    if (options.logfile_path != NULL) {
+        FILE *log_file = fopen(options.logfile_path, "w");
+        log_add_fp(log_file, LOG_TRACE);
+    }
 
     // TODO: Set CWD to argv[1] if available
 
