@@ -6,5 +6,5 @@ cgreen-runner --version
 lcov --version
 gcov --version
 gem install coveralls-lcov
-# libclang
-sudo apt install libclang-15-dev
+# libclang & cjson
+sudo apt install libclang-15-dev libcjson-dev
