@@ -28,8 +28,8 @@ workspace "Clefactory" "A C refactoring browser in C" {
             editor -> clefactory "sends navigation and refactoring requests to"
             clefactory -> editor "sends positioning and editing responses to"
             clef -> source "reads/analyzes"
-            clef -> lspServer "propagates LSP requests to"
-            lspServer -> clef "returns LSP responses to"
+            clef -> lspServer "propagates standard LSP requests to"
+            lspServer -> clef "returns standard LSP responses to"
             lspServer -> source "reads/analyzes"
             editor -> editorExtension "extends" "Editor extension protocol"
             editorExtension -> source "extended c-xrefactory operations"
@@ -38,22 +38,22 @@ workspace "Clefactory" "A C refactoring browser in C" {
     }
 
     views {
-        systemContext clefactory SystemContext {
+        systemContext clefactory "SystemContext" {
                 include *
                 autolayout lr
         }
 
-        container clefactory ContainerView {
+        container clefactory "ContainerView" {
                 include *
                 autolayout lr
 	    }
 
-        component editorExtension EditorExtension {
+        component editorExtension "EditorExtension" {
                 include *
                 autolayout lr
         }
 
-        component clef ClefCore {
+        component clef "ClefCore" {
                 include *
                 autolayout lr
         }
