@@ -1,3 +1,4 @@
-Response from LSP server: { "jsonrpc": "2.0", "id": 1, "result": { "capabilities": { "textDocumentSync": { "openClose": true, "change": 2, "save": { "includeText": true } }, "completionProvider": { "resolveProvider": true, "triggerCharacters": ["."] } }, "serverInfo": { "name": "My Language Server", "version": "1.0.0" } } }
-Received an 'initialize' message
-Received an 'exit' message
+YYYY-MM-DD HH:MM:SS TRACE lsp.:nnn: Received an 'initialize' request
+YYYY-MM-DD HH:MM:SS TRACE lsp.:nnn: Received an 'exit' request
+Dummy server received an 'initialize' request
+Dummy server received an 'exit' request

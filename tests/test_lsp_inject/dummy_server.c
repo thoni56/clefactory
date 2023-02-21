@@ -16,14 +16,14 @@ int main(int argc, char **argv) {
         cJSON *method = cJSON_GetObjectItem(root, "method");
         if (method != NULL) {
             if (strcmp(method->valuestring, "initialize") == 0) {
-                fprintf(stderr, "Dummy server received an 'initialize' message\n");
+                fprintf(stderr, "Dummy server received an 'initialize' request\n");
             } else if (strcmp(method->valuestring, "shutdown") == 0) {
-                fprintf(stderr, "Dummy server received a 'shutdown' message\n");
+                fprintf(stderr, "Dummy server received a 'shutdown' request\n");
             } else if (strcmp(method->valuestring, "exit") == 0) {
-                fprintf(stderr, "Dummy server received an 'exit' message\n");
+                fprintf(stderr, "Dummy server received an 'exit' request\n");
                 return EXIT_SUCCESS;
             } else {
-                fprintf(stderr, "Dummy server received an unknown message with method '%s'\n", method->valuestring);
+                fprintf(stderr, "Dummy server received an unknown request with method '%s'\n", method->valuestring);
             }
             char response[1000];
             fgets(response, 1000, responses);
