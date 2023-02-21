@@ -15,7 +15,8 @@ Some useful commands:
   <M-S-Right>   demote subtree
 
   
-* TODO [FEATURE] Pass LSP command through to LSP server
+* TODO [FEATURE] Pass LSP requests through to LSP server
+* TODO [FEATURE] Pass LSP responses through to LSP client
 * TODO [FEATURE] Rename an include file
 ** TODO Parse all translation units in the current directory
 ** TODO Rename the file

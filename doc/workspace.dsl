@@ -12,23 +12,24 @@ workspace "Clefactory" "A C refactoring browser in C" {
         source = Element "Source Code" "a set of files stored on disk or in editor" "" DB
 
         clefactory = SoftwareSystem "Clefactory" "Analyses source code, receives and processes extended requests for navigation and refactoring" Clefactory {
-            editorExtension = container editorExtension "Extends the Editor with operations and interfaces to the clefactory API" "Plugin" {
-                clef_el = Component clef.el "" elisp
+            editorExtension = container "editorExtension" "Extends the Editor with operations and interfaces to the clefactory API" "Plugin" {
+                clef_el = Component "clef.el" "" elisp
             }
             editor -> editorExtension "extends functionality using" plugin
 
             clef = Container "Clef" "C Language program" "Refactoring Browser" {
-                main = Component main "Main program" C
+                main = Component "main" "Main program" C
+                libclang = Component "libclang" "Clang library"
             }
 
             developer -> editor "performs extended editor/IDE operations"
             developer -> clefactory "configures"
-            editor -> source "does normal editing operations"
-            editor -> clefactory "sends navigation and refactoring requests"
-            clefactory -> editor "sends positioning and editing responses"
+            editor -> source "performs normal editing operations on"
+            editor -> clefactory "sends navigation and refactoring requests to"
+            clefactory -> editor "sends positioning and editing responses to"
             clef -> source "reads/analyzes"
-            clef -> lspServer "propagates LSP requests"
-            lspServer -> clef "returns LSP responses"
+            clef -> lspServer "propagates LSP requests to"
+            lspServer -> clef "returns LSP responses to"
             lspServer -> source "reads/analyzes"
             editor -> editorExtension "extends" "Editor extension protocol"
             editorExtension -> source "extended c-xrefactory operations"
