@@ -43,15 +43,15 @@ ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable
         cJSON *method = jsonGetObjectItem(root, "method");
         if (method != NULL) {
             if (strcmp(method->valuestring, "initialize") == 0) {
-                log_trace("Received an 'initialize' message");
+                log_trace("Received an 'initialize' request");
             } else if (strcmp(method->valuestring, "shutdown") == 0) {
-                log_trace("Received a 'shutdown' message");
+                log_trace("Received a 'shutdown' request");
             } else if (strcmp(method->valuestring, "exit") == 0) {
-                log_trace("Received an 'exit' message");
+                log_trace("Received an 'exit' request");
                 write(server_request_pipe, input, strlen(input));
                 return EXIT_SUCCESS;
             } else {
-                log_warn("Received an unknown message with method '%s'", method->valuestring);
+                log_warn("Received an unknown request with method '%s'", method->valuestring);
             }
         } else {
             log_warn("Received an invalid JSON-RPC message");
