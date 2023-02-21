@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
             }
             char response[1000];
             fgets(response, 1000, responses);
-            write(1, response, strlen(response)-1);
+            write(STDOUT_FILENO, response, strlen(response)-1);
         } else {
             fprintf(stderr, "Dummy server received an invalid JSON-RPC message: '%s'\n", input);
         }

@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "log.h"
+
 
 void launch_server(int input_pipe, int output_pipe, const char program[]) {
     // Duplicate input and output pipe read and write ends to stdin and stdout
@@ -13,6 +15,6 @@ void launch_server(int input_pipe, int output_pipe, const char program[]) {
     execlp(program, program, NULL);
 
     // If we get here the exec() failed.
-    perror("Error launching LSP server");
-    exit(1);
+    log_fatal("Error launching LSP server");
+    exit(EXIT_FAILURE);
 }
