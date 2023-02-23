@@ -26,9 +26,13 @@ else
   LLVM = /usr/lib/llvm-15
 endif
 
+ifeq ($(OS),Darwin)
+INCLUDES += -I$(LLVM)/include -I$$(brew --prefix)/include
+LDLIBS += -L$(LLVM)/lib -lclang -L$$(brew --prefix)/lib -lcjson
+else
 INCLUDES += -I$(LLVM)/include
-
 LDLIBS += -L$(LLVM)/lib -lclang -lcjson
+endif
 
 # Other variables
 
