@@ -46,3 +46,20 @@ Ensure(ServerHandler, will_report_failed_writing_to_client) {
 
     assert_that(handle_server_response(server_pipe, client_pipe), is_equal_to(RC_ERROR_SENDING_TO_CLIENT));
 }
+
+Ensure(ServerHandler, will_send_response_from_server_to_client) {
+    int server_pipe = 14;
+    int client_pipe = 15;
+    char *payload = "{\"jsonrpc\":\"2.0\",\"id\":3,\"method\":\"exit\"}";
+    char *input = create_json_message_from(payload);
+
+    expect(readPipe, when(pipe, is_equal_to(server_pipe)),
+           will_set_contents_of_parameter(buffer, input, strlen(input)),
+           will_return(65));
+
+    expect(writePipe, when(pipe, is_equal_to(client_pipe)), when(buffer, is_equal_to_string(input)),
+           will_return(0));
+
+    // Needs to be an exit request, otherwise the server handler will not return
+    assert_that(handle_server_response(server_pipe, client_pipe), is_equal_to(RC_OK));
+}
