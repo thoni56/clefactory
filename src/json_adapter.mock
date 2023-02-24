@@ -1,14 +1,20 @@
+#include "error.h"
+#include "json_adapter.h"
 #include <cgreen/mocks.h>
 #include <cjson/cJSON.h>
 
-extern cJSON *jsonParse(const char *json_string) {
+cJSON *jsonParse(const char *json_string) {
     return (cJSON *)mock(json_string);
 }
 
-extern cJSON *jsonGetObjectItem(cJSON *object, const char *elementName) {
+cJSON *jsonGetObjectItem(cJSON *object, const char *elementName) {
     return (cJSON *)mock(object, elementName);
 }
 
-extern void jsonDelete(cJSON *object) {
+void jsonDelete(cJSON *object) {
     mock(object);
+}
+
+ResultCode send_json_rpc_message(int pipe, const char *message) {
+    return (ResultCode)mock(pipe, message);
 }

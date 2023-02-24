@@ -1,4 +1,4 @@
-#include "fileio.h"
+#include "io.h"
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -153,4 +153,16 @@ char **getFilesInCurrentDirectory(void) {
         closedir(d);
     }
     return files;
+}
+
+int writePipe(int pipe, const char *buffer, size_t length) {
+    int rc = write(pipe, buffer, length);
+    fsync(pipe);
+    return rc;
+}
+
+int readPipe(int pipe, char *buffer, size_t size) {
+    int rc = read(pipe, buffer, size);
+    fsync(pipe);
+    return rc;
 }

@@ -10,6 +10,7 @@
 
 #include "server_handler.mock"
 #include "process.mock"
+#include "io.mock"
 #include "json_adapter.mock"
 
 

@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "common.h"
-#include "fileio.h"
+#include "io.h"
 
 
 #define FILE_TABLE_SIZE 1000

@@ -1,5 +1,5 @@
-#ifndef FILEIO_H_INCLUDED
-#define FILEIO_H_INCLUDED
+#ifndef IO_H_INCLUDED
+#define IO_H_INCLUDED
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -21,6 +21,8 @@ extern bool fileExists(char *fullPath);
 extern size_t readFile(FILE *file, void *buffer, size_t size, size_t count);
 extern size_t writeFile(FILE *file, void *buffer, size_t size, size_t count);
 extern int readChar(FILE *file);
+extern int writePipe(int pipe, const char *buffer, size_t length);
+extern int readPipe(int pipe, char *buffer, size_t size);
 
 // Return array of pointers to strings for all files in current directory
 // Caller needs to deallocate array and the strings

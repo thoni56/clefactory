@@ -1,6 +1,7 @@
 #ifndef JSON_ADAPTER_H_INCLUDED
 #define JSON_ADAPTER_H_INCLUDED
 
+#include "error.h"
 #include <cjson/cJSON.h>
 
 

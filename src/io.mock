@@ -1,6 +1,6 @@
 /* -*- c -*-*/
 #include <cgreen/mocks.h>
-#include "fileio.h"
+#include "io.h"
 
 
 char **getFilesInCurrentDirectory(void) {
@@ -69,4 +69,12 @@ char *getEnv(const char *variable) {
 
 char *getCwd(char *buffer, size_t size) {
     return (char *)mock(buffer, size);
+}
+
+int writePipe(int pipe, const char *buffer, size_t length) {
+    return mock(pipe, buffer, length);
+}
+
+int readPipe(int pipe, char *buffer, size_t size) {
+    return mock(pipe, buffer, size);
 }

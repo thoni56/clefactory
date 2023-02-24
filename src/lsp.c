@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include "error.h"
+#include "io.h"
 #include "json_adapter.h"
 #include "log.h"
 #include "process.h"
@@ -42,8 +43,31 @@ static int max(int a, int b) { return a > b ? a : b; }
 
 #define BUFFER_SIZE 1000
 
+
+static ResultCode send_json_rpc_message(int pipe, const char *message) {
+    char *buffer;
+    int length;
+
+    // Create the message header
+    length = strlen(message);
+    char header[100];
+    snprintf(header, sizeof(header), "Content-Length: %d\r\n\r\n", length);
+
+    // Concatenate the header and message
+    int message_length = strlen(header) + strlen(message) + 1;
+    buffer = malloc(message_length);
+    strcpy(buffer, header);
+    strcat(buffer, message);
+
+    // Send the message
+    int result = writePipe(pipe, buffer, message_length);
+    free(buffer);
+    return result;
+}
+
 // Communication with downstream server is over the pipes and with the
-// upstream client over stdin/stdout
+// upstream client over stdin/stdout, let's figure out who sends a message to us
+// and dispatch it.
 ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable fileTable,
                     CXIndex index) {
     int client_request_pipe = STDIN_FILENO;
@@ -57,28 +81,16 @@ ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable
     FD_SET(server_response_pipe, &inputs);
 
     while (true) {
-        sleep(1);
         fd_set tmp_inputs = inputs;
         if (select(max_fd + 1, &tmp_inputs, NULL, NULL, NULL) == -1) {
             log_fatal("Error during select()");
             return RC_SELECT_ERROR;
         }
         if (FD_ISSET(server_response_pipe, &tmp_inputs)) {
-            char input[BUFFER_SIZE];
-
-            int nbytes = read(server_response_pipe, input, BUFFER_SIZE);
-            if (nbytes == -1) {
-                perror("read");
-                exit(1);
-            } else if (nbytes == 0) {
-                log_fatal("Server closed pipe");
+            ResultCode rc = handle_server_response(server_response_pipe, client_response_pipe);
+            if (rc != RC_RECEIVING_FROM_SERVER) {
                 FD_CLR(server_response_pipe, &inputs);
-            } else {
-                log_trace("Received server response \"%s\"", input);
-                if (write(client_response_pipe, input, nbytes) == -1) {
-                    perror("write");
-                    exit(1);
-                }
+                return rc;
             }
         } else if (FD_ISSET(client_request_pipe, &tmp_inputs)) {
             char input[BUFFER_SIZE];
@@ -92,7 +104,7 @@ ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable
                         log_trace("Received a 'shutdown' request");
                     } else if (strcmp(method->valuestring, "exit") == 0) {
                         log_trace("Received an 'exit' request");
-                        write(server_request_pipe, input, strlen(input));
+                        send_json_rpc_message(server_request_pipe, input);
                         return EXIT_SUCCESS;
                     } else {
                         log_warn("Received an unknown request with method '%s'",
@@ -102,7 +114,8 @@ ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable
                     log_warn("Received an invalid JSON-RPC message");
                 }
                 jsonDelete(root);
-                write(server_request_pipe, input, strlen(input));
+                send_json_rpc_message(server_request_pipe, input);
+                fsync(server_request_pipe);
             } else {
                 log_error("Broken connection to client");
                 return RC_BROKEN_INPUT_FROM_CLIENT;
