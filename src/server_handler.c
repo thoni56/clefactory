@@ -29,13 +29,13 @@ ResultCode handle_server_response(int server_response_pipe, int client_response_
 
     int nbytes = readPipe(server_response_pipe, input, BUFFER_SIZE);
     if (nbytes == -1) {
-        return RC_RECEIVING_FROM_SERVER;
+        return RC_ERROR_RECEIVING_FROM_SERVER;
     } else if (nbytes == 0) {
         log_fatal("Server closed pipe");
     } else {
         log_trace("Received server response \"%s\"", input);
         if (writePipe(client_response_pipe, input, nbytes) == -1) {
-            return RC_SENDING_TO_CLIENT;
+            return RC_ERROR_SENDING_TO_CLIENT;
         }
     }
     return RC_OK;

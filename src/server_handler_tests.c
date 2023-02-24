@@ -27,7 +27,7 @@ Ensure(ServerHandler, will_report_failed_read) {
     expect(readPipe, when(pipe, is_equal_to(server_pipe)),
            will_return(-1));
 
-    assert_that(handle_server_response(server_pipe, client_pipe), is_equal_to(RC_RECEIVING_FROM_SERVER));
+    assert_that(handle_server_response(server_pipe, client_pipe), is_equal_to(RC_ERROR_RECEIVING_FROM_SERVER));
 }
 
 
@@ -44,5 +44,5 @@ Ensure(ServerHandler, will_report_failed_writing_to_client) {
     expect(writePipe, when(pipe, is_equal_to(client_pipe)),
            will_return(-1));
 
-    assert_that(handle_server_response(server_pipe, client_pipe), is_equal_to(RC_SENDING_TO_CLIENT));
+    assert_that(handle_server_response(server_pipe, client_pipe), is_equal_to(RC_ERROR_SENDING_TO_CLIENT));
 }

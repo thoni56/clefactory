@@ -88,7 +88,7 @@ ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable
         }
         if (FD_ISSET(server_response_pipe, &tmp_inputs)) {
             ResultCode rc = handle_server_response(server_response_pipe, client_response_pipe);
-            if (rc != RC_RECEIVING_FROM_SERVER) {
+            if (rc == RC_ERROR_RECEIVING_FROM_SERVER) {
                 FD_CLR(server_response_pipe, &inputs);
                 return rc;
             }
