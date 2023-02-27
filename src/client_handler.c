@@ -12,30 +12,6 @@
 
 #define BUFFER_SIZE 10000
 
-static ResultCode send_json_rpc_message(int pipe, cJSON *json) {
-    char *payload = jsonPrint(json);
-
-    // Create the message header
-    int length = strlen(payload);
-    char header[1000];
-    snprintf(header, sizeof(header),
-             "Content-Length: %d\r\nContent-type: application/vscode-jsonrpc;charset=utf-8\r\n\r\n", length);
-
-    // Concatenate the header and message and delimiter
-    char *delimiter = "\r\n\r\n";
-    int message_length = strlen(header) + strlen(payload) + strlen(delimiter);
-    char *buffer = malloc(message_length);
-    strcpy(buffer, header);
-    strcat(buffer, payload);
-    strcat(buffer, delimiter);
-
-    // Send the message
-    int result = writePipe(pipe, buffer, message_length);
-    fsync(pipe);
-    free(buffer);
-    return result;
-}
-
 static ResultCode parseRpcHeader(void) {
     int content_length = 0;
     ResultCode rc = RC_OK;
@@ -58,16 +34,19 @@ static ResultCode parseRpcHeader(void) {
         } else {
             log_error("Broken connection to client");
             rc = RC_BROKEN_INPUT_FROM_CLIENT;
+            break;
         }
     }
-
     return rc;
 }
 
 
 ResultCode handle_client_request(int server_request_pipe) {
-	ResultCode rc;
+    ResultCode rc;
     rc = parseRpcHeader();
+    if (rc != RC_OK)
+        return rc;
+
     char input[BUFFER_SIZE];
     if (readLine(input, sizeof(input), stdin) != NULL) {
         cJSON *root = jsonParse(input);
@@ -79,8 +58,6 @@ ResultCode handle_client_request(int server_request_pipe) {
                 log_trace("Received a 'shutdown' request");
             } else if (strcmp(method->valuestring, "exit") == 0) {
                 log_trace("Received an 'exit' request");
-                send_json_rpc_message(server_request_pipe, root);
-                rc = RC_OK;
             } else {
                 log_warn("Received an unknown request with method '%s'",
                          method->valuestring);
@@ -88,7 +65,7 @@ ResultCode handle_client_request(int server_request_pipe) {
         } else {
             log_warn("Received an invalid JSON-RPC message");
         }
-        send_json_rpc_message(server_request_pipe, root);
+        jsonSend(root, server_request_pipe);
         jsonDelete(root);
         readLine(input, sizeof(input), stdin);
         if (strcmp(input, "\r\n") != 0) {

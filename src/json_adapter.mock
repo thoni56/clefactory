@@ -19,6 +19,6 @@ void jsonDelete(cJSON *object) {
     mock(object);
 }
 
-ResultCode send_json_rpc_message(int pipe, const char *message) {
-    return (ResultCode)mock(pipe, message);
+ResultCode jsonSend(cJSON *object, int pipe) {
+    return (ResultCode)mock(pipe, object);
 }

@@ -13,4 +13,6 @@ extern char *jsonPrint(cJSON *object);
 
 extern void jsonDelete(cJSON *object);
 
+extern ResultCode jsonSend(cJSON *json, int pipe);
+
 #endif
