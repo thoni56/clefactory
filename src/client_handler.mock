@@ -1,0 +1,8 @@
+#include "client_handler.h"
+
+#include <cgreen/mocks.h>
+
+
+ResultCode handle_client_request(int server_request_pipe) {
+    return (ResultCode)mock(server_request_pipe);
+}

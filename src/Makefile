@@ -281,6 +281,7 @@ $(1)_tests.$(EXT): $(OBJDIR)/$(1)_tests.o $(OBJDIR)/$(1).o $$($(1)_DEPS)
 endef
 
 # Autogenerate unittest targets and recipe for listed modules
+$(eval $(call UNITTEST,client_handler,log))
 $(eval $(call UNITTEST,dispatcher,))
 $(eval $(call UNITTEST,exports,))
 $(eval $(call UNITTEST,filemanager,))

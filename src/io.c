@@ -166,3 +166,7 @@ int readPipe(int pipe, char *buffer, size_t size) {
     fsync(pipe);
     return rc;
 }
+
+char *readLine(char *buffer, size_t max_size, FILE *file) {
+    return fgets(buffer, max_size, file);
+}

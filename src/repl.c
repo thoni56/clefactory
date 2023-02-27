@@ -6,6 +6,7 @@
 #include "dispatcher.h"
 #include "exports.h"
 #include "filemanager.h"
+#include "io.h"
 #include "includes.h"
 #include "parser.h"
 #include "references.h"
@@ -44,7 +45,7 @@ void cli_repl(FileTable fileTable, CXIndex index) {
     char command[MAX_LINE_LENGTH];
 
     fprintf(stdout, "> ");
-    while (fgets(command, sizeof(command), stdin) != NULL) {
+    while (readLine(command, sizeof(command), stdin) != NULL) {
         // TODO: ... so that we can refresh the index if needed,
         // before doing the operation
         int error_code = dispatch_command(index, fileTable, command, dispatchTable);

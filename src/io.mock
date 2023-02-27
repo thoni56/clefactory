@@ -78,3 +78,7 @@ int writePipe(int pipe, const char *buffer, size_t length) {
 int readPipe(int pipe, char *buffer, size_t size) {
     return mock(pipe, buffer, size);
 }
+
+char *readLine(char *buffer, size_t max_size, FILE *file) {
+    return (char *)mock(buffer, max_size, file);
+}

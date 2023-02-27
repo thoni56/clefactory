@@ -23,6 +23,7 @@ extern size_t writeFile(FILE *file, void *buffer, size_t size, size_t count);
 extern int readChar(FILE *file);
 extern int writePipe(int pipe, const char *buffer, size_t length);
 extern int readPipe(int pipe, char *buffer, size_t size);
+extern char *readLine(char *buffer, size_t max_size, FILE *file);
 
 // Return array of pointers to strings for all files in current directory
 // Caller needs to deallocate array and the strings

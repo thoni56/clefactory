@@ -17,7 +17,8 @@ AfterEach(ServerHandler) {}
 
 static char *create_json_message_from(const char *payload) {
     char *message = malloc(1000);
-    sprintf(message, "Content-Length: %lu %s", strlen(payload), payload);
+    sprintf(message, "Content-Length: %lu\r\nContent-type: application/vscode-jsonrpc;charset=utf-8\r\n\r\n%s\r\n",
+            strlen(payload), payload);
     return message;
 }
 

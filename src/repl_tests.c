@@ -8,6 +8,7 @@
 #include "exports.mock"
 #include "filemanager.mock"
 #include "includes.mock"
+#include "io.mock"
 #include "parser.mock"
 #include "references.mock"
 #include "units.mock"

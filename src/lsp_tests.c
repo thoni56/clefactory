@@ -8,10 +8,11 @@
 #include <cgreen/unit.h>
 #include <unistd.h>
 
-#include "server_handler.mock"
-#include "process.mock"
+#include "client_handler.mock"
 #include "io.mock"
 #include "json_adapter.mock"
+#include "process.mock"
+#include "server_handler.mock"
 
 
 Describe(Lsp);
