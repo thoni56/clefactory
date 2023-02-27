@@ -32,6 +32,7 @@ ResultCode handle_server_response(int server_response_pipe, int client_response_
         return RC_ERROR_RECEIVING_FROM_SERVER;
     } else if (nbytes == 0) {
         log_fatal("Server closed pipe");
+        return RC_SERVER_CLOSED_PIPE;
     } else {
         log_trace("Received server response \"%s\"", input);
         if (writePipe(client_response_pipe, input, nbytes) == -1) {

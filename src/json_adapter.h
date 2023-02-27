@@ -9,6 +9,8 @@ extern cJSON *jsonParse(const char * const json_string);
 
 extern cJSON *jsonGetObjectItem(cJSON *object, const char *const elementName);
 
+extern char *jsonPrint(cJSON *object);
+
 extern void jsonDelete(cJSON *object);
 
 #endif

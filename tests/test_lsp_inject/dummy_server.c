@@ -8,20 +8,22 @@
 
 #define MAX_HEADER_FIELD_LEN 1000
 
-static unsigned long lsp_parse_header(void) {
-    char buffer[MAX_HEADER_FIELD_LEN];
+static int lsp_parse_header(void) {
+    char input[MAX_HEADER_FIELD_LEN];
     unsigned long content_length = 0;
 
     for (;;) {
-        fgets(buffer, MAX_HEADER_FIELD_LEN, stdin);
-        if (strcmp(buffer, "\r\n") == 0) { // End of header
+        if (fgets(input, MAX_HEADER_FIELD_LEN, stdin) == NULL)
+            return -1;
+        fprintf(stderr, "Got '%s' while parsing header\n", input);
+        if (strcmp(input, "\r\n") == 0) { // End of header
             if (content_length == 0)
                 fprintf(stderr, "Dummy server received incomplete header\n");
             else
                 return content_length;
         }
 
-        char *buffer_part = strtok(buffer, " ");
+        char *buffer_part = strtok(input, " ");
         if (strcmp(buffer_part, "Content-Length:") == 0) {
             buffer_part = strtok(NULL, "\n");
             content_length = atoi(buffer_part);
@@ -29,29 +31,51 @@ static unsigned long lsp_parse_header(void) {
     }
 }
 
+static void send_json_rpc_message(char *payload) {
+    // Create the message header
+    int length = strlen(payload);
+    char header[1000];
+    snprintf(header, sizeof(header),
+             "Content-Length: %d\r\nContent-type: application/vscode-jsonrpc;charset=utf-8\r\n\r\n", length);
+
+    // Concatenate the header and message and delimiter
+    char *delimiter = "\r\n\r\n";
+    int message_length = strlen(header) + strlen(payload) + strlen(delimiter);
+    char *buffer = malloc(message_length);
+    strcpy(buffer, header);
+    strcat(buffer, payload);
+    strcat(buffer, delimiter);
+
+    // Send the message
+    write(STDOUT_FILENO, buffer, message_length);
+    free(buffer);
+}
+
+
 int main(int argc, char **argv) {
     char input[1000];
     FILE *responses = fopen("responses.json", "r");
 
-    while (fgets(input, sizeof(input), stdin)) {
-        lsp_parse_header();
+    for (;;) {
+        int content_length = lsp_parse_header();
+        if (content_length == -1)
+            break;
+        if (fgets(input, content_length+1, stdin) == NULL)
+            break;
         cJSON *root = cJSON_Parse(input);
         cJSON *method = cJSON_GetObjectItem(root, "method");
         if (method != NULL) {
-            if (strcmp(method->valuestring, "initialize") == 0) {
-                fprintf(stderr, "Dummy server received an 'initialize' request\n");
-            } else if (strcmp(method->valuestring, "shutdown") == 0) {
-                fprintf(stderr, "Dummy server received a 'shutdown' request\n");
-            } else if (strcmp(method->valuestring, "exit") == 0) {
-                fprintf(stderr, "Dummy server received an 'exit' request\n");
+            fprintf(stderr, "Dummy server received '%s' request\n", method->valuestring);
+            if (strcmp(method->valuestring, "exit") == 0)
                 return EXIT_SUCCESS;
-            } else {
-                fprintf(stderr, "Dummy server received an unknown request with method '%s'\n",
-                        method->valuestring);
+            fgets(input, sizeof(input), stdin);
+            if (strcmp(input, "\r\n") != 0) {
+                fprintf(stderr, "Dummy server expected delimiter");
+                return EXIT_FAILURE;
             }
             char response[1000];
             fgets(response, 1000, responses);
-            write(STDOUT_FILENO, response, strlen(response) - 1);
+            send_json_rpc_message(response);
         } else {
             fprintf(stderr, "Dummy server received an invalid JSON-RPC message: '%s'\n", input);
         }

@@ -11,6 +11,10 @@ cJSON *jsonGetObjectItem(cJSON *object, const char *elementName) {
     return (cJSON *)mock(object, elementName);
 }
 
+char *jsonPrint(cJSON *object) {
+    return (char *)mock(object);
+}
+
 void jsonDelete(cJSON *object) {
     mock(object);
 }

@@ -14,4 +14,6 @@ cJSON *jsonGetObjectItem(cJSON *object, const char *const elementName) {
     return cJSON_GetObjectItem(object, elementName);
 }
 
+char *jsonPrint(cJSON *object) { return cJSON_PrintUnformatted(object); }
+
 void jsonDelete(cJSON *object) { cJSON_Delete(object); }

@@ -1,4 +1,6 @@
-YYYY-MM-DD HH:MM:SS TRACE lsp.:nnn: Received an 'initialize' request
-YYYY-MM-DD HH:MM:SS TRACE lsp.:nnn: Received an 'exit' request
+YYYY-MM-DD HH:MM:SS TRACE lsp.c:nnn: Received an 'initialize' request
+YYYY-MM-DD HH:MM:SS TRACE lsp.c:nnn: Received a 'shutdown' request
+YYYY-MM-DD HH:MM:SS TRACE lsp.c:nnn: Received an 'exit' request
 Dummy server received an 'initialize' request
+Dummy server received a 'shutdown' request
 Dummy server received an 'exit' request
