@@ -26,7 +26,8 @@ Ensure(ClientHandler, will_return_broken_input_for_broken_header) {
            will_return(content_length_header));
     expect(readLine, will_return(NULL));
 
-    assert_that(handle_client_request(42), is_equal_to(RC_BROKEN_INPUT_FROM_CLIENT));
+    FILE *server_channel = (FILE *)0xcdcdcd;
+    assert_that(handle_client_request(server_channel, stdin), is_equal_to(RC_BROKEN_INPUT_FROM_CLIENT));
 }
 
 static const char *delimiter = "\r\n";
@@ -49,7 +50,8 @@ Ensure(ClientHandler, will_return_broken_input_for_broken_payload) {
     // Payload
     expect(readLine, will_return(NULL));
 
-    assert_that(handle_client_request(42), is_equal_to(RC_BROKEN_INPUT_FROM_CLIENT));
+    FILE *server_channel = (FILE *)0xcdcdcd;
+    assert_that(handle_client_request(server_channel, stdin), is_equal_to(RC_BROKEN_INPUT_FROM_CLIENT));
 }
 
 Ensure(ClientHandler, will_send_received_one_line_json_request_to_server) {
@@ -57,10 +59,9 @@ Ensure(ClientHandler, will_send_received_one_line_json_request_to_server) {
 
     // One-line valid json
     const char *valid_json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{}}";
-    const char *buffer_parameter;
-    expect(readLine, will_capture_parameter(buffer, buffer_parameter),
+    expect(readLine,
            will_set_contents_of_parameter(buffer, valid_json, strlen(valid_json)+1),
-           will_return(buffer_parameter));
+           will_return(valid_json));
     expect(readLine, will_set_contents_of_parameter(buffer, delimiter, strlen(delimiter)+1),
            will_return(delimiter));
 
@@ -70,9 +71,9 @@ Ensure(ClientHandler, will_send_received_one_line_json_request_to_server) {
     expect(jsonGetObjectItem, when(object, is_equal_to(root)),
            will_return(&method));
 
-    int server_request_pipe = 42;
-    expect(jsonSend, when(pipe, is_equal_to(server_request_pipe)), when(object, is_equal_to(root)));
+    FILE *server_channel = (FILE *)0xcdcdcd;
+    expect(jsonSend, when(file, is_equal_to(server_channel)), when(object, is_equal_to(root)));
     expect(jsonDelete, when(object, is_equal_to(root)));
 
-    assert_that(handle_client_request(server_request_pipe), is_equal_to(RC_OK));
+    assert_that(handle_client_request(server_channel, stdin), is_equal_to(RC_OK));
 }

@@ -18,7 +18,7 @@ char *jsonPrint(cJSON *object) { return cJSON_PrintUnformatted(object); }
 
 void jsonDelete(cJSON *object) { cJSON_Delete(object); }
 
-ResultCode jsonSend(cJSON *json, int pipe) {
+ResultCode jsonSend(cJSON *json, FILE *pipe) {
     char *payload = jsonPrint(json);
 
     // Create the message header

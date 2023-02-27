@@ -58,6 +58,10 @@ ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable
     FD_SET(client_request_pipe, &inputs);
     FD_SET(server_response_pipe, &inputs);
 
+    FILE *server_request_channel = fdopen(server_request_pipe, "w");
+    FILE *client_request_channel = stdin;
+    FILE *server_response_channel = fdopen(server_response_pipe, "w");
+    FILE *client_response_channel = fdopen(client_response_pipe, "w");
     while (true) {
         fd_set tmp_inputs = inputs;
         if (select(max_fd + 1, &tmp_inputs, NULL, NULL, NULL) == -1) {
@@ -65,13 +69,13 @@ ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable
             return RC_SELECT_ERROR;
         }
         if (FD_ISSET(server_response_pipe, &tmp_inputs)) {
-            ResultCode rc = handle_server_response(server_response_pipe, client_response_pipe);
+            ResultCode rc = handle_server_response(server_response_channel, client_response_channel);
             if (rc == RC_ERROR_RECEIVING_FROM_SERVER || rc == RC_SERVER_CLOSED_PIPE) {
                 FD_CLR(server_response_pipe, &inputs);
                 return rc;
             }
         } else if (FD_ISSET(client_request_pipe, &tmp_inputs)) {
-            ResultCode rc = handle_client_request(server_request_pipe);
+            ResultCode rc = handle_client_request(server_request_channel, client_request_channel);
             if (rc != RC_OK)
                 return rc;
         }

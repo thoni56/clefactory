@@ -19,6 +19,6 @@ void jsonDelete(cJSON *object) {
     mock(object);
 }
 
-ResultCode jsonSend(cJSON *object, int pipe) {
-    return (ResultCode)mock(pipe, object);
+ResultCode jsonSend(cJSON *object, FILE *file) {
+    return (ResultCode)mock(object, file);
 }

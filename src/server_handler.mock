@@ -7,6 +7,6 @@ void launch_server(int input_pipe, int output_pipe, const char program[]) {
     mock(input_pipe, output_pipe, program);
 }
 
-ResultCode handle_server_response(int server_response_pipe, int client_response_pipe) {
+ResultCode handle_server_response(FILE *server_response_pipe, FILE *client_response_pipe) {
     return (ResultCode)mock(server_response_pipe, client_response_pipe);
 }

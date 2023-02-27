@@ -41,7 +41,7 @@ static ResultCode parseRpcHeader(void) {
 }
 
 
-ResultCode handle_client_request(int server_request_pipe) {
+ResultCode handle_client_request(FILE *server_request_channel, FILE *client_request_pipe) {
     ResultCode rc;
     rc = parseRpcHeader();
     if (rc != RC_OK)
@@ -49,29 +49,23 @@ ResultCode handle_client_request(int server_request_pipe) {
 
     char input[BUFFER_SIZE];
     if (readLine(input, sizeof(input), stdin) != NULL) {
-        cJSON *root = jsonParse(input);
-        cJSON *method = jsonGetObjectItem(root, "method");
-        if (method != NULL) {
-            if (strcmp(method->valuestring, "initialize") == 0) {
-                log_trace("Received an 'initialize' request");
-            } else if (strcmp(method->valuestring, "shutdown") == 0) {
-                log_trace("Received a 'shutdown' request");
-            } else if (strcmp(method->valuestring, "exit") == 0) {
-                log_trace("Received an 'exit' request");
-            } else {
-                log_warn("Received an unknown request with method '%s'",
-                         method->valuestring);
-            }
-        } else {
-            log_warn("Received an invalid JSON-RPC message");
-        }
-        jsonSend(root, server_request_pipe);
-        jsonDelete(root);
         readLine(input, sizeof(input), stdin);
         if (strcmp(input, "\r\n") != 0) {
             log_error("Missing message separator");
             rc = RC_MISSING_MESSAGE_SEPARATOR;
         }
+
+        cJSON *root = jsonParse(input);
+        cJSON *method = jsonGetObjectItem(root, "method");
+        if (method != NULL) {
+            log_trace("Client responded with '%s' response", method->valuestring);
+            jsonSend(root, server_request_channel);
+            jsonDelete(root);
+        } else {
+            log_warn("Received an invalid JSON-RPC message");
+        }
+        jsonSend(root, server_request_channel);
+        jsonDelete(root);
     } else {
         log_error("Broken connection to client");
         rc = RC_BROKEN_INPUT_FROM_CLIENT;
