@@ -58,10 +58,11 @@ ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable
     FD_SET(client_request_pipe, &inputs);
     FD_SET(server_response_pipe, &inputs);
 
+    FILE *client_request_channel = fdopen(client_request_pipe, "r");
     FILE *server_request_channel = fdopen(server_request_pipe, "w");
-    FILE *client_request_channel = stdin;
-    FILE *server_response_channel = fdopen(server_response_pipe, "w");
+    FILE *server_response_channel = fdopen(server_response_pipe, "r");
     FILE *client_response_channel = fdopen(client_response_pipe, "w");
+
     while (true) {
         fd_set tmp_inputs = inputs;
         if (select(max_fd + 1, &tmp_inputs, NULL, NULL, NULL) == -1) {

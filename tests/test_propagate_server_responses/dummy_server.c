@@ -6,30 +6,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#define MAX_HEADER_FIELD_LEN 1000
-
-static int lsp_parse_header(void) {
-    char input[MAX_HEADER_FIELD_LEN];
-    unsigned long content_length = 0;
-
-    for (;;) {
-        if (fgets(input, MAX_HEADER_FIELD_LEN, stdin) == NULL)
-            return -1;
-        fprintf(stderr, "Got '%s' while parsing header\n", input);
-        if (strcmp(input, "\r\n") == 0) { // End of header
-            if (content_length == 0)
-                fprintf(stderr, "Dummy server received incomplete header\n");
-            else
-                return content_length;
-        }
-
-        char *buffer_part = strtok(input, " ");
-        if (strcmp(buffer_part, "Content-Length:") == 0) {
-            buffer_part = strtok(NULL, "\n");
-            content_length = atoi(buffer_part);
-        }
-    }
-}
 
 static void send_json_rpc_message(char *payload) {
     // Create the message header
@@ -53,33 +29,15 @@ static void send_json_rpc_message(char *payload) {
 
 
 int main(int argc, char **argv) {
-    char input[1000];
+    sleep(1);
     FILE *responses = fopen("responses.json", "r");
 
     for (;;) {
-        int content_length = lsp_parse_header();
-        if (content_length == -1)
-            break;
-        if (fgets(input, content_length+1, stdin) == NULL)
-            break;
-        cJSON *root = cJSON_Parse(input);
-        cJSON *method = cJSON_GetObjectItem(root, "method");
-        if (method != NULL) {
-            fprintf(stderr, "Dummy server received '%s' request\n", method->valuestring);
-            if (strcmp(method->valuestring, "exit") == 0)
-                return EXIT_SUCCESS;
-            fgets(input, sizeof(input), stdin);
-            if (strcmp(input, "\r\n") != 0) {
-                fprintf(stderr, "Dummy server expected delimiter");
-                return EXIT_FAILURE;
-            }
-            char response[1000];
-            fgets(response, 1000, responses);
+        char response[1000];
+        if (fgets(response, 1000, responses) != NULL)
             send_json_rpc_message(response);
-        } else {
-            fprintf(stderr, "Dummy server received an invalid JSON-RPC message: '%s'\n", input);
-        }
-        cJSON_Delete(root);
+        else
+            return EXIT_SUCCESS;
     }
     return EXIT_FAILURE;
 }

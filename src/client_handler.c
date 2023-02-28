@@ -12,12 +12,12 @@
 
 #define BUFFER_SIZE 10000
 
-static ResultCode parseRpcHeader(void) {
+static ResultCode parseRpcHeader(FILE *client_request_channel) {
     int content_length = 0;
     ResultCode rc = RC_OK;
     for (;;) {
         char input[BUFFER_SIZE];
-        if (readLine(input, sizeof(input), stdin) != NULL) {
+        if (readLine(input, sizeof(input), client_request_channel) != NULL) {
             if (strcmp(input, "\r\n") == 0) { // End of header
                 if (content_length == 0) {
                     log_error("Client sent incomplete header");
@@ -41,14 +41,14 @@ static ResultCode parseRpcHeader(void) {
 }
 
 
-ResultCode handle_client_request(FILE *server_request_channel, FILE *client_request_pipe) {
+ResultCode handle_client_request(FILE *server_request_channel, FILE *client_request_channel) {
     ResultCode rc;
-    rc = parseRpcHeader();
+    rc = parseRpcHeader(client_request_channel);
     if (rc != RC_OK)
         return rc;
 
     char input[BUFFER_SIZE];
-    if (readLine(input, sizeof(input), stdin) != NULL) {
+    if (readLine(input, sizeof(input), client_request_channel) != NULL) {
 
         cJSON *root = jsonParse(input);
         cJSON *method = jsonGetObjectItem(root, "method");
@@ -68,7 +68,7 @@ ResultCode handle_client_request(FILE *server_request_channel, FILE *client_requ
         }
 
         // Delimiter
-        readLine(input, sizeof(input), stdin);
+        readLine(input, sizeof(input), client_request_channel);
         if (strcmp(input, "\r\n") != 0) {
             log_error("Missing message separator");
             rc = RC_MISSING_MESSAGE_SEPARATOR;

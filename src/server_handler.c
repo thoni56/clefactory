@@ -24,16 +24,43 @@ void launch_server(int input_pipe, int output_pipe, const char program[]) {
     exit(EXIT_FAILURE);
 }
 
+static ResultCode parseRpcHeader(FILE *server_response_channel) {
+    int content_length = 0;
+    ResultCode rc = RC_OK;
+    for (;;) {
+        char input[BUFFER_SIZE];
+        if (readLine(input, sizeof(input), server_response_channel) != NULL) {
+            if (strcmp(input, "\r\n") == 0) { // End of header
+                if (content_length == 0) {
+                    log_error("Client sent incomplete header");
+                    rc = RC_SERVER_SENT_INCOMPLETE_HEADER;
+                }
+                break;
+            }
+            char *buffer_part = strtok(input, " ");
+            if (strcmp(buffer_part, "Content-Length:") == 0) {
+                buffer_part = strtok(NULL, "\n");
+                content_length = atoi(buffer_part);
+            }
+
+        } else {
+            log_error("Broken input channel from client");
+            rc = RC_BROKEN_INPUT_CHANNEL_FROM_SERVER;
+            break;
+        }
+    }
+    return rc;
+}
+
+
 ResultCode handle_server_response(FILE *server_response_channel, FILE *client_response_channel) {
     char input[BUFFER_SIZE];
     ResultCode rc = RC_OK;
+    rc = parseRpcHeader(server_response_channel);
+    if (rc != RC_OK)
+        return rc;
 
     if (readLine(input, sizeof(input), server_response_channel) != NULL) {
-        readLine(input, sizeof(input), server_response_channel);
-        if (strcmp(input, "\r\n") != 0) {
-            log_error("Missing message separator");
-            rc = RC_MISSING_MESSAGE_SEPARATOR;
-        }
 
         cJSON *root = jsonParse(input);
         cJSON *method = jsonGetObjectItem(root, "method");
@@ -43,9 +70,18 @@ ResultCode handle_server_response(FILE *server_response_channel, FILE *client_re
             if (result == EOF)
                 rc = RC_ERROR_SENDING_TO_CLIENT;
             jsonDelete(root);
+
         } else {
             log_warn("Client responded with an invalid JSON-RPC message");
         }
+
+        // Delimiter
+        readLine(input, sizeof(input), server_response_channel);
+        if (strcmp(input, "\r\n") != 0) {
+            log_error("Missing message separator");
+            rc = RC_MISSING_MESSAGE_SEPARATOR;
+        }
+
     } else {
         log_error("Broken input channel from server");
         rc = RC_BROKEN_INPUT_CHANNEL_FROM_SERVER;
