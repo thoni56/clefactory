@@ -47,7 +47,7 @@ static void send_json_rpc_message(char *payload) {
     strcat(buffer, delimiter);
 
     // Send the message
-    write(STDOUT_FILENO, buffer, message_length);
+    fputs(buffer, stdout);
     free(buffer);
 }
 
