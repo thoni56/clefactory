@@ -240,11 +240,10 @@ ifeq ($(OS),Darwin)
 	# Build only for M1
 	CGREEN = arch -arm64 cgreen-runner
 	CGREEN_LIB = -L/opt/homebrew/lib -lcgreen
-	DYLD_PATH = DYLD_LIBRARY_PATH=/opt/homebrew/lib:$(LLVM)/lib
-	LIBS += -rpath $(LLVM)/lib
+	LDLIBS += -rpath $(LLVM)/lib
 else
 	CGREEN = cgreen-runner
-	LIBS += -Wl,-rpath=$(LLVM)/lib
+	LDLIBS += -Wl,-rpath=$(LLVM)/lib
 endif
 
 PHONY += unittests
@@ -254,7 +253,7 @@ unittests:
 else
 unittests: $(UNITTESTS)
 	$(MAKE) -e clean-coverage
-	$(DYLD_PATH) $(CGREEN) -q $(CGREEN_OUTPUT) --suite unittests $(UNITTESTS)
+	$(CGREEN) -q $(CGREEN_OUTPUT) --suite unittests $(UNITTESTS)
 	make gcov
 	filecount=`ls -1 $(OBJDIR)/*.gcda 2>/dev/null | wc -l` ; \
 	if [ $$filecount -gt 0 ] ; then \
