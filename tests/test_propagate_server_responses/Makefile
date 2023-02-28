@@ -3,8 +3,8 @@ include ../Makefile.boilerplate
 OS := $(shell uname)
 
 
-$(TEST): dummy_server
-	../../src/clef --lsp=./dummy_server --log=log 2> error > output.tmp
+$(TEST): canned_server
+	../../src/clef --lsp=./canned_server --log=log 2> error > output.tmp
 	cat output.tmp log error | $(NORMALIZE_TRACE) > output
 	$(VERIFY)
 
@@ -16,4 +16,4 @@ else
 LDLIBS += -lcjson
 endif
 
-dummy_server: dummy_server.c
+canned_server: canned_server.c
