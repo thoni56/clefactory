@@ -34,9 +34,10 @@ int main(int argc, char **argv) {
 
     for (;;) {
         char response[1000];
-        if (fgets(response, 1000, responses) != NULL)
+        if (fgets(response, 1000, responses) != NULL) {
+            response[strlen(response)-1] = '\0';
             send_json_rpc_message(response);
-        else
+        } else
             return EXIT_SUCCESS;
     }
     return EXIT_FAILURE;

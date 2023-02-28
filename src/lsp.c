@@ -71,7 +71,7 @@ ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable
         }
         if (FD_ISSET(server_response_pipe, &tmp_inputs)) {
             ResultCode rc = handle_server_response(server_response_channel, client_response_channel);
-            if (rc == RC_ERROR_RECEIVING_FROM_SERVER || rc == RC_SERVER_CLOSED_PIPE) {
+            if (rc != RC_OK) {
                 FD_CLR(server_response_pipe, &inputs);
                 return rc;
             }

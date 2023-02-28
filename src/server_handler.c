@@ -32,7 +32,7 @@ static ResultCode parseRpcHeader(FILE *server_response_channel) {
         if (readLine(input, sizeof(input), server_response_channel) != NULL) {
             if (strcmp(input, "\r\n") == 0) { // End of header
                 if (content_length == 0) {
-                    log_error("Client sent incomplete header");
+                    log_error("Server sent incomplete header");
                     rc = RC_SERVER_SENT_INCOMPLETE_HEADER;
                 }
                 break;
@@ -44,14 +44,13 @@ static ResultCode parseRpcHeader(FILE *server_response_channel) {
             }
 
         } else {
-            log_error("Broken input channel from client");
+            log_error("Server disconnected");
             rc = RC_BROKEN_INPUT_CHANNEL_FROM_SERVER;
             break;
         }
     }
     return rc;
 }
-
 
 ResultCode handle_server_response(FILE *server_response_channel, FILE *client_response_channel) {
     char input[BUFFER_SIZE];
@@ -63,27 +62,34 @@ ResultCode handle_server_response(FILE *server_response_channel, FILE *client_re
     if (readLine(input, sizeof(input), server_response_channel) != NULL) {
 
         cJSON *root = jsonParse(input);
-        cJSON *method = jsonGetObjectItem(root, "method");
-        if (method != NULL) {
-            log_trace("Server responded with '%s'", method->valuestring);
+        cJSON *result = jsonGetObjectItem(root, "result");
+        if (result != NULL) {
+            log_trace("Server responded with result");
             int result = jsonSend(root, client_response_channel);
             if (result == EOF)
                 rc = RC_ERROR_SENDING_TO_CLIENT;
             jsonDelete(root);
-
         } else {
-            log_warn("Client responded with an invalid JSON-RPC message");
+            cJSON *error = jsonGetObjectItem(root, "error");
+            if (error != NULL) {
+                log_trace("Server responded with error");
+                int result = jsonSend(root, client_response_channel);
+                if (result == EOF)
+                    rc = RC_ERROR_SENDING_TO_CLIENT;
+                jsonDelete(root);
+            }
+            log_warn("Server responded with an invalid JSON-RPC message");
         }
 
         // Delimiter
         readLine(input, sizeof(input), server_response_channel);
         if (strcmp(input, "\r\n") != 0) {
-            log_error("Missing message separator");
+            log_error("Missing message separator from server");
             rc = RC_MISSING_MESSAGE_SEPARATOR;
         }
 
     } else {
-        log_error("Broken input channel from server");
+        log_error("Server disconnected");
         rc = RC_BROKEN_INPUT_CHANNEL_FROM_SERVER;
     }
     return rc;

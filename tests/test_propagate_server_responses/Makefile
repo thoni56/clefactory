@@ -4,8 +4,8 @@ OS := $(shell uname)
 
 
 $(TEST): dummy_server
-	../../utils/rpc-driver.py input | ../../src/clef --lsp=./dummy_server --log=log 2> error
-	cat log error | $(NORMALIZE_TRACE) > output
+	../../src/clef --lsp=./dummy_server --log=log 2> error > output.tmp
+	cat output.tmp log error | $(NORMALIZE_TRACE) > output
 	$(VERIFY)
 
 CFLAGS = -g -O0
