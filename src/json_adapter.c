@@ -18,7 +18,8 @@ char *jsonPrint(cJSON *object) { return cJSON_PrintUnformatted(object); }
 
 void jsonDelete(cJSON *object) { cJSON_Delete(object); }
 
-ResultCode jsonSend(cJSON *json, FILE *pipe) {
+// Will return EOF on error, else non-negative value
+int jsonSend(cJSON *json, FILE *file) {
     char *payload = jsonPrint(json);
 
     // Create the message header
@@ -36,8 +37,8 @@ ResultCode jsonSend(cJSON *json, FILE *pipe) {
     strcat(buffer, delimiter);
 
     // Send the message
-    int result = writePipe(pipe, buffer, message_length);
-    fsync(pipe);
+    int result = fputs(buffer, file);
+    fflush(file);
     free(buffer);
     return result;
 }

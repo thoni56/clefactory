@@ -1,5 +1,5 @@
-#include "error.h"
 #include "json_adapter.h"
+
 #include <cgreen/mocks.h>
 #include <cjson/cJSON.h>
 
@@ -19,6 +19,6 @@ void jsonDelete(cJSON *object) {
     mock(object);
 }
 
-ResultCode jsonSend(cJSON *object, FILE *file) {
-    return (ResultCode)mock(object, file);
+int jsonSend(cJSON *object, FILE *file) {
+    return mock(object, file);
 }

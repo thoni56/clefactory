@@ -27,7 +27,7 @@ Ensure(ClientHandler, will_return_broken_input_for_broken_header) {
     expect(readLine, will_return(NULL));
 
     FILE *server_channel = (FILE *)0xcdcdcd;
-    assert_that(handle_client_request(server_channel, stdin), is_equal_to(RC_BROKEN_INPUT_FROM_CLIENT));
+    assert_that(handle_client_request(server_channel, stdin), is_equal_to(RC_BROKEN_INPUT_CHANNEL_FROM_CLIENT));
 }
 
 static const char *delimiter = "\r\n";
@@ -51,7 +51,7 @@ Ensure(ClientHandler, will_return_broken_input_for_broken_payload) {
     expect(readLine, will_return(NULL));
 
     FILE *server_channel = (FILE *)0xcdcdcd;
-    assert_that(handle_client_request(server_channel, stdin), is_equal_to(RC_BROKEN_INPUT_FROM_CLIENT));
+    assert_that(handle_client_request(server_channel, stdin), is_equal_to(RC_BROKEN_INPUT_CHANNEL_FROM_CLIENT));
 }
 
 Ensure(ClientHandler, will_send_received_one_line_json_request_to_server) {
@@ -67,7 +67,7 @@ Ensure(ClientHandler, will_send_received_one_line_json_request_to_server) {
 
     cJSON *root = (cJSON*)0xababab;
     expect(jsonParse, will_return(root));
-    cJSON method = {.valuestring = "exit"};
+    cJSON method = {.valuestring = "initialize"};
     expect(jsonGetObjectItem, when(object, is_equal_to(root)),
            will_return(&method));
 

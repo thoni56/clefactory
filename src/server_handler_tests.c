@@ -6,6 +6,7 @@
 #include "log.h"
 
 #include "io.mock"
+#include "json_adapter.mock"
 
 
 Describe(ServerHandler);
@@ -22,46 +23,68 @@ static char *create_json_message_from(const char *payload) {
     return message;
 }
 
-Ensure(ServerHandler, will_report_failed_read) {
-    FILE *server_request_channel = (FILE *)0xececec;
-    FILE *client_request_channel = (FILE *)0xededed;
-    expect(readPipe, when(pipe, is_equal_to(server_request_channel)),
-           will_return(-1));
+Ensure(ServerHandler, will_report_failed_receiving_from_client) {
+    FILE *server_response_channel = (FILE *)0xececec;
+    FILE *client_response_channel = (FILE *)0xededed;
+    expect(readLine, when(file, is_equal_to(server_response_channel)),
+           will_return(NULL));
 
-    assert_that(handle_server_response(server_request_channel, client_request_channel), is_equal_to(RC_ERROR_RECEIVING_FROM_SERVER));
+    assert_that(handle_server_response(server_response_channel, client_response_channel), is_equal_to(RC_BROKEN_INPUT_CHANNEL_FROM_SERVER));
 }
 
 
-Ensure(ServerHandler, will_report_failed_writing_to_client) {
-    FILE *server_request_channel = (FILE *)0xececec;
-    FILE *client_request_channel = (FILE *)0xededed;
+Ensure(ServerHandler, will_report_failed_sending_to_client) {
+    FILE *server_response_channel = (FILE *)0xececec;
+    FILE *client_response_channel = (FILE *)0xededed;
     char *payload = "{\"jsonrpc\":\"2.0\",\"id\":3,\"method\":\"exit\"}";
-    char *input = create_json_message_from(payload);
+    char *message = create_json_message_from(payload);
 
-    expect(readLine, when(file, is_equal_to(server_request_channel)),
-           will_set_contents_of_parameter(buffer, input, strlen(input)),
-           will_return(65));
+    expect(readLine, when(file, is_equal_to_hex(server_response_channel)),
+           will_set_contents_of_parameter(buffer, message, strlen(message)),
+           will_return(!NULL));
+    expect(readLine, when(file, is_equal_to_hex(server_response_channel)),
+           will_set_contents_of_parameter(buffer, "\r\n", 3),
+           will_return(!NULL));
 
-    expect(writePipe, when(pipe, is_equal_to(client_request_channel)),
-           will_return(-1));
+    cJSON root;
+    cJSON method = {.valuestring = "exit"};
+    expect(jsonParse, will_return(&root));
+    expect(jsonGetObjectItem, when(object, is_equal_to(&root)),
+           will_return(&method));
 
-    assert_that(handle_server_response(server_request_channel, client_request_channel),
+    expect(jsonSend, when(file, is_equal_to(client_response_channel)),
+           will_return(EOF));
+
+    expect(jsonDelete, when(object, is_equal_to(&root)));
+
+    assert_that(handle_server_response(server_response_channel, client_response_channel),
                 is_equal_to(RC_ERROR_SENDING_TO_CLIENT));
 }
 
 Ensure(ServerHandler, will_send_response_from_server_to_client) {
-    FILE *server_request_channel = (FILE *)0xececec;
-    FILE *client_request_channel = (FILE *)0xededed;
+    FILE *server_response_channel = (FILE *)0xececec;
+    FILE *client_response_channel = (FILE *)0xededed;
     char *payload = "{\"jsonrpc\":\"2.0\",\"id\":3,\"method\":\"exit\"}";
-    char *input = create_json_message_from(payload);
+    char *message = create_json_message_from(payload);
 
-    expect(readPipe, when(pipe, is_equal_to(server_request_channel)),
-           will_set_contents_of_parameter(buffer, input, strlen(input)),
-           will_return(65));
+    expect(readLine, when(file, is_equal_to_hex(server_response_channel)),
+           will_set_contents_of_parameter(buffer, message, strlen(message)),
+           will_return(!NULL));
+    expect(readLine, when(file, is_equal_to_hex(server_response_channel)),
+           will_set_contents_of_parameter(buffer, "\r\n", 3),
+           will_return(!NULL));
 
-    expect(writePipe, when(pipe, is_equal_to(client_request_channel)), when(buffer, is_equal_to_string(input)),
+    cJSON root;
+    cJSON method = {.valuestring = "exit"};
+    expect(jsonParse, will_return(&root));
+    expect(jsonGetObjectItem, when(object, is_equal_to(&root)),
+           will_return(&method));
+
+    expect(jsonSend, when(file, is_equal_to(client_response_channel)),
            will_return(0));
 
-    // Needs to be an exit request, otherwise the server handler will not return
-    assert_that(handle_server_response(server_request_channel, client_request_channel), is_equal_to(RC_OK));
+    expect(jsonDelete, when(object, is_equal_to(&root)));
+
+    // Needs to be an exit response, otherwise the server handler will not return
+    assert_that(handle_server_response(server_response_channel, client_response_channel), is_equal_to(RC_OK));
 }

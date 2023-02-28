@@ -15,12 +15,13 @@ Some useful commands:
   <M-S-Right>   demote subtree
 
   
-* TODO [FEATURE] Pass LSP requests through to LSP server
-* TODO [FEATURE] Pass LSP responses through to LSP client
+* TODO [FEATURE] Pass LSP requests/responses through to/from LSP server/client
 * TODO [FEATURE] Rename an include file
 ** TODO Parse all translation units in the current directory
 ** TODO Rename the file
 ** TODO Exchange all references to the file (in #include directives)
+* TODO [FEATURE] Organize imports
+Sort the includes in the group (separated by empty lines) that the cursor is on in alphabetical order
 * TODO Get a list of files from compile_commands.json
 If it exists use it instead of all .c files in current directory
 * TODO Take one argument which is the directory to 'cd' to before operating
@@ -29,9 +30,9 @@ Any file in it will not be considered even if it they are included,
 handy for `/usr` where files "never" change so it is unnecessary to
 check their time stamps
 * TODO Store and restore the index on disc
-Using `clang_saveIndex()` and `clang_createIndexFromFile()` are
+`clang_saveIndex()` and `clang_createIndexFromFile()` are
 available. Need to think about if a build system can be responsible
 for keeping the index updated and `clefactory` should only do the
-actual operations. Then we only needs to check if the files are newer
+actual operations. Then we only need to check if the files are newer
 than the index file...
 * DONE If no compile_commands.json use all *.c files in current directory
