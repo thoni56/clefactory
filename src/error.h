@@ -3,6 +3,7 @@
 
 typedef enum {
     RC_OK = 0,
+    RC_EXIT = 1,
     RC_PIPE_CREATION_ERROR = -100,
     RC_FORK_FAILED = -101,
     RC_ERROR_SENDING_TO_SERVER = -102,

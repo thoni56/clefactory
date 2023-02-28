@@ -49,23 +49,31 @@ ResultCode handle_client_request(FILE *server_request_channel, FILE *client_requ
 
     char input[BUFFER_SIZE];
     if (readLine(input, sizeof(input), stdin) != NULL) {
+
+        cJSON *root = jsonParse(input);
+        cJSON *method = jsonGetObjectItem(root, "method");
+
+        if (method != NULL) {
+
+            log_trace("Client sent '%s' request", method->valuestring);
+            int result = jsonSend(root, server_request_channel);
+            if (result == EOF)
+                rc = RC_ERROR_SENDING_TO_SERVER;
+            if (strcmp(method->valuestring, "exit") == 0)
+                rc = RC_EXIT;
+            jsonDelete(root);
+
+        } else {
+            log_warn("Received an invalid JSON-RPC message");
+        }
+
+        // Delimiter
         readLine(input, sizeof(input), stdin);
         if (strcmp(input, "\r\n") != 0) {
             log_error("Missing message separator");
             rc = RC_MISSING_MESSAGE_SEPARATOR;
         }
 
-        cJSON *root = jsonParse(input);
-        cJSON *method = jsonGetObjectItem(root, "method");
-        if (method != NULL) {
-            log_trace("Client responded with '%s'", method->valuestring);
-            int result = jsonSend(root, server_request_channel);
-            if (result == EOF)
-                rc = RC_ERROR_SENDING_TO_SERVER;
-            jsonDelete(root);
-        } else {
-            log_warn("Received an invalid JSON-RPC message");
-        }
     } else {
         log_error("Broken input channel from client");
         rc = RC_BROKEN_INPUT_CHANNEL_FROM_CLIENT;
