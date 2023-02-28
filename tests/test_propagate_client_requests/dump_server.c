@@ -7,12 +7,13 @@
 #include <unistd.h>
 
 int main(int argc, char **argv) {
-    char input[1000];
+    FILE *dump_file = fopen("dump", "w");
+    char input[10000];
 
     for (;;) {
         if (fgets(input, sizeof(input), stdin) == NULL)
             break;
-        fprintf(stderr, "%s", input);
+        fprintf(dump_file, "%s", input);
     }
     return EXIT_FAILURE;
 }

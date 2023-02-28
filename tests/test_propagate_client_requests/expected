@@ -1,0 +1,18 @@
+YYYY-MM-DD HH:MM:SS TRACE client_handler.c:nnn: Client sent 'initialize' request
+YYYY-MM-DD HH:MM:SS TRACE client_handler.c:nnn: Client sent 'shutdown' request
+YYYY-MM-DD HH:MM:SS TRACE client_handler.c:nnn: Client sent 'exit' request
+Content-Length: 58
+Content-type: application/vscode-jsonrpc;charset=utf-8
+
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}
+
+Content-Length: 58
+Content-type: application/vscode-jsonrpc;charset=utf-8
+
+{"jsonrpc":"2.0","id":2,"method":"shutdown","params":null}
+
+Content-Length: 40
+Content-type: application/vscode-jsonrpc;charset=utf-8
+
+{"jsonrpc":"2.0","id":3,"method":"exit"}
+
