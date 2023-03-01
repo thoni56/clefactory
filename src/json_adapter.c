@@ -30,7 +30,7 @@ int jsonSend(cJSON *json, FILE *file) {
              "Content-Length: %d\r\nContent-type: application/vscode-jsonrpc;charset=utf-8\r\n\r\n", length);
 
     // Concatenate the header and message and delimiter
-    int message_length = strlen(header) + strlen(payload) + strlen(delimiter);
+    int message_length = strlen(header) + strlen(payload) + strlen(delimiter)+1;
     char *buffer = malloc(message_length);
     snprintf(buffer, message_length, "%s%s%s", header, payload, delimiter);
     fprintf(stderr, "buffer: %s", buffer);
