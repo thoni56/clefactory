@@ -13,7 +13,7 @@ with open(sys.argv[1], 'r') as input_file:
         line = line.strip()
 
         # Calculate the length of the JSON string in bytes
-        content_length = len(line)
+        content_length = len(line)+4
 
         # Send header
         sys.stdout.write('Content-Length: %d\r\n' % content_length)

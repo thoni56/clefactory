@@ -23,7 +23,7 @@ int jsonSend(cJSON *json, FILE *file) {
     char *payload = jsonPrint(json);
 
     // Create the message header
-    int length = strlen(payload);
+    int length = strlen(payload)+4;
     char header[1000];
     snprintf(header, sizeof(header),
              "Content-Length: %d\r\nContent-type: application/vscode-jsonrpc;charset=utf-8\r\n\r\n", length);

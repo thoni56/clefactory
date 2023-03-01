@@ -85,7 +85,7 @@ ResultCode handle_server_response(FILE *server_response_channel, FILE *client_re
         readLine(input, sizeof(input), server_response_channel);
         if (strcmp(input, "\r\n") != 0) {
             log_error("Missing message separator from server");
-            rc = RC_MISSING_MESSAGE_SEPARATOR;
+            rc = RC_MISSING_MESSAGE_DELIMITER_FROM_CLIENT;
         }
 
     } else {

@@ -32,8 +32,10 @@ Ensure(ClientHandler, will_return_broken_input_for_broken_header) {
 
 static const char *delimiter = "\r\n";
 
-static void expect_correct_header(void) {
-    static const char *content_length_header = "Content-Length: 43\r\n";
+static void expect_correct_header(int message_length) {
+    char content_length_header[1000];
+
+    sprintf(content_length_header, "Content-Length: %d\r\n", message_length);
 
     // Header
     expect(readLine,
@@ -45,7 +47,7 @@ static void expect_correct_header(void) {
 }
 
 Ensure(ClientHandler, will_return_broken_input_for_broken_payload) {
-    expect_correct_header();
+    expect_correct_header(14);
 
     // Payload
     expect(readLine, will_return(NULL));
@@ -55,15 +57,13 @@ Ensure(ClientHandler, will_return_broken_input_for_broken_payload) {
 }
 
 Ensure(ClientHandler, will_send_received_one_line_json_request_to_server) {
-    expect_correct_header();
+    const char *valid_json_including_delimiter = "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{}}\r\n\r\n";
+    expect_correct_header(strlen(valid_json_including_delimiter));
 
     // One-line valid json
-    const char *valid_json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{}}";
-    expect(readLine,
-           will_set_contents_of_parameter(buffer, valid_json, strlen(valid_json)+1),
-           will_return(valid_json));
-    expect(readLine, will_set_contents_of_parameter(buffer, delimiter, strlen(delimiter)+1),
-           will_return(delimiter));
+    expect(readLine, when(max_size, is_equal_to(strlen(valid_json_including_delimiter))),
+           will_set_contents_of_parameter(buffer, valid_json_including_delimiter, strlen(valid_json_including_delimiter)+1),
+           will_return(valid_json_including_delimiter));
 
     cJSON *root = (cJSON*)0xababab;
     expect(jsonParse, will_return(root));
