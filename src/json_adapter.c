@@ -23,18 +23,17 @@ int jsonSend(cJSON *json, FILE *file) {
     char *payload = jsonPrint(json);
 
     // Create the message header
-    int length = strlen(payload)+4;
+    char *delimiter = "\r\n\r\n";
+    int length = strlen(payload)+strlen(delimiter);
     char header[1000];
     snprintf(header, sizeof(header),
              "Content-Length: %d\r\nContent-type: application/vscode-jsonrpc;charset=utf-8\r\n\r\n", length);
 
     // Concatenate the header and message and delimiter
-    char *delimiter = "\r\n\r\n";
     int message_length = strlen(header) + strlen(payload) + strlen(delimiter);
     char *buffer = malloc(message_length);
-    strcpy(buffer, header);
-    strcat(buffer, payload);
-    strcat(buffer, delimiter);
+    snprintf(buffer, message_length, "%s%s%s", header, payload, delimiter);
+    fprintf(stderr, "buffer: %s", buffer);
 
     // Send the message
     int result = fputs(buffer, file);
