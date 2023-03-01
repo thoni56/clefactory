@@ -31,10 +31,9 @@ Ensure(ClientHandler, will_return_broken_input_for_broken_header) {
 }
 
 static const char *delimiter = "\r\n";
+static char content_length_header[1000];
 
 static void expect_correct_header(int message_length) {
-    char content_length_header[1000];
-
     sprintf(content_length_header, "Content-Length: %d\r\n", message_length);
 
     // Header
