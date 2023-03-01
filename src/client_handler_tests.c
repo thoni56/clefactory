@@ -74,5 +74,7 @@ Ensure(ClientHandler, will_send_received_one_line_json_request_to_server) {
     expect(jsonSend, when(file, is_equal_to(server_channel)), when(object, is_equal_to(root)));
     expect(jsonDelete, when(object, is_equal_to(root)));
 
+    expect(readLine, when(max_size, is_equal_to(3)));
+
     assert_that(handle_client_request(server_channel, stdin), is_equal_to(RC_OK));
 }

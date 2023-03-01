@@ -69,6 +69,10 @@ ResultCode handle_client_request(FILE *server_request_channel, FILE *client_requ
                 rc = RC_EXIT;
             jsonDelete(root);
 
+            readLine(input, 3, client_request_channel);
+            if (strcmp(input, "\r\n") != 0)
+                log_error("Missing delimiter in client input");
+
         } else {
             log_warn("Received an invalid JSON-RPC message");
         }

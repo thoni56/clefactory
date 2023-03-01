@@ -1,4 +1,4 @@
-Content-Length: 262
+Content-Length: 266
 Content-type: application/vscode-jsonrpc;charset=utf-8
 
 {"jsonrpc":"2.0","id":1,"result":{"capabilities":{"textDocumentSync":{"openClose":true,"change":2,"save":{"includeText":true}},"completionProvider":{"resolveProvider":true,"triggerCharacters":["."]}},"serverInfo":{"name":"My Language Server","version":"1.0.0"}}}
