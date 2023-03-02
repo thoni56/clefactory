@@ -13,7 +13,7 @@
 
 
 protected int main_(int argc, char *argv[]) {
-    log_set_level(LOG_ERROR);
+    log_set_level(LOG_FATAL);
     ResultCode rc = decode_options(argc, argv);
     if (rc != RC_OK)
         return EXIT_FAILURE;

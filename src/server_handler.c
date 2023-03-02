@@ -24,12 +24,13 @@ void launch_server(int input_pipe, int output_pipe, const char program[]) {
     exit(EXIT_FAILURE);
 }
 
-static ResultCode parseRpcHeader(FILE *server_response_channel) {
+static ResultCode parseRpcHeader(FILE *server_response_channel, int *length) {
     int content_length = 0;
     ResultCode rc = RC_OK;
     for (;;) {
         char input[BUFFER_SIZE];
         if (readLine(input, sizeof(input), server_response_channel) != NULL) {
+            log_trace("server: -> '%s'", input);
             if (strcmp(input, "\r\n") == 0) { // End of header
                 if (content_length == 0) {
                     log_error("Server sent incomplete header");
@@ -49,22 +50,25 @@ static ResultCode parseRpcHeader(FILE *server_response_channel) {
             break;
         }
     }
+    *length = content_length;
     return rc;
 }
 
 ResultCode handle_server_response(FILE *server_response_channel, FILE *client_response_channel) {
     char input[BUFFER_SIZE];
     ResultCode rc = RC_OK;
-    rc = parseRpcHeader(server_response_channel);
+    int length = 0;
+
+    rc = parseRpcHeader(server_response_channel, &length);
     if (rc != RC_OK)
         return rc;
 
-    if (readLine(input, sizeof(input), server_response_channel) != NULL) {
+    if (readLine(input, length, server_response_channel) != NULL) {
 
         cJSON *root = jsonParse(input);
         cJSON *result = jsonGetObjectItem(root, "result");
         if (result != NULL) {
-            log_trace("Server responded with result");
+            log_trace("server <- result");
             int result = jsonSend(root, client_response_channel);
             if (result == EOF)
                 rc = RC_ERROR_SENDING_TO_CLIENT;
@@ -72,20 +76,13 @@ ResultCode handle_server_response(FILE *server_response_channel, FILE *client_re
         } else {
             cJSON *error = jsonGetObjectItem(root, "error");
             if (error != NULL) {
-                log_trace("Server responded with error");
+                log_trace("server <- error");
                 int result = jsonSend(root, client_response_channel);
                 if (result == EOF)
                     rc = RC_ERROR_SENDING_TO_CLIENT;
                 jsonDelete(root);
             }
             log_warn("Server responded with an invalid JSON-RPC message");
-        }
-
-        // Delimiter
-        readLine(input, sizeof(input), server_response_channel);
-        if (strcmp(input, "\r\n") != 0) {
-            log_error("Missing message separator from server");
-            rc = RC_MISSING_MESSAGE_DELIMITER_FROM_CLIENT;
         }
 
     } else {

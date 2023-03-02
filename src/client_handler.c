@@ -61,8 +61,9 @@ ResultCode handle_client_request(FILE *server_request_channel, FILE *client_requ
 
         if (method != NULL) {
 
-            log_trace("Client sent '%s' request", method->valuestring);
+            log_trace("client -> '%s' request", method->valuestring);
             int result = jsonSend(root, server_request_channel);
+            log_trace("-> server '%s' request", method->valuestring);
             if (result == EOF)
                 rc = RC_ERROR_SENDING_TO_SERVER;
             if (strcmp(method->valuestring, "exit") == 0)
@@ -70,6 +71,7 @@ ResultCode handle_client_request(FILE *server_request_channel, FILE *client_requ
             jsonDelete(root);
 
             readLine(input, 3, client_request_channel);
+            log_trace("client -> '%s'", input);
             if (strcmp(input, "\r\n") != 0)
                 log_error("Missing delimiter in client input");
 
