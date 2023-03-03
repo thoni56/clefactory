@@ -1,8 +1,15 @@
-Content-Length: 266
+Content-Length: 1772
 Content-type: application/vscode-jsonrpc;charset=utf-8
 
-{"jsonrpc":"2.0","id":1,"result":{"capabilities":{"textDocumentSync":{"openClose":true,"change":2,"save":{"includeText":true}},"completionProvider":{"resolveProvider":true,"triggerCharacters":["."]}},"serverInfo":{"name":"My Language Server","version":"1.0.0"}}}
+{"id":1,"jsonrpc":"2.0","result":{"capabilities":{"astProvider":true,"callHierarchyProvider":true,"clangdInlayHintsProvider":true,"codeActionProvider":true,"compilationDatabase":{"automaticReload":true},"completionProvider":{"resolveProvider":false,"triggerCharacters":[".","<",">",":","\"","/","*"]},"declarationProvider":true,"definitionProvider":true,"documentFormattingProvider":true,"documentHighlightProvider":true,"documentLinkProvider":{"resolveProvider":false},"documentOnTypeFormattingProvider":{"firstTriggerCharacter":"\n","moreTriggerCharacter":[]},"documentRangeFormattingProvider":true,"documentSymbolProvider":true,"executeCommandProvider":{"commands":["clangd.applyFix","clangd.applyTweak"]},"hoverProvider":true,"implementationProvider":true,"inlayHintProvider":true,"memoryUsageProvider":true,"referencesProvider":true,"renameProvider":true,"selectionRangeProvider":true,"semanticTokensProvider":{"full":{"delta":true},"legend":{"tokenModifiers":["declaration","deprecated","deduced","readonly","static","abstract","virtual","dependentName","defaultLibrary","usedAsMutableReference","functionScope","classScope","fileScope","globalScope"],"tokenTypes":["variable","variable","parameter","function","method","function","property","variable","class","interface","enum","enumMember","type","type","unknown","namespace","typeParameter","concept","type","macro","comment"]},"range":false},"signatureHelpProvider":{"triggerCharacters":["(",")","{","}","<",">",","]},"standardTypeHierarchyProvider":true,"textDocumentSync":{"change":2,"openClose":true,"save":true},"typeDefinitionProvider":true,"typeHierarchyProvider":true,"workspaceSymbolProvider":true},"serverInfo":{"name":"clangd","version":"Ubuntu clangd version 15.0.7 linux+grpc x86_64-pc-linux-gnu"}}}
 
-YYYY-MM-DD HH:MM:SS TRACE server_handler.c:nnn: Server responded with result
-YYYY-MM-DD HH:MM:SS ERROR server_handler.c:nnn: Server disconnected
-HH:MM:SS ERROR server_handler.c:nnn: Server disconnected
+Content-Length: 38
+Content-type: application/vscode-jsonrpc;charset=utf-8
+
+{"id":2,"jsonrpc":"2.0","result":null}
+
+Content-Length: 77
+Content-type: application/vscode-jsonrpc;charset=utf-8
+
+{"error":{"code":-32601,"message":"method not found"},"id":3,"jsonrpc":"2.0"}
+

@@ -10,17 +10,15 @@
 static void send_json_rpc_message(char *payload) {
     // Create the message header
     int length = strlen(payload);
-    char header[1000];
+    char header[10000];
     snprintf(header, sizeof(header),
              "Content-Length: %d\r\nContent-type: application/vscode-jsonrpc;charset=utf-8\r\n\r\n", length);
 
-    // Concatenate the header and message and delimiter
-    char *delimiter = "\r\n\r\n";
-    int message_length = strlen(header) + strlen(payload) + strlen(delimiter);
+    // Concatenate the header and message (and delimiter - not sent by clangd)
+    int message_length = strlen(header) + strlen(payload) + 1;
     char *buffer = malloc(message_length);
     strcpy(buffer, header);
     strcat(buffer, payload);
-    strcat(buffer, delimiter);
 
     // Send the message
     fputs(buffer, stdout);
@@ -33,8 +31,8 @@ int main(int argc, char **argv) {
     FILE *responses = fopen("responses.json", "r");
 
     for (;;) {
-        char response[1000];
-        if (fgets(response, 1000, responses) != NULL) {
+        char response[10000];
+        if (fgets(response, sizeof(response), responses) != NULL) {
             response[strlen(response)-1] = '\0';
             send_json_rpc_message(response);
         } else

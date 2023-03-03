@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+# Usage:
+#     rpc-driver.py <file> [ <delay> }
+#
+# Read lines from the file argv[1] and prepend them with a JSON-RPC header
+# If there is a second argument that is the delay before starting, in seconds
+
 import json
 import sys
 import time
@@ -7,7 +13,8 @@ import time
 # Open the input file
 with open(sys.argv[1], 'r') as input_file:
     # Iterate over each line in the input file
-    time.sleep(1)
+    if len(sys.argv) > 2:
+        time.sleep(int(sys.argv[2]))
     for line in input_file:
         # Strip whitespace from the line
         line = line.strip()

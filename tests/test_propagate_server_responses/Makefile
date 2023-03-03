@@ -5,7 +5,7 @@ OS := $(shell uname)
 
 $(TEST): canned_server
 	../../src/clef --lsp=./canned_server --log=log 2> error > output.tmp
-	cat output.tmp log error | $(NORMALIZE_TRACE) > output
+	cat output.tmp error | $(NORMALIZE_TRACE) > output
 	$(VERIFY)
 
 CFLAGS = -g -O0

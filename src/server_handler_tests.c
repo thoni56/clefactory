@@ -2,6 +2,7 @@
 #include <cgreen/constraint_syntax_helpers.h>
 #include <cgreen/mocks.h>
 
+#include "error.h"
 #include "log.h"
 #include "server_handler.h"
 
@@ -52,9 +53,9 @@ Ensure(ServerHandler, will_report_failed_sending_to_client) {
 
     expect_header(server_response_channel, payload);
 
-    expect(readLine, when(file, is_equal_to_hex(server_response_channel)),
+    expect(readFile, when(file, is_equal_to_hex(server_response_channel)),
            will_set_contents_of_parameter(buffer, payload, strlen(payload) + 1),
-           will_return(!NULL));
+           will_return(strlen(payload)));
 
     cJSON root;
     cJSON method = {.valuestring = "exit"};
@@ -76,8 +77,8 @@ Ensure(ServerHandler, will_send_response_from_server_to_client) {
 
     expect_header(server_response_channel, payload);
 
-    expect(readLine, when(file, is_equal_to_hex(server_response_channel)),
-           will_set_contents_of_parameter(buffer, payload, strlen(payload)), will_return(!NULL));
+    expect(readFile, when(file, is_equal_to_hex(server_response_channel)),
+           will_set_contents_of_parameter(buffer, payload, strlen(payload)), will_return(strlen(payload)));
 
     cJSON root;
     cJSON method = {.valuestring = "exit"};
