@@ -31,6 +31,7 @@ int main(int argc, char **argv) {
     FILE *responses = fopen("responses.json", "r");
 
     for (;;) {
+        usleep(1);
         char response[10000];
         if (fgets(response, sizeof(response), responses) != NULL) {
             response[strlen(response)-1] = '\0';

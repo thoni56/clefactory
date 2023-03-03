@@ -72,13 +72,16 @@ ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable
         if (FD_ISSET(server_response_pipe, &tmp_inputs)) {
             ResultCode rc = handle_server_response(server_response_channel, client_response_channel);
             if (rc != RC_OK) {
+                log_trace("handle_server_response returned error: %d", rc);
                 FD_CLR(server_response_pipe, &inputs);
                 return rc;
             }
         } else if (FD_ISSET(client_request_pipe, &tmp_inputs)) {
             ResultCode rc = handle_client_request(server_request_channel, client_request_channel);
-            if (rc != RC_OK)
+            if (rc != RC_OK) {
+                log_trace("handle_client_request returned error: %d", rc);
                 return rc;
+            }
         }
     }
 }
