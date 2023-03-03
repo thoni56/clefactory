@@ -51,12 +51,12 @@ void removeFile(char *fileName) {
     mock(fileName);
 }
 
-size_t readFile(FILE *file, void *buffer, size_t size, size_t count) {
-    return (size_t)mock(buffer, size, count, file);
+size_t readFile(FILE *file, void *buffer, size_t count) {
+    return (size_t)mock(buffer, count, 1, file);
 }
 
-size_t writeFile(FILE *file, void *buffer, size_t size, size_t count) {
-    return (size_t)mock(buffer, size, count, file);
+size_t writeFile(FILE *file, void *buffer, size_t count) {
+    return (size_t)mock(buffer, count, 1, file);
 }
 
 int readChar(FILE *file) {

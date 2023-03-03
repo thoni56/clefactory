@@ -18,8 +18,11 @@ extern void removeFile(char *dirname);
 extern bool isDirectory(char *fullPath);
 extern bool directoryExists(char *fullPath);
 extern bool fileExists(char *fullPath);
-extern size_t readFile(FILE *file, void *buffer, size_t size, size_t count);
-extern size_t writeFile(FILE *file, void *buffer, size_t size, size_t count);
+
+// readFile() and writeFile() assumes size 1 and only requires the count parameter
+extern size_t readFile(FILE *file, void *buffer, size_t count);
+extern size_t writeFile(FILE *file, void *buffer, size_t count);
+
 extern int readChar(FILE *file);
 extern int writePipe(int pipe, const char *buffer, size_t length);
 extern int readPipe(int pipe, char *buffer, size_t size);

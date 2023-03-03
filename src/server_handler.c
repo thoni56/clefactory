@@ -63,6 +63,8 @@ ResultCode handle_server_response(FILE *server_response_channel, FILE *client_re
     if (rc != RC_OK)
         return rc;
 
+    // We are relying on the Content-Length to contain everything up
+    // to next package, including delimiter, as per ADR-0003
     if (readLine(input, length, server_response_channel) != NULL) {
 
         cJSON *root = jsonParse(input);

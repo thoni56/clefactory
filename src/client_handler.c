@@ -54,7 +54,7 @@ ResultCode handle_client_request(FILE *server_request_channel, FILE *client_requ
     char input[BUFFER_SIZE];
 
     // We read all input as per the length in the header, which should include the delimiter and the null
-    if (readLine(input, length, client_request_channel) != NULL) {
+    if (readFile(client_request_channel, input, length) == length) {
 
         cJSON *root = jsonParse(input);
         cJSON *method = jsonGetObjectItem(root, "method");
@@ -70,13 +70,8 @@ ResultCode handle_client_request(FILE *server_request_channel, FILE *client_requ
                 rc = RC_EXIT;
             jsonDelete(root);
 
-            readLine(input, 3, client_request_channel);
-            log_trace("client -> '%s'", input);
-            if (strcmp(input, "\r\n") != 0)
-                log_error("Missing delimiter in client input");
-
         } else {
-            log_warn("Received an invalid JSON-RPC message");
+            log_warn("Received invalid LSP request");
         }
 
     } else {

@@ -55,9 +55,6 @@ Ensure(ServerHandler, will_report_failed_sending_to_client) {
     expect(readLine, when(file, is_equal_to_hex(server_response_channel)),
            will_set_contents_of_parameter(buffer, payload, strlen(payload) + 1),
            will_return(!NULL));
-    expect(readLine, when(file, is_equal_to_hex(server_response_channel)),
-           will_set_contents_of_parameter(buffer, delimiter, strlen(delimiter) + 1),
-           will_return(!NULL));
 
     cJSON root;
     cJSON method = {.valuestring = "exit"};
@@ -81,8 +78,6 @@ Ensure(ServerHandler, will_send_response_from_server_to_client) {
 
     expect(readLine, when(file, is_equal_to_hex(server_response_channel)),
            will_set_contents_of_parameter(buffer, payload, strlen(payload)), will_return(!NULL));
-    expect(readLine, when(file, is_equal_to_hex(server_response_channel)),
-           will_set_contents_of_parameter(buffer, "\r\n", 3), will_return(!NULL));
 
     cJSON root;
     cJSON method = {.valuestring = "exit"};
