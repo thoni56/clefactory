@@ -3,7 +3,14 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
-(use-package lsp-mode)
+(use-package lsp-mode
+  :ensure t
+  :defer t
+  :hook (lsp-mode . (lambda ()
+		      (let ((lsp-keymap-prefix "C-c l"))
+			(lsp-enable-which-key-integration))))
+  :config
+  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
 
 (load-file "clef.el")
 (custom-set-variables
