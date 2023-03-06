@@ -30,7 +30,7 @@ static ResultCode parseRpcHeader(FILE *server_response_channel, int *length) {
     for (;;) {
         char input[BUFFER_SIZE];
         if (readLine(input, sizeof(input), server_response_channel) != NULL) {
-            log_trace("server: -> '%s'", input);
+            log_debug("server: -> '%s'", input);
             if (strcmp(input, "\r\n") == 0) { // End of header
                 if (content_length == 0) {
                     log_error("Server sent incomplete header");
