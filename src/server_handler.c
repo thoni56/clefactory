@@ -69,25 +69,38 @@ ResultCode handle_server_response(FILE *server_response_channel, FILE *client_re
 
         cJSON *root = jsonParse(input);
         cJSON *id = jsonGetObjectItem(root, "id");
-        cJSON *result = jsonGetObjectItem(root, "result");
-        if (result != NULL) {
-            log_trace("client <- server : result (%d)", id->valueint);
-            int result = jsonSend(root, client_response_channel);
-            if (result == EOF)
-                rc = RC_ERROR_SENDING_TO_CLIENT;
-            jsonDelete(root);
-        } else {
-            cJSON *error = jsonGetObjectItem(root, "error");
-            if (error != NULL) {
-                log_trace("<- server : error (%d)", id->valueint);
+        if (id != NULL) {
+            // A response
+            cJSON *result = jsonGetObjectItem(root, "result");
+            if (result != NULL) {
+                log_trace("client <- server : result (%d)", id->valueint);
                 int result = jsonSend(root, client_response_channel);
-                log_trace("client <- : error (%d)", id->valueint);
                 if (result == EOF)
                     rc = RC_ERROR_SENDING_TO_CLIENT;
-                jsonDelete(root);
-            } else
-                log_warn("Server responded with an invalid JSON-RPC message");
+            } else {
+                cJSON *error = jsonGetObjectItem(root, "error");
+                if (error != NULL) {
+                    log_trace("client <- server : error (%d)", id->valueint);
+                    int result = jsonSend(root, client_response_channel);
+                    if (result == EOF)
+                        rc = RC_ERROR_SENDING_TO_CLIENT;
+                } else {
+                    log_warn("Server responded with an invalid JSON-RPC message: '%s'", input);
+                }
+            }
+        } else {
+            // A notification
+            cJSON *method = jsonGetObjectItem(root, "method");
+            if (method != NULL) {
+                log_trace("client <- server : notification '%s'", method->valuestring);
+                int result = jsonSend(root, client_response_channel);
+                if (result == EOF)
+                    rc = RC_ERROR_SENDING_TO_CLIENT;
+            } else {
+                log_warn("Server responded with an invalid JSON-RPC message: '%s'", input);
+            }
         }
+        jsonDelete(root);
 
     } else {
         log_error("Server disconnected");

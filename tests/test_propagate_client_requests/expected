@@ -1,9 +1,6 @@
-YYYY-MM-DD HH:MM:SS TRACE client_handler.c:nnn: client -> : 'initialize' request (1)
-YYYY-MM-DD HH:MM:SS TRACE client_handler.c:nnn: -> server : 'initialize' request (1)
-YYYY-MM-DD HH:MM:SS TRACE client_handler.c:nnn: client -> : 'shutdown' request (2)
-YYYY-MM-DD HH:MM:SS TRACE client_handler.c:nnn: -> server : 'shutdown' request (2)
-YYYY-MM-DD HH:MM:SS TRACE client_handler.c:nnn: client -> : 'exit' request (3)
-YYYY-MM-DD HH:MM:SS TRACE client_handler.c:nnn: -> server : 'exit' request (3)
+YYYY-MM-DD HH:MM:SS TRACE client_handler.c:nnn: client -> server : 'initialize' request (1)
+YYYY-MM-DD HH:MM:SS TRACE client_handler.c:nnn: client -> server : 'shutdown' request (2)
+YYYY-MM-DD HH:MM:SS TRACE client_handler.c:nnn: client -> server : 'exit' request (3)
 Content-Length: 62
 Content-type: application/vscode-jsonrpc;charset=utf-8
 
