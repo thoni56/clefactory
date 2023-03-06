@@ -1,7 +1,7 @@
 ;; Clef LSP definitions
 (require 'lsp)
 
-(setq lsp-client-packages (cons 'lsp-clef lsp-client-packages))
+(add-to-list 'lsp-client-packages 'lsp-clef)
 
 (lsp-register-client
  (make-lsp-client

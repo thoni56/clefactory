@@ -3,6 +3,7 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
+(require 'lsp-mode)
 (use-package lsp-mode
   :ensure t
   :defer t
