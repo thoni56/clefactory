@@ -1,14 +1,13 @@
 #include "client_handler.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/stat.h>
 #include "io.h"
 #include "json_adapter.h"
 #include "log.h"
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #define BUFFER_SIZE 10000
 
@@ -41,7 +40,6 @@ static ResultCode parseRpcHeader(FILE *client_request_channel, int *content_leng
     return rc;
 }
 
-
 ResultCode handle_client_request(FILE *server_request_channel, FILE *client_request_channel) {
     int length;
     ResultCode rc;
@@ -53,7 +51,8 @@ ResultCode handle_client_request(FILE *server_request_channel, FILE *client_requ
     // TODO dynamically reallocate if size larger than current size...
     char input[BUFFER_SIZE];
 
-    // We read all input as per the length in the header, which should include the delimiter and the null
+    // We read all input as per the length in the header, which should include the delimiter and the
+    // null
     if (readFile(client_request_channel, input, length) == length) {
 
         cJSON *root = jsonParse(input);
@@ -62,13 +61,23 @@ ResultCode handle_client_request(FILE *server_request_channel, FILE *client_requ
 
         if (method != NULL) {
 
-            log_trace("client -> '%s' request (%d)", method->valuestring, id->valueint);
-            int result = jsonSend(root, server_request_channel);
-            log_trace("-> server '%s' request (%d)", method->valuestring, id->valueint);
-            if (result == EOF)
-                rc = RC_ERROR_SENDING_TO_SERVER;
-            if (strcmp(method->valuestring, "exit") == 0)
-                rc = RC_EXIT;
+            if (id != NULL) {
+                // A request
+                log_trace("client -> : '%s' request (%d)", method->valuestring, id->valueint);
+                int result = jsonSend(root, server_request_channel);
+                log_trace("-> server : '%s' request (%d)", method->valuestring, id->valueint);
+                if (result == EOF)
+                    rc = RC_ERROR_SENDING_TO_SERVER;
+                if (strcmp(method->valuestring, "exit") == 0)
+                    rc = RC_EXIT;
+            } else {
+                // A notification
+                log_trace("client -> : '%s' notification", method->valuestring);
+                int result = jsonSend(root, server_request_channel);
+                log_trace("-> server : '%s' notification", method->valuestring);
+                if (result == EOF)
+                    rc = RC_ERROR_SENDING_TO_SERVER;
+            }
             jsonDelete(root);
 
         } else {
