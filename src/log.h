@@ -13,7 +13,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-#define LOG_VERSION "0.2.0"
+#define LOG_VERSION "0.3.0"
 
 typedef struct {
   va_list ap;

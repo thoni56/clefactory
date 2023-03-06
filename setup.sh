@@ -1,2 +1,3 @@
 #! /bin/bash -i
-export PATH=$PATH:$PWD/src:$PWD/utils
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+export PATH=$PATH:$SCRIPT_DIR/src:$SCRIPT_DIR/utils
