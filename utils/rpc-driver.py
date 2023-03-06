@@ -20,12 +20,12 @@ with open(sys.argv[1], 'r') as input_file:
         if len(sys.argv) > 3:
             time.sleep(int(sys.argv[3]))
         else :
-            time.sleep(0.01)
+            time.sleep(0.1)
         # Strip whitespace from the line
-        line = line.strip()
+        line = line.strip()+"\r\n\r\n"
 
         # Calculate the length of the JSON string in bytes
-        content_length = len(line)+4
+        content_length = len(line)
 
         # Send header
         sys.stdout.write('Content-Length: %d\r\n' % content_length)
@@ -33,6 +33,5 @@ with open(sys.argv[1], 'r') as input_file:
         sys.stdout.write('\r\n')
 
         # Send payload with delimiter
-        sys.stdout.write('%s\r\n' % line)
-        sys.stdout.write('\r\n')
+        sys.stdout.write(line)
         sys.stdout.flush()
