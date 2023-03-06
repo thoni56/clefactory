@@ -63,18 +63,16 @@ ResultCode handle_client_request(FILE *server_request_channel, FILE *client_requ
 
             if (id != NULL) {
                 // A request
-                log_trace("client -> : '%s' request (%d)", method->valuestring, id->valueint);
+                log_trace("client -> server : '%s' request (%d)", method->valuestring, id->valueint);
                 int result = jsonSend(root, server_request_channel);
-                log_trace("-> server : '%s' request (%d)", method->valuestring, id->valueint);
                 if (result == EOF)
                     rc = RC_ERROR_SENDING_TO_SERVER;
                 if (strcmp(method->valuestring, "exit") == 0)
                     rc = RC_EXIT;
             } else {
                 // A notification
-                log_trace("client -> : '%s' notification", method->valuestring);
+                log_trace("client -> server : '%s' notification", method->valuestring);
                 int result = jsonSend(root, server_request_channel);
-                log_trace("-> server : '%s' notification", method->valuestring);
                 if (result == EOF)
                     rc = RC_ERROR_SENDING_TO_SERVER;
             }
