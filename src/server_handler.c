@@ -68,9 +68,10 @@ ResultCode handle_server_response(FILE *server_response_channel, FILE *client_re
     if (readFile(server_response_channel, input, length) == length) {
 
         cJSON *root = jsonParse(input);
+        cJSON *id = jsonGetObjectItem(root, "id");
         cJSON *result = jsonGetObjectItem(root, "result");
         if (result != NULL) {
-            log_trace("server <- result");
+            log_trace("server <- result (%d)", id->valueint);
             int result = jsonSend(root, client_response_channel);
             if (result == EOF)
                 rc = RC_ERROR_SENDING_TO_CLIENT;
@@ -78,7 +79,7 @@ ResultCode handle_server_response(FILE *server_response_channel, FILE *client_re
         } else {
             cJSON *error = jsonGetObjectItem(root, "error");
             if (error != NULL) {
-                log_trace("server <- error");
+                log_trace("server <- error (%d)", id->valueint);
                 int result = jsonSend(root, client_response_channel);
                 if (result == EOF)
                     rc = RC_ERROR_SENDING_TO_CLIENT;

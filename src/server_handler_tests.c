@@ -58,9 +58,15 @@ Ensure(ServerHandler, will_report_failed_sending_to_client) {
            will_return(strlen(payload)));
 
     cJSON root;
-    cJSON method = {.valuestring = "exit"};
     expect(jsonParse, will_return(&root));
-    expect(jsonGetObjectItem, when(object, is_equal_to(&root)), will_return(&method));
+
+    cJSON id = {.valueint = 1};
+    expect(jsonGetObjectItem, when(object, is_equal_to(&root)),  when(elementName, is_equal_to_string("id")),
+           will_return(&id));
+
+    cJSON result = {.valuestring = "exit"};
+    expect(jsonGetObjectItem, when(object, is_equal_to(&root)),  when(elementName, is_equal_to_string("result")),
+           will_return(&result));
 
     expect(jsonSend, when(file, is_equal_to(client_response_channel)), will_return(EOF));
 
@@ -81,9 +87,15 @@ Ensure(ServerHandler, will_send_response_from_server_to_client) {
            will_set_contents_of_parameter(buffer, payload, strlen(payload)), will_return(strlen(payload)));
 
     cJSON root;
-    cJSON method = {.valuestring = "exit"};
     expect(jsonParse, will_return(&root));
-    expect(jsonGetObjectItem, when(object, is_equal_to(&root)), will_return(&method));
+
+    cJSON id = {.valueint = 1};
+    expect(jsonGetObjectItem, when(object, is_equal_to(&root)),  when(elementName, is_equal_to_string("id")),
+           will_return(&id));
+
+    cJSON result = {.valuestring = "exit"};
+    expect(jsonGetObjectItem, when(object, is_equal_to(&root)),  when(elementName, is_equal_to_string("result")),
+           will_return(&result));
 
     expect(jsonSend, when(file, is_equal_to(client_response_channel)), will_return(0));
 

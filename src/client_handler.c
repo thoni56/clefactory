@@ -57,13 +57,14 @@ ResultCode handle_client_request(FILE *server_request_channel, FILE *client_requ
     if (readFile(client_request_channel, input, length) == length) {
 
         cJSON *root = jsonParse(input);
+        cJSON *id = jsonGetObjectItem(root, "id");
         cJSON *method = jsonGetObjectItem(root, "method");
 
         if (method != NULL) {
 
-            log_trace("client -> '%s' request", method->valuestring);
+            log_trace("client -> '%s' request (%d)", method->valuestring, id->valueint);
             int result = jsonSend(root, server_request_channel);
-            log_trace("-> server '%s' request", method->valuestring);
+            log_trace("-> server '%s' request (%d)", method->valuestring, id->valueint);
             if (result == EOF)
                 rc = RC_ERROR_SENDING_TO_SERVER;
             if (strcmp(method->valuestring, "exit") == 0)
