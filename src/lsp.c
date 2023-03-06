@@ -79,7 +79,8 @@ ResultCode lsp_repl(int server_request_pipe, int server_response_pipe, FileTable
         } else if (FD_ISSET(client_request_pipe, &tmp_inputs)) {
             ResultCode rc = handle_client_request(server_request_channel, client_request_channel);
             if (rc != RC_OK) {
-                log_trace("handle_client_request returned error: %d", rc);
+                if (rc != RC_EXIT)
+                    log_trace("handle_client_request returned error: %d", rc);
                 return rc;
             }
         }
