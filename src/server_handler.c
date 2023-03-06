@@ -71,21 +71,23 @@ ResultCode handle_server_response(FILE *server_response_channel, FILE *client_re
         cJSON *id = jsonGetObjectItem(root, "id");
         cJSON *result = jsonGetObjectItem(root, "result");
         if (result != NULL) {
-            log_trace("server <- result (%d)", id->valueint);
+            log_trace("<- server : result (%d)", id->valueint);
             int result = jsonSend(root, client_response_channel);
+            log_trace("client <- : result (%d)", id->valueint);
             if (result == EOF)
                 rc = RC_ERROR_SENDING_TO_CLIENT;
             jsonDelete(root);
         } else {
             cJSON *error = jsonGetObjectItem(root, "error");
             if (error != NULL) {
-                log_trace("server <- error (%d)", id->valueint);
+                log_trace("<- server : error (%d)", id->valueint);
                 int result = jsonSend(root, client_response_channel);
+                log_trace("client <- : error (%d)", id->valueint);
                 if (result == EOF)
                     rc = RC_ERROR_SENDING_TO_CLIENT;
                 jsonDelete(root);
-            }
-            log_warn("Server responded with an invalid JSON-RPC message");
+            } else
+                log_warn("Server responded with an invalid JSON-RPC message");
         }
 
     } else {
