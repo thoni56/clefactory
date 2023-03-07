@@ -54,6 +54,49 @@ static ResultCode parseRpcHeader(FILE *server_response_channel, int *length) {
     return rc;
 }
 
+static ResultCode handle_response(FILE *client_response_channel, char input[], cJSON *root) {
+    ResultCode rc = RC_OK;
+
+    cJSON *id = jsonGetObjectItem(root, "id");
+    cJSON *result = jsonGetObjectItem(root, "result");
+    if (result != NULL) {
+        log_trace("server -> client : result (%d)", id->valueint);
+        int result = jsonSend(root, client_response_channel);
+        if (result == EOF)
+            rc = RC_ERROR_SENDING_TO_CLIENT;
+    } else {
+        cJSON *error = jsonGetObjectItem(root, "error");
+        if (error != NULL) {
+            log_trace("server -> client : error (%d)", id->valueint);
+            int result = jsonSend(root, client_response_channel);
+            if (result == EOF)
+                rc = RC_ERROR_SENDING_TO_CLIENT;
+        } else {
+            log_warn("Server responded with an invalid JSON-RPC message: '%s'", input);
+        }
+    }
+
+    return rc;
+}
+
+static ResultCode handle_notification(FILE *client_response_channel, char input[], cJSON *root) {
+    ResultCode rc = RC_OK;
+
+    cJSON *method = jsonGetObjectItem(root, "method");
+    if (method != NULL) {
+        log_trace("server -> client : notification '%s'", method->valuestring);
+        int result = jsonSend(root, client_response_channel);
+        if (result == EOF)
+            rc = RC_ERROR_SENDING_TO_CLIENT;
+    } else {
+        log_warn("Server responded with an invalid JSON-RPC message: '%s'", input);
+    }
+
+    return rc;
+}
+
+static bool hasId(cJSON *object) { return jsonGetObjectItem(object, "id") != NULL; }
+
 ResultCode handle_server_response(FILE *server_response_channel, FILE *client_response_channel) {
     char input[BUFFER_SIZE];
     ResultCode rc = RC_OK;
@@ -68,37 +111,11 @@ ResultCode handle_server_response(FILE *server_response_channel, FILE *client_re
     if (readFile(server_response_channel, input, length) == length) {
 
         cJSON *root = jsonParse(input);
-        cJSON *id = jsonGetObjectItem(root, "id");
-        if (id != NULL) {
-            // A response
-            cJSON *result = jsonGetObjectItem(root, "result");
-            if (result != NULL) {
-                log_trace("client <- server : result (%d)", id->valueint);
-                int result = jsonSend(root, client_response_channel);
-                if (result == EOF)
-                    rc = RC_ERROR_SENDING_TO_CLIENT;
-            } else {
-                cJSON *error = jsonGetObjectItem(root, "error");
-                if (error != NULL) {
-                    log_trace("client <- server : error (%d)", id->valueint);
-                    int result = jsonSend(root, client_response_channel);
-                    if (result == EOF)
-                        rc = RC_ERROR_SENDING_TO_CLIENT;
-                } else {
-                    log_warn("Server responded with an invalid JSON-RPC message: '%s'", input);
-                }
-            }
+
+        if (hasId(root)) {
+            rc = handle_response(client_response_channel, input, root);
         } else {
-            // A notification
-            cJSON *method = jsonGetObjectItem(root, "method");
-            if (method != NULL) {
-                log_trace("client <- server : notification '%s'", method->valuestring);
-                int result = jsonSend(root, client_response_channel);
-                if (result == EOF)
-                    rc = RC_ERROR_SENDING_TO_CLIENT;
-            } else {
-                log_warn("Server responded with an invalid JSON-RPC message: '%s'", input);
-            }
+            rc = handle_notification(client_response_channel, input, root);
         }
         jsonDelete(root);
 

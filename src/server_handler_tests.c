@@ -60,7 +60,11 @@ Ensure(ServerHandler, will_report_failed_sending_to_client) {
     cJSON root;
     expect(jsonParse, will_return(&root));
 
+    /* Does it have an id? */
     cJSON id = {.valueint = 1};
+    expect(jsonGetObjectItem, when(object, is_equal_to(&root)),  when(elementName, is_equal_to_string("id")),
+           will_return(&id));
+    /* What is it? */
     expect(jsonGetObjectItem, when(object, is_equal_to(&root)),  when(elementName, is_equal_to_string("id")),
            will_return(&id));
 
@@ -90,6 +94,10 @@ Ensure(ServerHandler, will_send_response_from_server_to_client) {
     expect(jsonParse, will_return(&root));
 
     cJSON id = {.valueint = 1};
+    /* Does it have an id? */
+    expect(jsonGetObjectItem, when(object, is_equal_to(&root)),  when(elementName, is_equal_to_string("id")),
+           will_return(&id));
+    /* What is it? */
     expect(jsonGetObjectItem, when(object, is_equal_to(&root)),  when(elementName, is_equal_to_string("id")),
            will_return(&id));
 
